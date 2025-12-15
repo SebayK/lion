@@ -614,6 +614,62 @@ export const ValidateMixinImplementation = superclass =>
     }
 
     /**
+     * Maps Lion validators to native ValidityStateFlags
+     * @param {ValidationResultEntry[]} validationResult
+     * @returns {{flags: ValidityStateFlags, message: string}}
+     * @private
+     */
+    __mapToValidityStateFlags(validationResult) {
+      /** @type {ValidityStateFlags} */
+      const flags = {};
+      let message = '';
+
+      // Find the first error-type validation result
+      const firstError = validationResult.find(({ validator }) => validator.type === 'error');
+
+      if (firstError) {
+        const { validator, outcome } = firstError;
+        const vCtor = /** @type {typeof Validator} */ (validator.constructor);
+        const validatorName = vCtor.validatorName;
+
+        // Get the message - it can be a boolean or a string
+        // If it's a boolean, we'll get the message later asynchronously
+        message = typeof outcome === 'string' ? outcome : '';
+
+        // Map to native ValidityStateFlags
+        switch (validatorName) {
+          case 'Required':
+            flags.valueMissing = true;
+            break;
+          case 'MinLength':
+            flags.tooShort = true;
+            break;
+          case 'MaxLength':
+            flags.tooLong = true;
+            break;
+          case 'Pattern':
+            flags.patternMismatch = true;
+            break;
+          case 'IsEmail':
+          case 'IsNumber':
+            flags.typeMismatch = true;
+            break;
+          case 'MinNumber':
+            flags.rangeUnderflow = true;
+            break;
+          case 'MaxNumber':
+            flags.rangeOverflow = true;
+            break;
+          default:
+            // All other validators use customError
+            flags.customError = true;
+        }
+      }
+
+      return { flags, message, validator: firstError?.validator };
+    }
+
+    /**
      * A 'pass' is a single run of the validation process, which will be triggered in these cases:
      * - on clear or disable
      * - on sync validation
@@ -663,8 +719,36 @@ export const ValidateMixinImplementation = superclass =>
       this.hasFeedbackFor = [
         ...new Set(this.__validationResult.map(({ validator }) => validator.type)),
       ];
+
+      // Set validity using ElementInternals API
+      this.__updateElementInternalsValidity();
+
       /** private event that should be listened to by LionFieldSet */
       this.dispatchEvent(new Event('validate-performed', { bubbles: true }));
+    }
+
+    /**
+     * Updates the ElementInternals validity state based on validation results
+     * @private
+     */
+    async __updateElementInternalsValidity() {
+      if (!this._internals) {
+        return;
+      }
+
+      const { flags, message, validator } = this.__mapToValidityStateFlags(this.__validationResult);
+
+      if (Object.keys(flags).length > 0) {
+        // Get the message if it wasn't already provided as a string
+        let validationMessage = message;
+        if (!validationMessage && validator) {
+          validationMessage = await validator._getMessage({ fieldName: this.label || this.name });
+        }
+        this._internals.setValidity(flags, validationMessage || 'Invalid');
+      } else {
+        // No errors, set as valid
+        this._internals.setValidity({});
+      }
     }
 
     /**
