@@ -15,6 +15,15 @@ function applyFocusVisiblePolyfillWhenNeeded(node) {
 }
 
 /**
+ * FocusMixin - Manages focus state and focus-visible for form controls
+ *
+ * Note: With ElementInternals, the browser automatically applies :focus, :focus-visible,
+ * and :disabled pseudo-classes to the host component. However, this mixin is retained for:
+ * 1. Backward compatibility with existing code that depends on `focused` property
+ * 2. Supporting the focus-visible polyfill for older browsers
+ * 3. Providing the `focusedVisible` property for InteractionStateMixin and other mixins
+ * 4. Maintaining the API surface for focus(), blur() methods
+ *
  * @typedef {import('../types/FocusMixinTypes.js').FocusMixin} FocusMixin
  * @type {FocusMixin}
  * @param {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} superclass

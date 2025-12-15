@@ -7,6 +7,15 @@ import { FormControlMixin } from './FormControlMixin.js';
  */
 
 /**
+ * InteractionStateMixin - Tracks user interaction states (touched, dirty, filled)
+ *
+ * Note: ElementInternals does not handle 'dirty' or 'touched' states. These are application-level
+ * UX concerns that are crucial for determining when to show validation feedback to users.
+ * This mixin is RETAINED as-is because:
+ * 1. ElementInternals has no equivalent for these interaction states
+ * 2. The ValidateMixin depends on these states for feedback visibility logic
+ * 3. These states provide essential UX patterns (e.g., don't show errors until user touches field)
+ *
  * @desc `InteractionStateMixin` adds meta information about touched and dirty states, that can
  * be read by other form components (ing-uic-input-error for instance, uses the touched state
  * to determine whether an error message needs to be shown).
