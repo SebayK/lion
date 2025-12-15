@@ -13,6 +13,15 @@ import { ValidateMixin } from '../validate/ValidateMixin.js';
  */
 
 /**
+ * ChoiceGroupMixin - Manages groups of choice inputs (radio buttons, checkboxes)
+ *
+ * Note on ElementInternals integration:
+ * Similar to FormGroupMixin, this uses a HYBRID APPROACH:
+ * - Individual choice inputs (lion-radio, lion-checkbox) use ElementInternals for form association
+ * - The group itself aggregates child values and manages selection state
+ * - Group-level validations (e.g., "select at least 2 options") are handled by ValidateMixin
+ * - The group does NOT use setFormValue() as it represents a collection, not a single value
+ *
  * ChoiceGroupMixin applies on both Fields (listbox/select-rich/combobox)  and FormGroups
  * (radio-group, checkbox-group)
  * TODO: Ideally, the ChoiceGroupMixin should not depend on InteractionStateMixin, which is only

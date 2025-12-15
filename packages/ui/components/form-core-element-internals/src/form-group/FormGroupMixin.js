@@ -18,6 +18,24 @@ import { FormElementsHaveNoError } from './FormElementsHaveNoError.js';
  */
 
 /**
+ * FormGroupMixin - Manages composite form controls (fieldsets, radio-groups, checkbox-groups)
+ *
+ * Note on ElementInternals integration:
+ * - ElementInternals is designed for single-value controls, not composite groups
+ * - This mixin uses a HYBRID APPROACH:
+ *   1. Child elements (lion-input, lion-checkbox, etc.) use ElementInternals to associate with <form>
+ *   2. The group itself does NOT use setFormValue() - it has no single value to submit
+ *   3. FormGroupMixin RETAINS its role for:
+ *      - Aggregating child values into a modelValue object
+ *      - Running group-level validations (e.g., "at least one checkbox must be checked")
+ *      - Managing children (e.g., resetGroup, serializedValue aggregation)
+ *      - Providing the formElements collection for programmatic access
+ *
+ * This approach ensures:
+ * - Individual form controls are properly registered with the native form
+ * - Group-level logic and validations continue to work
+ * - The API surface remains backward compatible
+ *
  * @desc Form group mixin serves as the basis for (sub) forms. Designed to be put on
  * elements with [role="group|radiogroup"] (think of checkbox-group, radio-group, fieldset).
  * It bridges all the functionality of the child form controls:
