@@ -26,6 +26,13 @@ import { InteractionStateMixin } from './InteractionStateMixin.js'; // applies F
 export class LionField extends FormControlMixin(
   InteractionStateMixin(FocusMixin(FormatMixin(ValidateMixin(SlotMixin(LitElement))))),
 ) {
+  static formAssociated = true;
+
+  constructor() {
+    super();
+    this._internals = this.attachInternals();
+  }
+
   /**
    * @param {import('lit').PropertyValues} changedProperties
    */

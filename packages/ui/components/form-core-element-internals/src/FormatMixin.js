@@ -221,6 +221,12 @@ const FormatMixinImplementation = superclass =>
       if (source !== 'serialized') {
         this.serializedValue = this.serializer(this.modelValue);
       }
+
+      // Set form value using ElementInternals API
+      if (this._internals) {
+        this._internals.setFormValue(this.serializedValue);
+      }
+
       this._reflectBackFormattedValueToUser();
       this.__preventRecursiveTrigger = false;
       this.__prevViewValue = this.value;
