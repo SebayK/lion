@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { LionField } from '@lion/ui/form-core.js';
+import { LionField } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * @typedef {import('../../localize/types/LocalizeMixinTypes.js').FormatNumberOptions} FormatOptions

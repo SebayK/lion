@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import autosize from 'autosize';
-import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core.js';
+import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core-element-internals.js';
 import { css } from 'lit';
 
 class LionFieldWithTextArea extends LionField {
