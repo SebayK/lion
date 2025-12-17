@@ -33,7 +33,7 @@ const FormDataMixinImplementation = superclass =>
 
     constructor() {
       super();
-      
+
       /**
        * @type {ElementInternals | undefined}
        * @protected
@@ -43,7 +43,7 @@ const FormDataMixinImplementation = superclass =>
 
     connectedCallback() {
       super.connectedCallback?.();
-      
+
       // Initialize ElementInternals after element is constructed
       if (!this._internals) {
         this._internals = this.attachInternals();
@@ -73,14 +73,14 @@ const FormDataMixinImplementation = superclass =>
       if (!this._internals) return;
 
       const value = this.modelValue;
-      
+
       // Handle Unparseable values - don't submit to form
       // The viewValue stays in the input field, but form data should be empty
       if (value instanceof Unparseable) {
         this._internals.setFormValue(null);
         return;
       }
-      
+
       // Handle different value types
       if (value == null || value === '') {
         this._internals.setFormValue(null);
@@ -131,9 +131,8 @@ const FormDataMixinImplementation = superclass =>
     /**
      * Form state restore callback
      * @param {string | File | FormData} state
-     * @param {string} _mode
      */
-    formStateRestoreCallback(state, _mode) {
+    formStateRestoreCallback(state) {
       // Restore modelValue from saved state
       if (state != null) {
         this.modelValue = state;
