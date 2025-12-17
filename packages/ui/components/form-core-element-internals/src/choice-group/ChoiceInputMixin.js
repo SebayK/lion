@@ -58,15 +58,27 @@ const ChoiceInputMixinImplementation = superclass =>
      * @returns {void}
      */
     requestUpdate(name, oldValue, options) {
+      // Prevent recursive syncing between checked and modelValue.checked
+      // Check this BEFORE calling super to prevent double events
+      const preventSync = this.__isSyncing;
+
       super.requestUpdate(name, oldValue, options);
+
+      if (preventSync) {
+        return;
+      }
 
       if (name === 'modelValue') {
         if (this.modelValue.checked !== this.checked) {
+          this.__isSyncing = true;
           this.__syncModelCheckedToChecked(this.modelValue.checked);
+          this.__isSyncing = false;
         }
       } else if (name === 'checked') {
         if (this.modelValue.checked !== this.checked) {
+          this.__isSyncing = true;
           this.__syncCheckedToModel(this.checked);
+          this.__isSyncing = false;
         }
       }
     }
@@ -99,6 +111,20 @@ const ChoiceInputMixinImplementation = superclass =>
       ) {
         this._syncNameToParentFormGroup();
       }
+    }
+
+    /**
+     * Serializer for choice inputs: only serialize the value when checked
+     * @param {ChoiceInputModelValue} v
+     * @returns {string}
+     */
+    serializer(v) {
+      // For choice inputs, only serialize the value if checked
+      // Unchecked inputs should not appear in form data
+      if (!v || !v.checked) {
+        return '';
+      }
+      return v.value !== undefined ? v.value : '';
     }
 
     constructor() {
