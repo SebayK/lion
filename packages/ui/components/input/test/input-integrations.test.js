@@ -3,7 +3,7 @@ import {
   runInteractionStateMixinSuite,
   runFormatMixinSuite,
   runNativeTextFieldMixinSuite,
-} from '@lion/ui/form-core-test-suites.js';
+} from '@lion/ui/form-core-element-internals-test-suites.js';
 
 import { LionInput } from '@lion/ui/input.js';
 

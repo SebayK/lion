@@ -2,7 +2,7 @@ import {
   runInteractionStateMixinSuite,
   runFormatMixinSuite,
   runNativeTextFieldMixinSuite,
-} from '@lion/ui/form-core-test-suites.js';
+} from '@lion/ui/form-core-element-internals-test-suites.js';
 
 import '@lion/ui/define/lion-textarea.js';
 

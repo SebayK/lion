@@ -1,4 +1,5 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { Unparseable } from './validate/Unparseable.js';
 
 /**
  * @typedef {import('../types/FormControlMixinTypes.js').FormControlHost} FormControlHost
@@ -72,6 +73,13 @@ const FormDataMixinImplementation = superclass =>
       if (!this._internals) return;
 
       const value = this.modelValue;
+      
+      // Handle Unparseable values - don't submit to form
+      // The viewValue stays in the input field, but form data should be empty
+      if (value instanceof Unparseable) {
+        this._internals.setFormValue(null);
+        return;
+      }
       
       // Handle different value types
       if (value == null || value === '') {
