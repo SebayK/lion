@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { ChoiceGroupMixin, FormGroupMixin } from '@lion/ui/form-core.js';
+import { ChoiceGroupMixin, FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * A wrapper around multiple checkboxes

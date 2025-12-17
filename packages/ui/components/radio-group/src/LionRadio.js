@@ -1,4 +1,4 @@
-import { ChoiceInputMixin } from '@lion/ui/form-core.js';
+import { ChoiceInputMixin } from '@lion/ui/form-core-element-internals.js';
 import { LionInput } from '@lion/ui/input.js';
 
 /**
