@@ -87,9 +87,9 @@ const ChoiceGroupMixinImplementation = superclass =>
       // are the same.
       const elems = this._getCheckedElements();
       if (this.multipleChoice) {
-        return elems.map(el => el.serializedValue.value);
+        return elems.map(el => el.choiceValue);
       }
-      return elems[0] ? elems[0].serializedValue.value : '';
+      return elems[0] ? elems[0].choiceValue : '';
     }
 
     set serializedValue(value) {
@@ -97,7 +97,7 @@ const ChoiceGroupMixinImplementation = superclass =>
        * @param {ChoiceInputHost} el
        * @param {string} val
        */
-      const checkCondition = (el, val) => el.serializedValue.value === val;
+      const checkCondition = (el, val) => el.choiceValue === val;
 
       if (this.__isInitialSerializedValue) {
         this.registrationComplete.then(() => {

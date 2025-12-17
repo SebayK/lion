@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Debug</title>
+  <script type="module">
+    import '@lion/ui/define/lion-form.js';
+    import '@lion/ui/define/lion-input.js';
+    import '@lion/ui/define/lion-fieldset.js';
+    import { Required } from '@lion/ui/form-core.js';
+
+    window.addEventListener('load', async () => {
+      const form = document.querySelector('lion-form');
+      const button = document.querySelector('button');
+      
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Button clicked');
+        console.log('Form elements:', form.formElements);
+        console.log('Fieldset:', form.formElements[0]);
+        console.log('Fieldset formElements:', form.formElements[0].formElements);
+        console.log('checkValidity:', form.checkValidity());
+        
+        const spy = [];
+        const originalDispatch = form.dispatchEvent.bind(form);
+        form.dispatchEvent = (event) => {
+          console.log('dispatchEvent called with:', event);
+          spy.push(event);
+          return originalDispatch(event);
+        };
+        
+        // Trigger submit
+        form._formNode.dispatchEvent(new Event('submit', { cancelable: true }));
+        
+        console.log('Spy captured:', spy);
+      });
+    });
+  </script>
+</head>
+<body>
+  <lion-form>
+    <form>
+      <lion-fieldset name="name">
+        <lion-input name="firstName" .modelValue=${'Foo'}></lion-input>
+        <lion-input name="lastName"></lion-input>
+      </lion-fieldset>
+      <button type="button">Test Submit</button>
+    </form>
+  </lion-form>
+</body>
+</html>

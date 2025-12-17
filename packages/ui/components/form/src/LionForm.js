@@ -65,13 +65,7 @@ export class LionForm extends LionFieldset {
   }
 
   /**
-   * Handles form submission with Element Internals validation.
-   *
-   * Flow:
-   * 1. If noValidate is false, validates using checkValidity()
-   * 2. If invalid, calls reportValidity() to show browser tooltips and blocks submission
-   * 3. If valid (or noValidate=true), proceeds with submission
-   * 4. Dispatches 'submit' event with FormData and serializedValue in detail
+   * Handles form submission.
    *
    * @param {Event} ev
    * @protected
@@ -79,17 +73,6 @@ export class LionForm extends LionFieldset {
   _submit(ev) {
     ev.preventDefault();
     ev.stopPropagation();
-
-    // Validate before submit (unless novalidate is set)
-    if (!this.noValidate && !this._formNode.checkValidity()) {
-      // Form is invalid - show validation errors
-      this._formNode.reportValidity();
-      this.submitGroup(); // Set submitted state for Lion's feedback system
-      this._setFocusOnFirstErroneousFormElement(/** @type { * & FormRegistrarHost } */ (this));
-      return; // Block submission
-    }
-
-    // Form is valid - proceed with submission
     this.submitGroup();
 
     // Collect form data using Element Internals (automatic!)
