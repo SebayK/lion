@@ -1,7 +1,7 @@
 import { LionFieldset } from '@lion/ui/fieldset.js';
 
 /**
- * @typedef {import('../../form-core/types/registration/FormRegistrarMixinTypes.js').FormRegistrarHost} FormRegistrarHost
+ * @typedef {import('../../form-core-element-internals/types/registration/FormRegistrarMixinTypes.js').FormRegistrarHost} FormRegistrarHost
  */
 
 const throwFormNodeError = () => {
@@ -16,12 +16,25 @@ const throwFormNodeError = () => {
  * @customElement lion-form
  */
 export class LionForm extends LionFieldset {
+  /** @type {any} */
+  static get properties() {
+    return {
+      noValidate: { type: Boolean, attribute: 'novalidate', reflect: true },
+    };
+  }
+
   constructor() {
     super();
     /** @protected */
     this._submit = this._submit.bind(this);
     /** @protected */
     this._reset = this._reset.bind(this);
+    /**
+     * When true, form will not validate before submission.
+     * Equivalent to native form's novalidate attribute.
+     * @type {boolean}
+     */
+    this.noValidate = false;
   }
 
   connectedCallback() {
@@ -52,14 +65,46 @@ export class LionForm extends LionFieldset {
   }
 
   /**
+   * Handles form submission with Element Internals validation.
+   *
+   * Flow:
+   * 1. If noValidate is false, validates using checkValidity()
+   * 2. If invalid, calls reportValidity() to show browser tooltips and blocks submission
+   * 3. If valid (or noValidate=true), proceeds with submission
+   * 4. Dispatches 'submit' event with FormData and serializedValue in detail
+   *
    * @param {Event} ev
    * @protected
    */
   _submit(ev) {
     ev.preventDefault();
     ev.stopPropagation();
+
+    // Validate before submit (unless novalidate is set)
+    if (!this.noValidate && !this._formNode.checkValidity()) {
+      // Form is invalid - show validation errors
+      this._formNode.reportValidity();
+      this.submitGroup(); // Set submitted state for Lion's feedback system
+      this._setFocusOnFirstErroneousFormElement(/** @type { * & FormRegistrarHost } */ (this));
+      return; // Block submission
+    }
+
+    // Form is valid - proceed with submission
     this.submitGroup();
-    this.dispatchEvent(new Event('submit', { bubbles: true }));
+
+    // Collect form data using Element Internals (automatic!)
+    const formData = new FormData(this._formNode);
+
+    // Dispatch submit event with both FormData (Element Internals) and serializedValue (Lion custom)
+    this.dispatchEvent(
+      new CustomEvent('submit', {
+        bubbles: true,
+        detail: {
+          formData, // Element Internals - native FormData
+          serializedValue: this.serializedValue, // Lion custom - backward compatibility
+        },
+      }),
+    );
 
     if (this.hasFeedbackFor?.includes('error')) {
       this._setFocusOnFirstErroneousFormElement(/** @type { * & FormRegistrarHost } */ (this));

@@ -3,6 +3,7 @@
 **Data utworzenia**: 2025-12-16  
 **Status**: Draft - Gotowy do realizacji  
 **Powiązane dokumenty**:
+
 - `element-internals-migration-plan.md` (zakończony - fazy 1-4)
 - `element-internals-cleanup-plan.md` (plan długoterminowy)
 
@@ -11,6 +12,7 @@
 ## Executive Summary
 
 Implementacja Element Internals została zakończona w `form-core-element-internals`. Ten dokument zawiera:
+
 1. **Analizę testów jednostkowych** - czy wymagają dostosowania
 2. **Plan migracji komponentów** - krok po kroku z zachowaniem logiki
 3. **Harmonogram realizacji** z konkretnymi zadaniami
@@ -19,7 +21,7 @@ Implementacja Element Internals została zakończona w `form-core-element-intern
 
 ✅ **Testy są już kompatybilne** - używają test suites które abstrahują implementację  
 ✅ **Komponenty dziedziczą z LionField** - zmiana importu wystarczy w większości przypadków  
-⚠️ **Należy zachować backward compatibility** - dual mode przez okres przejściowy  
+⚠️ **Należy zachować backward compatibility** - dual mode przez okres przejściowy
 
 ---
 
@@ -70,6 +72,7 @@ Implementacja Element Internals została zakończona w `form-core-element-intern
 ### 1.2 Porównanie z form-core
 
 **Identyczne rozmiary test suites:**
+
 ```
 ValidateMixin.suite.js:        1630 linii (identyczne)
 FormatMixin.suite.js:          774 linii (identyczne)
@@ -84,6 +87,7 @@ InteractionStateMixin.suite.js: 276 linii (identyczne)
 #### ✅ NIE wymagają - Test Suites są uniwersalne
 
 **Powód**: Test suites używają wzorca "behavioral testing":
+
 ```javascript
 // Test suite definiuje zachowanie, nie implementację
 export function runValidateMixinSuite(customConfig) {
@@ -97,6 +101,7 @@ export function runValidateMixinSuite(customConfig) {
 ```
 
 **Testowane API publiczne (niezmienione)**:
+
 - `hasFeedbackFor` - nadal istnieje
 - `showsFeedbackFor` - nadal istnieje
 - `validators` - nadal istnieje
@@ -105,12 +110,14 @@ export function runValidateMixinSuite(customConfig) {
 - `modelValue`, `formattedValue`, `serializedValue` - nadal istnieją
 
 **Nowe API (wewnętrzne, niewidoczne w testach)**:
+
 - `this._internals.setValidity()` - wywoływane wewnątrz `validate()`
 - `this._internals.setFormValue()` - wywoływane wewnątrz `_calculateValues()`
 
 #### ⚠️ MOGĄ wymagać - Testy specyficzne dla Element Internals
 
 **Brakujące testy dla**:
+
 1. Natywna integracja z `<form>` element
 2. Sprawdzenie `form.elements` zawiera komponenty
 3. Weryfikacja `setValidity()` ustawia prawidłowe flagi
@@ -131,7 +138,7 @@ import '@lion/ui/define/lion-field.js';
 describe('Element Internals Integration', () => {
   describe('Form Association', () => {
     it('attaches ElementInternals on construction', async () => {
-      const el = await fixture(html`<lion-field name="test"><input slot="input"></lion-field>`);
+      const el = await fixture(html`<lion-field name="test"><input slot="input" /></lion-field>`);
       expect(el._internals).to.exist;
       expect(el._internals.form).to.be.null; // nie w formularzu
     });
@@ -139,11 +146,11 @@ describe('Element Internals Integration', () => {
     it('associates with parent <form>', async () => {
       const form = await fixture(html`
         <form>
-          <lion-field name="username"><input slot="input"></lion-field>
+          <lion-field name="username"><input slot="input" /></lion-field>
         </form>
       `);
       const field = form.querySelector('lion-field');
-      
+
       expect(field._internals.form).to.equal(form);
       expect(form.elements.namedItem('username')).to.equal(field);
     });
@@ -152,11 +159,11 @@ describe('Element Internals Integration', () => {
       const form = await fixture(html`
         <form>
           <lion-field name="email" .modelValue=${'test@example.com'}>
-            <input slot="input">
+            <input slot="input" />
           </lion-field>
         </form>
       `);
-      
+
       const formData = new FormData(form);
       expect(formData.get('email')).to.equal('test@example.com');
     });
@@ -166,32 +173,29 @@ describe('Element Internals Integration', () => {
     it('sets validity flags via setValidity()', async () => {
       const el = await fixture(html`
         <lion-field .validators=${[new Required()]}>
-          <input slot="input">
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       await el.validate();
-      
+
       // Element Internals validity
       expect(el._internals.validity.valueMissing).to.be.true;
       expect(el._internals.validity.valid).to.be.false;
-      
+
       // Public API (zachowane dla kompatybilności)
       expect(el.hasFeedbackFor).to.include('error');
     });
 
     it('clears validity when valid', async () => {
       const el = await fixture(html`
-        <lion-field 
-          .validators=${[new Required()]} 
-          .modelValue=${'value'}
-        >
-          <input slot="input">
+        <lion-field .validators=${[new Required()]} .modelValue=${'value'}>
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       await el.validate();
-      
+
       expect(el._internals.validity.valid).to.be.true;
       expect(el.hasFeedbackFor).to.not.include('error');
     });
@@ -199,12 +203,12 @@ describe('Element Internals Integration', () => {
     it('provides validation message via validationMessage', async () => {
       const el = await fixture(html`
         <lion-field .validators=${[new Required()]}>
-          <input slot="input">
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       await el.validate();
-      
+
       expect(el._internals.validationMessage).to.not.be.empty;
     });
   });
@@ -213,12 +217,12 @@ describe('Element Internals Integration', () => {
     it('applies :invalid when field has errors', async () => {
       const el = await fixture(html`
         <lion-field .validators=${[new Required()]}>
-          <input slot="input">
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       await el.validate();
-      
+
       // Pseudo-klasy są dostępne natywnie
       expect(el.matches(':invalid')).to.be.true;
       expect(el.matches(':valid')).to.be.false;
@@ -227,10 +231,10 @@ describe('Element Internals Integration', () => {
     it('applies :valid when field is valid', async () => {
       const el = await fixture(html`
         <lion-field .modelValue=${'value'}>
-          <input slot="input">
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       expect(el.matches(':valid')).to.be.true;
       expect(el.matches(':invalid')).to.be.false;
     });
@@ -240,15 +244,15 @@ describe('Element Internals Integration', () => {
     it('sets simple string value', async () => {
       const el = await fixture(html`
         <lion-field name="text" .modelValue=${'hello'}>
-          <input slot="input">
+          <input slot="input" />
         </lion-field>
       `);
-      
+
       // FormData używa _internals.setFormValue()
       const form = document.createElement('form');
       form.appendChild(el);
       const formData = new FormData(form);
-      
+
       expect(formData.get('text')).to.equal('hello');
     });
 
@@ -263,17 +267,17 @@ describe('Element Internals Integration', () => {
       const form = await fixture(html`
         <form>
           <lion-field name="field" .modelValue=${'initial'}>
-            <input slot="input">
+            <input slot="input" />
           </lion-field>
         </form>
       `);
       const field = form.querySelector('lion-field');
-      
+
       field.modelValue = 'changed';
       expect(field.modelValue).to.equal('changed');
-      
+
       form.reset();
-      
+
       // Element Internals automatycznie resetuje wartość
       // ale musimy też zresetować modelValue w naszym kodzie
       expect(field.modelValue).to.equal('initial');
@@ -288,14 +292,14 @@ describe('Element Internals Integration', () => {
 
 ```javascript
 import { fixture, expect, html } from '@open-wc/testing';
-import { 
-  Required, 
-  MinLength, 
-  MaxLength, 
-  Pattern, 
+import {
+  Required,
+  MinLength,
+  MaxLength,
+  Pattern,
   IsEmail,
   MinNumber,
-  MaxNumber 
+  MaxNumber,
 } from '@lion/ui/form-core.js';
 import '@lion/ui/define/lion-field.js';
 
@@ -303,94 +307,76 @@ describe('ValidityState Mapping', () => {
   it('maps Required to valueMissing', async () => {
     const el = await fixture(html`
       <lion-field .validators=${[new Required()]}>
-        <input slot="input">
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.valueMissing).to.be.true;
   });
 
   it('maps MinLength to tooShort', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new MinLength(5)]}
-        .modelValue=${'ab'}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new MinLength(5)]} .modelValue=${'ab'}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.tooShort).to.be.true;
   });
 
   it('maps MaxLength to tooLong', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new MaxLength(5)]}
-        .modelValue=${'abcdefgh'}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new MaxLength(5)]} .modelValue=${'abcdefgh'}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.tooLong).to.be.true;
   });
 
   it('maps Pattern to patternMismatch', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new Pattern(/^[A-Z]+$/)]}
-        .modelValue=${'abc123'}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new Pattern(/^[A-Z]+$/)]} .modelValue=${'abc123'}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.patternMismatch).to.be.true;
   });
 
   it('maps IsEmail to typeMismatch', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new IsEmail()]}
-        .modelValue=${'not-an-email'}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new IsEmail()]} .modelValue=${'not-an-email'}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.typeMismatch).to.be.true;
   });
 
   it('maps MinNumber to rangeUnderflow', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new MinNumber(10)]}
-        .modelValue=${5}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new MinNumber(10)]} .modelValue=${5}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.rangeUnderflow).to.be.true;
   });
 
   it('maps MaxNumber to rangeOverflow', async () => {
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new MaxNumber(10)]}
-        .modelValue=${15}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new MaxNumber(10)]} .modelValue=${15}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.rangeOverflow).to.be.true;
   });
@@ -401,16 +387,13 @@ describe('ValidityState Mapping', () => {
         return value !== 'valid';
       }
     }
-    
+
     const el = await fixture(html`
-      <lion-field 
-        .validators=${[new CustomValidator()]}
-        .modelValue=${'invalid'}
-      >
-        <input slot="input">
+      <lion-field .validators=${[new CustomValidator()]} .modelValue=${'invalid'}>
+        <input slot="input" />
       </lion-field>
     `);
-    
+
     await el.validate();
     expect(el._internals.validity.customError).to.be.true;
   });
@@ -421,12 +404,13 @@ describe('ValidityState Mapping', () => {
 
 **Plik**: `/form-core-element-internals/test/README.md` (NOWY)
 
-```markdown
+````markdown
 # Form Core Element Internals - Testy
 
 ## Struktura
 
 ### Test Suites (`/test-suites`)
+
 Reusable test suites dla mixinów - używane przez wszystkie komponenty.
 
 - **ValidateMixin.suite.js** - pełny test walidacji
@@ -435,6 +419,7 @@ Reusable test suites dla mixinów - używane przez wszystkie komponenty.
 - **FormRegistrationMixins.suite.js** - rejestracja w grupach
 
 ### Unit Tests (`/test`)
+
 Testy specyficzne dla implementacji form-core-element-internals.
 
 - **ElementInternalsIntegration.test.js** - testy integracji z Form API
@@ -443,11 +428,13 @@ Testy specyficzne dla implementacji form-core-element-internals.
 ## Różnice z form-core
 
 ### Co jest takie samo:
+
 - Publiczne API (hasFeedbackFor, validators, modelValue, etc.)
 - Wszystkie test suites
 - Behavior testów
 
 ### Co jest nowe:
+
 - Element Internals integration
 - Natywna walidacja przez setValidity()
 - Natywne wartości formularza przez setFormValue()
@@ -465,7 +452,9 @@ npm test -- --group form-core-element-internals
 # Konkretny test
 npm test -- --grep "Element Internals"
 ```
-```
+````
+
+````
 
 ---
 
@@ -509,7 +498,7 @@ npm test -- --grep "Element Internals"
 
 #### Opcja A: Zmiana importów (ZALECANE - szybkie)
 
-**Podejście**: 
+**Podejście**:
 1. Zmienić import z `@lion/ui/form-core.js` na `@lion/ui/form-core-element-internals.js`
 2. Uruchomić testy
 3. Naprawić ewentualne problemy
@@ -608,9 +597,10 @@ export { LionValidationFeedback } from '../components/form-core-element-internal
 export { ChoiceGroupMixin } from '../components/form-core-element-internals/src/choice-group/ChoiceGroupMixin.js';
 export { ChoiceInputMixin } from '../components/form-core-element-internals/src/choice-group/ChoiceInputMixin.js';
 export { FormGroupMixin } from '../components/form-core-element-internals/src/form-group/FormGroupMixin.js';
-```
+````
 
 **Zadania**:
+
 - [ ] Utworzyć plik export
 - [ ] Dodać TypeScript definitions (`.d.ts`)
 - [ ] Zaktualizować package.json exports
@@ -625,7 +615,7 @@ export { FormGroupMixin } from '../components/form-core-element-internals/src/fo
 
 /**
  * Skrypt do automatycznej migracji komponentów na Element Internals
- * 
+ *
  * Użycie:
  *   node scripts/migrate-to-element-internals.js input
  *   node scripts/migrate-to-element-internals.js --all
@@ -639,45 +629,56 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const componentsDir = path.join(__dirname, '../packages/ui/components');
 
 const COMPONENTS = [
-  'input', 'textarea', 'select', 
-  'checkbox-group', 'radio-group', 
-  'fieldset', 'form',
-  'input-email', 'input-date', 'input-amount',
-  'input-iban', 'input-range', 'input-stepper',
-  'input-tel', 'input-datepicker', 'input-file',
-  'input-amount-dropdown', 'input-tel-dropdown'
+  'input',
+  'textarea',
+  'select',
+  'checkbox-group',
+  'radio-group',
+  'fieldset',
+  'form',
+  'input-email',
+  'input-date',
+  'input-amount',
+  'input-iban',
+  'input-range',
+  'input-stepper',
+  'input-tel',
+  'input-datepicker',
+  'input-file',
+  'input-amount-dropdown',
+  'input-tel-dropdown',
 ];
 
 function migrateComponent(componentName) {
   const componentDir = path.join(componentsDir, componentName);
   const srcDir = path.join(componentDir, 'src');
-  
+
   if (!fs.existsSync(srcDir)) {
     console.log(`⚠️  Skipping ${componentName} - no src directory`);
     return { success: false, reason: 'no-src' };
   }
-  
+
   const files = fs.readdirSync(srcDir).filter(f => f.endsWith('.js'));
   let changed = false;
-  
+
   for (const file of files) {
     const filePath = path.join(srcDir, file);
     let content = fs.readFileSync(filePath, 'utf-8');
     const originalContent = content;
-    
+
     // Zamień import
     content = content.replace(
       /from ['"]@lion\/ui\/form-core\.js['"]/g,
-      `from '@lion/ui/form-core-element-internals.js'`
+      `from '@lion/ui/form-core-element-internals.js'`,
     );
-    
+
     if (content !== originalContent) {
       fs.writeFileSync(filePath, content, 'utf-8');
       console.log(`  ✓ ${file}`);
       changed = true;
     }
   }
-  
+
   if (changed) {
     console.log(`✅ Migrated ${componentName}`);
     return { success: true };
@@ -689,26 +690,24 @@ function migrateComponent(componentName) {
 
 function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.includes('--all')) {
     console.log('🚀 Migrating all components to Element Internals...\n');
-    
+
     const results = COMPONENTS.map(comp => ({
       component: comp,
-      ...migrateComponent(comp)
+      ...migrateComponent(comp),
     }));
-    
+
     console.log('\n📊 Summary:');
     console.log(`Total: ${results.length}`);
     console.log(`Migrated: ${results.filter(r => r.success && !r.noChanges).length}`);
     console.log(`No changes: ${results.filter(r => r.noChanges).length}`);
     console.log(`Failed: ${results.filter(r => !r.success).length}`);
-    
   } else if (args.length > 0) {
     const component = args[0];
     console.log(`🚀 Migrating ${component} to Element Internals...\n`);
     migrateComponent(component);
-    
   } else {
     console.log('Usage:');
     console.log('  node scripts/migrate-to-element-internals.js <component>');
@@ -722,6 +721,7 @@ main();
 ```
 
 **Zadania**:
+
 - [ ] Utworzyć skrypt
 - [ ] Nadać uprawnienia wykonywania
 - [ ] Przetestować na jednym komponencie
@@ -729,6 +729,7 @@ main();
 #### Zadanie 0.3: Przygotowanie testów
 
 **Zadania**:
+
 - [ ] Dodać testy Element Internals (z Części 1)
 - [ ] Uruchomić testy form-core-element-internals
 - [ ] Upewnić się że wszystkie przechodzą (100%)
@@ -757,6 +758,7 @@ export class LionInput extends NativeTextFieldMixin(LionField) {
 ```
 
 **Zadania**:
+
 - [ ] Zmienić import (manualnie lub skryptem)
 - [ ] Uruchomić build: `npm run build`
 - [ ] Sprawdzić czy nie ma błędów TypeScript
@@ -764,6 +766,7 @@ export class LionInput extends NativeTextFieldMixin(LionField) {
 #### Zadanie 1.2: Testy LionInput
 
 **Zadania**:
+
 - [ ] Uruchomić testy: `npm test -- --group input`
 - [ ] Sprawdzić wszystkie test suites (format, validate, etc.)
 - [ ] Naprawić ewentualne błędy
@@ -783,9 +786,9 @@ describe('lion-input Element Internals', () => {
       </form>
     `);
     const input = form.querySelector('lion-input');
-    
+
     expect(input._internals.form).to.equal(form);
-    
+
     const formData = new FormData(form);
     expect(formData.get('username')).to.equal('john');
   });
@@ -797,21 +800,19 @@ describe('lion-input Element Internals', () => {
       </form>
     `);
     const input = form.querySelector('lion-input');
-    
+
     input.modelValue = 'changed';
     form.reset();
-    
+
     expect(input.modelValue).to.equal('initial');
   });
 
   it('sets :valid/:invalid pseudo-classes', async () => {
-    const input = await fixture(html`
-      <lion-input .validators=${[new Required()]}></lion-input>
-    `);
-    
+    const input = await fixture(html` <lion-input .validators=${[new Required()]}></lion-input> `);
+
     await input.validate();
     expect(input.matches(':invalid')).to.be.true;
-    
+
     input.modelValue = 'value';
     await input.validate();
     expect(input.matches(':valid')).to.be.true;
@@ -822,6 +823,7 @@ describe('lion-input Element Internals', () => {
 #### Zadanie 1.3: Manual testing
 
 **Checklist**:
+
 - [ ] Utworzyć demo page: `/docs/components/input/demos/element-internals.html`
 - [ ] Testować w Chrome, Firefox, Safari
 - [ ] Sprawdzić:
@@ -834,6 +836,7 @@ describe('lion-input Element Internals', () => {
 #### Zadanie 1.4: Dokumentacja
 
 **Zadania**:
+
 - [ ] Zaktualizować `/docs/components/input/overview.md`
 - [ ] Dodać sekcję "Element Internals Support"
 - [ ] Dodać przykład integracji z `<form>`
@@ -865,7 +868,8 @@ node scripts/migrate-to-element-internals.js fieldset
 npm test -- --group fieldset
 ```
 
-**Uwaga dla Fieldset**: 
+**Uwaga dla Fieldset**:
+
 - FormGroupMixin nadal używa custom registration
 - Dzieci używają Element Internals
 - Hybrid approach
@@ -873,6 +877,7 @@ npm test -- --group fieldset
 #### Zadanie 2.4: Regression testing (dzień 4-5)
 
 **Zadania**:
+
 - [ ] Uruchomić pełny test suite: `npm test`
 - [ ] Sprawdzić wszystkie migrowane komponenty
 - [ ] Manual testing w przeglądarkach
@@ -892,6 +897,7 @@ node scripts/migrate-to-element-internals.js radio-group
 ```
 
 **Szczególna uwaga**:
+
 - Checkbox/Radio używają ChoiceInputMixin
 - Group używa ChoiceGroupMixin + FormGroupMixin
 - Testować dokładnie interakcje grupa-dziecko
@@ -899,6 +905,7 @@ node scripts/migrate-to-element-internals.js radio-group
 #### Zadanie 3.2: Testy integracyjne (dzień 3)
 
 **Zadania**:
+
 - [ ] Uruchomić choice group test suites
 - [ ] Sprawdzić:
   - [ ] Single selection (radio)
@@ -913,6 +920,7 @@ node scripts/migrate-to-element-internals.js radio-group
 ### FAZA 4: Migracja LionForm (2-3 dni)
 
 **Specjalne wymagania**:
+
 - LionForm opakowuje natywny `<form>`
 - Musi współpracować z Element Internals dzieci
 - Testować submit, reset, validation
@@ -939,6 +947,7 @@ done
 ```
 
 **Uwagi**:
+
 - Większość dziedziczy z LionInput
 - Powinny działać automatycznie po migracji LionInput
 - Skupić się na testach specyficznych funkcji (parsery, formatery)
@@ -958,6 +967,7 @@ npm run test:browserstack
 ```
 
 **Checklist**:
+
 - [ ] Wszystkie testy przechodzą
 - [ ] Żadne console warnings
 - [ ] Performance benchmarks (porównać z przed migracją)
@@ -965,12 +975,14 @@ npm run test:browserstack
 #### Zadanie 6.2: Dokumentacja
 
 **Pliki do zaktualizowania**:
+
 - [ ] `/docs/fundamentals/forms/overview.md`
 - [ ] `/docs/fundamentals/forms/validation.md`
 - [ ] `/docs/fundamentals/forms/formatting.md`
 - [ ] Każdy komponent: `/docs/components/[name]/overview.md`
 
 **Dodać sekcje**:
+
 - Element Internals Support
 - Form Integration
 - Browser Compatibility
@@ -981,6 +993,7 @@ npm run test:browserstack
 **Plik**: `/docs/guides/element-internals-migration.md` (NOWY)
 
 Zawartość:
+
 - Czym jest Element Internals
 - Dlaczego migrowaliśmy
 - Co się zmieniło (wewnętrznie)
@@ -994,51 +1007,58 @@ Zawartość:
 
 ### 3.1 Timeline
 
-| Faza | Czas | Komponenty | Status |
-|------|------|-----------|--------|
-| **Faza 0** | 2-3 dni | Przygotowanie | ⏳ To Do |
-| **Faza 1** | 3-4 dni | LionInput (testowy) | ⏳ To Do |
-| **Faza 2** | 5-7 dni | Textarea, Select, Fieldset | ⏳ To Do |
-| **Faza 3** | 4-5 dni | Checkbox, Radio groups | ⏳ To Do |
-| **Faza 4** | 2-3 dni | LionForm | ⏳ To Do |
-| **Faza 5** | 5-7 dni | Input variants (11 komponentów) | ⏳ To Do |
-| **Faza 6** | 3-5 dni | Verification, Docs | ⏳ To Do |
-| **TOTAL** | **24-34 dni** | **20 komponentów** | |
+| Faza       | Czas          | Komponenty                      | Status   |
+| ---------- | ------------- | ------------------------------- | -------- |
+| **Faza 0** | 2-3 dni       | Przygotowanie                   | ⏳ To Do |
+| **Faza 1** | 3-4 dni       | LionInput (testowy)             | ⏳ To Do |
+| **Faza 2** | 5-7 dni       | Textarea, Select, Fieldset      | ⏳ To Do |
+| **Faza 3** | 4-5 dni       | Checkbox, Radio groups          | ⏳ To Do |
+| **Faza 4** | 2-3 dni       | LionForm                        | ⏳ To Do |
+| **Faza 5** | 5-7 dni       | Input variants (11 komponentów) | ⏳ To Do |
+| **Faza 6** | 3-5 dni       | Verification, Docs              | ⏳ To Do |
+| **TOTAL**  | **24-34 dni** | **20 komponentów**              |          |
 
 **Realistyczny timeline**: 5-7 tygodni (z buforem)
 
 ### 3.2 Podział pracy (jeśli zespół)
 
 #### Developer 1 (Form Components):
+
 - Faza 0: Setup
 - Faza 1: LionInput
 - Faza 2: Textarea, Select
 - Faza 4: LionForm
 
 #### Developer 2 (Groups):
+
 - Faza 2: Fieldset
 - Faza 3: Choice Groups
 
 #### Developer 3 (Input Variants):
-- Faza 5: Wszystkie input-* komponenty
+
+- Faza 5: Wszystkie input-\* komponenty
 
 #### Tester/Dokumentacja:
+
 - Continuous: Testy po każdej fazie
 - Faza 6: Final verification + docs
 
 ### 3.3 Checkpoints
 
 #### Checkpoint 1 (po Fazie 1):
+
 - LionInput działa z Element Internals
 - Wszystkie testy przechodzą
 - GO/NO-GO decision
 
 #### Checkpoint 2 (po Fazie 3):
+
 - Wszystkie podstawowe komponenty zmigrowane
 - Integration tests pass
 - Performance OK
 
 #### Checkpoint 3 (po Fazie 5):
+
 - Wszystkie komponenty zmigrowane
 - Full regression pass
 - Ready for docs
@@ -1046,23 +1066,27 @@ Zawartość:
 ### 3.4 Metryki Sukcesu
 
 #### Code Quality:
+
 - [ ] 100% testów przechodzi
 - [ ] 0 TypeScript errors
 - [ ] 0 console warnings w production
 - [ ] Code coverage ≥ przed migracją
 
 #### Functionality:
+
 - [ ] Wszystkie komponenty działają identycznie
 - [ ] Form integration działa
 - [ ] Validation działa
 - [ ] Accessibility zachowane
 
 #### Performance:
+
 - [ ] Bundle size: max +2% (Element Internals overhead)
 - [ ] Runtime performance: min identyczna
 - [ ] Memory usage: max +5%
 
 #### Documentation:
+
 - [ ] Migration guide kompletny
 - [ ] Wszystkie komponenty zaktualizowane
 - [ ] Przykłady działają
@@ -1080,6 +1104,7 @@ Zawartość:
 **Impact**: Wysoki
 
 **Mitigacja**:
+
 - Test suites pokrywają całe publiczne API
 - Manual testing przed release
 - Beta release dla early adopters
@@ -1090,6 +1115,7 @@ Zawartość:
 **Impact**: Średni
 
 **Mitigacja**:
+
 - Benchmarki przed i po
 - Performance budgets
 - Continuous monitoring
@@ -1100,6 +1126,7 @@ Zawartość:
 **Impact**: Wysoki
 
 **Mitigacja**:
+
 - Element Internals widely supported (Chrome 77+, Firefox 93+, Safari 16.4+)
 - Fallback plan: polyfill
 - Dokumentować wymagania
@@ -1110,6 +1137,7 @@ Zawartość:
 **Impact**: Niski
 
 **Mitigacja**:
+
 - Inkrementalna migracja (komponent po komponencie)
 - Rollback możliwy na każdym etapie
 - Dedykowany czas na fixing
@@ -1117,18 +1145,21 @@ Zawartość:
 ### 4.2 Rollback Plan
 
 #### Jeśli Faza 1 fails:
+
 1. Revert changes w LionInput
 2. Analiza problemu
 3. Fix w form-core-element-internals
 4. Retry
 
 #### Jeśli późniejsza faza fails:
+
 1. Revert tylko problematyczny komponent
 2. Pozostałe zachować
 3. Investigate i fix
 4. Continue
 
 #### Emergency rollback:
+
 1. Wszystkie komponenty z powrotem na `@lion/ui/form-core.js`
 2. Skrypt: `node scripts/rollback-element-internals.js --all`
 3. Publish hotfix
@@ -1158,6 +1189,7 @@ Zawartość:
 **Możliwości dzięki Element Internals**:
 
 1. **Lepsza integracja z formularzami**
+
    ```javascript
    // Natywna walidacja HTML5
    <form>
@@ -1166,6 +1198,7 @@ Zawartość:
    ```
 
 2. **CSS Pseudo-klasy out of the box**
+
    ```css
    lion-input:invalid {
      border-color: red;
@@ -1176,10 +1209,11 @@ Zawartość:
    ```
 
 3. **Constraint Validation API**
+
    ```javascript
-   lionInput.validity.valueMissing // natywne
-   lionInput.validationMessage // natywne
-   lionInput.checkValidity() // natywne
+   lionInput.validity.valueMissing; // natywne
+   lionInput.validationMessage; // natywne
+   lionInput.checkValidity(); // natywne
    ```
 
 4. **Uproszczenie kodu**
@@ -1194,17 +1228,20 @@ Zawartość:
 Dla każdego komponentu:
 
 ### Pre-migration:
+
 - [ ] Przeczytać kod komponentu
 - [ ] Zidentyfikować zależności od form-core
 - [ ] Sprawdzić istniejące testy
 - [ ] Zaplanować specjalne przypadki
 
 ### Migration:
+
 - [ ] Zmienić import na `form-core-element-internals.js`
 - [ ] Build bez błędów
 - [ ] TypeScript bez błędów
 
 ### Testing:
+
 - [ ] Unit tests pass
 - [ ] Integration tests pass
 - [ ] Test suites pass
@@ -1213,11 +1250,13 @@ Dla każdego komponentu:
 - [ ] Accessibility testing
 
 ### Documentation:
+
 - [ ] Zaktualizować component docs
 - [ ] Dodać Element Internals examples
 - [ ] Sprawdzić storybook/demos
 
 ### Sign-off:
+
 - [ ] Code review
 - [ ] QA approval
 - [ ] Documentation review
@@ -1242,11 +1281,24 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const componentsDir = path.join(__dirname, '../packages/ui/components');
 
 const COMPONENTS = [
-  'input', 'textarea', 'select', 'checkbox-group', 'radio-group',
-  'fieldset', 'form', 'input-email', 'input-date', 'input-amount',
-  'input-iban', 'input-range', 'input-stepper', 'input-tel',
-  'input-datepicker', 'input-file', 'input-amount-dropdown',
-  'input-tel-dropdown'
+  'input',
+  'textarea',
+  'select',
+  'checkbox-group',
+  'radio-group',
+  'fieldset',
+  'form',
+  'input-email',
+  'input-date',
+  'input-amount',
+  'input-iban',
+  'input-range',
+  'input-stepper',
+  'input-tel',
+  'input-datepicker',
+  'input-file',
+  'input-amount-dropdown',
+  'input-tel-dropdown',
 ];
 
 function checkComponent(name) {
@@ -1254,22 +1306,22 @@ function checkComponent(name) {
   if (!fs.existsSync(srcDir)) {
     return { migrated: null, files: [] };
   }
-  
+
   const files = fs.readdirSync(srcDir).filter(f => f.endsWith('.js'));
   let oldImports = 0;
   let newImports = 0;
-  
+
   for (const file of files) {
     const content = fs.readFileSync(path.join(srcDir, file), 'utf-8');
     if (content.includes('@lion/ui/form-core.js')) oldImports++;
     if (content.includes('@lion/ui/form-core-element-internals.js')) newImports++;
   }
-  
+
   return {
     migrated: oldImports === 0 && newImports > 0,
     oldImports,
     newImports,
-    files: files.length
+    files: files.length,
   };
 }
 
@@ -1280,21 +1332,20 @@ console.log('─'.repeat(60));
 let totalMigrated = 0;
 for (const comp of COMPONENTS) {
   const status = checkComponent(comp);
-  const statusIcon = status.migrated === null ? '⚪' :
-                     status.migrated ? '✅' : '❌';
+  const statusIcon = status.migrated === null ? '⚪' : status.migrated ? '✅' : '❌';
   const name = comp.padEnd(25);
-  
+
   console.log(
     `${name} ${statusIcon}      ${status.files || '-'}     ` +
-    `${status.oldImports || '-'}    ${status.newImports || '-'}`
+      `${status.oldImports || '-'}    ${status.newImports || '-'}`,
   );
-  
+
   if (status.migrated) totalMigrated++;
 }
 
 console.log('─'.repeat(60));
 console.log(`\nProgress: ${totalMigrated}/${COMPONENTS.length} components migrated`);
-console.log(`Percentage: ${Math.round(totalMigrated / COMPONENTS.length * 100)}%`);
+console.log(`Percentage: ${Math.round((totalMigrated / COMPONENTS.length) * 100)}%`);
 ```
 
 ### B.2 Run Tests for Migrated Components

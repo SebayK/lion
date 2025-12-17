@@ -1,5 +1,4 @@
-import { LionField } from '@lion/ui/form-core-element-internals.js';
-import { Required, MinLength, MaxLength } from '@lion/ui/form-core-element-internals.js';
+import { LionField, Required, MinLength, MaxLength } from '@lion/ui/form-core-element-internals.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 /**
@@ -142,7 +141,7 @@ describe('ValidateMixin - Element Internals Public API', () => {
     it('returns ValidityState object', async () => {
       const el = await fixture(html`<test-field-api></test-field-api>`);
 
-      const validity = el.validity;
+      const { validity } = el;
 
       expect(validity).to.have.property('valid');
       expect(validity).to.have.property('valueMissing');

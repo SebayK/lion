@@ -2,7 +2,7 @@
 
 /**
  * Skrypt do sprawdzania statusu migracji komponentów na Element Internals
- * 
+ *
  * Użycie:
  *   node scripts/check-migration-status.js
  */
@@ -109,7 +109,9 @@ if (totalMigrated === 0) {
   console.log('  1. Start with Phase 1: Migrate LionInput (proof of concept)');
   console.log('  2. Run: node scripts/migrate-to-element-internals.js input');
 } else if (totalMigrated < COMPONENTS.length) {
-  console.log(`  1. Continue migration of remaining ${COMPONENTS.length - totalMigrated} components`);
+  console.log(
+    `  1. Continue migration of remaining ${COMPONENTS.length - totalMigrated} components`,
+  );
   console.log('  2. Run tests for each migrated component');
 } else {
   console.log('  🎉 All components migrated!');

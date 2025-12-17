@@ -295,6 +295,70 @@ const FormGroupMixinImplementation = superclass =>
     }
 
     /**
+     * Checks validity of all child form elements.
+     * Aggregates validation state from all children using Element Internals API.
+     *
+     * This method implements the Element Internals checkValidity() pattern for groups.
+     * Unlike single form controls, groups don't have their own validity state - they
+     * aggregate the validity of their children.
+     *
+     * @returns {boolean} True if all children are valid, false otherwise
+     */
+    checkValidity() {
+      return this.formElements.every(child => {
+        if (typeof child.checkValidity === 'function') {
+          return child.checkValidity();
+        }
+        // Fallback for elements without checkValidity (shouldn't happen with Element Internals)
+        return !child.hasFeedbackFor?.includes('error');
+      });
+    }
+
+    /**
+     * Reports validity for all invalid children.
+     * Shows native browser validation UI (tooltips) for the first invalid child.
+     *
+     * This method implements the Element Internals reportValidity() pattern for groups.
+     * It will:
+     * 1. Check validity of all children
+     * 2. For invalid children, call their reportValidity() to show browser tooltips
+     * 3. Return false if any child is invalid
+     *
+     * Note: Browser will typically only show tooltip for the first invalid element
+     * that gets focus, but we call reportValidity() on all to ensure proper state.
+     *
+     * @returns {boolean} True if all children are valid, false otherwise
+     */
+    reportValidity() {
+      let allValid = true;
+      let firstInvalidChild = null;
+
+      this.formElements.forEach(child => {
+        if (typeof child.reportValidity === 'function') {
+          const valid = child.reportValidity();
+          if (!valid) {
+            allValid = false;
+            if (!firstInvalidChild) {
+              firstInvalidChild = child;
+            }
+          }
+        } else if (child.hasFeedbackFor?.includes('error')) {
+          allValid = false;
+          if (!firstInvalidChild) {
+            firstInvalidChild = child;
+          }
+        }
+      });
+
+      // Focus first invalid child for better UX
+      if (!allValid && firstInvalidChild && typeof firstInvalidChild.focus === 'function') {
+        firstInvalidChild.focus();
+      }
+
+      return allValid;
+    }
+
+    /**
      * Resets to initial/prefilled values and interaction states of all FormControls in group,
      */
     resetGroup() {

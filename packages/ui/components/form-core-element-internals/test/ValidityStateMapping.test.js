@@ -1,5 +1,6 @@
 import { fixture, expect, html } from '@open-wc/testing';
-import { LionField ,
+import {
+  LionField,
   Required,
   MinLength,
   MaxLength,
@@ -11,7 +12,7 @@ import { LionField ,
 
 /**
  * Testy mapowania validatorów na ValidityStateFlags
- * 
+ *
  * Sprawdza czy różne typy validatorów są prawidłowo
  * mapowane na odpowiednie flagi ValidityState
  */
@@ -63,10 +64,7 @@ describe('ValidityState Mapping', () => {
 
     it('clears tooShort when long enough', async () => {
       const el = await fixture(html`
-        <test-field-vsm
-          .validators=${[new MinLength(5)]}
-          .modelValue=${'abcdef'}
-        ></test-field-vsm>
+        <test-field-vsm .validators=${[new MinLength(5)]} .modelValue=${'abcdef'}></test-field-vsm>
       `);
 
       await el.validate();
@@ -244,10 +242,7 @@ describe('ValidityState Mapping', () => {
 
     it('clears message when valid', async () => {
       const el = await fixture(html`
-        <test-field-vsm
-          .validators=${[new Required()]}
-          .modelValue=${'value'}
-        ></test-field-vsm>
+        <test-field-vsm .validators=${[new Required()]} .modelValue=${'value'}></test-field-vsm>
       `);
 
       await el.validate();
@@ -256,9 +251,7 @@ describe('ValidityState Mapping', () => {
 
     it('shows first error message for multiple validators', async () => {
       const el = await fixture(html`
-        <test-field-vsm
-          .validators=${[new Required(), new MinLength(5)]}
-        ></test-field-vsm>
+        <test-field-vsm .validators=${[new Required(), new MinLength(5)]}></test-field-vsm>
       `);
 
       await el.validate();

@@ -13,6 +13,7 @@ Projekt migracji Lion Web Components na natywne Element Internals API składa si
 **Status**: ✅ Zakończony - wszystkie 4 fazy zrealizowane
 
 **Zawartość**:
+
 - Analiza obecnej implementacji form-core
 - Ocena wykonalności migracji
 - Plan migracji w 4 fazach (ZAKOŃCZONE):
@@ -22,7 +23,7 @@ Projekt migracji Lion Web Components na natywne Element Internals API składa si
   - Faza 4: Obsługa komponentów kompozytowych ✅
 - Korzyści z migracji
 
-**Rezultat**: 
+**Rezultat**:
 Kompletna implementacja w `packages/ui/components/form-core-element-internals`
 
 ---
@@ -36,12 +37,14 @@ Kompletna implementacja w `packages/ui/components/form-core-element-internals`
 **Zawartość**:
 
 ### Część 1: Analiza Testów (2-3 dni)
+
 - Struktura testów w form-core-element-internals
 - Porównanie z form-core
 - ✅ Wniosek: Testy NIE wymagają zmian (test suites są uniwersalne)
 - ⚠️ Do dodania: Testy Element Internals API
 
 ### Część 2: Plan Migracji Komponentów (24-34 dni)
+
 Szczegółowy plan migracji **20 komponentów** w 6 fazach:
 
 - **Faza 0**: Przygotowanie (2-3 dni)
@@ -63,26 +66,30 @@ Szczegółowy plan migracji **20 komponentów** w 6 fazach:
   - Specjalna obsługa
 
 - **Faza 5**: Input Variants (5-7 dni)
-  - 11 komponentów input-*
+  - 11 komponentów input-\*
 
 - **Faza 6**: Verification (3-5 dni)
   - Testing & Documentation
 
 ### Część 3: Harmonogram i Zasoby
+
 - Timeline: 5-7 tygodni
 - Podział pracy w zespole
 - Checkpoints i metryki sukcesu
 
 ### Część 4: Risk Management
+
 - Identyfikacja ryzyk
 - Plany mitigacji
 - Rollback procedures
 
 ### Część 5: Po Migracji
+
 - Deprecation path
 - Future enhancements
 
 **Narzędzia**:
+
 - Skrypt migracji: `migrate-to-element-internals.js`
 - Status checker: `check-migration-status.js`
 - Test runner: `test-migrated.sh`
@@ -98,28 +105,34 @@ Szczegółowy plan migracji **20 komponentów** w 6 fazach:
 **Zawartość**:
 
 ### Etap 1: Deprecation i Dual Mode (2 tygodnie)
+
 - Oznaczenie starego kodu jako deprecated
 - Dual mode (stary + nowy system)
 - Migration guide
 
 ### Etap 2: Migracja Komponentów (3-4 tygodnie)
+
 - Przepisanie wszystkich komponentów
 - Aktualizacja testów
 
 ### Etap 3: Analiza Systemu Rejestracji (1 tydzień)
+
 - Określenie co można usunąć
 - Uproszczenie ~543 linii registration code
 
 ### Etap 4: Usunięcie Starego Kodu (1-2 tygodnie)
+
 - Rename: `form-core-element-internals` → `form-core`
 - Legacy: `form-core` → `form-core-legacy`
 
 ### Etap 5: Optymalizacja (1-2 tygodnie)
+
 - Cleanup kodu
 - Dokumentacja
 - Performance testing
 
 **Oczekiwane korzyści**:
+
 - Bundle size: -5-10%
 - Walidacja: +20-30% szybsza
 - Rejestracja: +50% szybsza
@@ -163,37 +176,42 @@ Szczegółowy plan migracji **20 komponentów** w 6 fazach:
 
 ## 📊 Podsumowanie Statusu
 
-| Dokument | Status | Fazy | Czas | Rezultat |
-|----------|--------|------|------|----------|
-| Migration Plan | ✅ Zakończony | 4/4 | - | form-core-element-internals |
-| **Implementation Plan** | **🎯 Aktualny** | **0/6** | **5-7 tyg** | **Migracja komponentów** |
-| Cleanup Plan | 📅 Przyszłość | 0/5 | 6-8 tyg | Cleanup & optimization |
+| Dokument                | Status          | Fazy    | Czas        | Rezultat                    |
+| ----------------------- | --------------- | ------- | ----------- | --------------------------- |
+| Migration Plan          | ✅ Zakończony   | 4/4     | -           | form-core-element-internals |
+| **Implementation Plan** | **🎯 Aktualny** | **0/6** | **5-7 tyg** | **Migracja komponentów**    |
+| Cleanup Plan            | 📅 Przyszłość   | 0/5     | 6-8 tyg     | Cleanup & optimization      |
 
 ---
 
 ## 🚀 Kolejne Kroki
 
 ### 1. Natychmiast (Dziś)
+
 - [x] Review Implementation Plan
 - [ ] Approve z zespołem
 - [ ] Commit dokumentacji do repo
 
 ### 2. Tydzień 1 (Faza 0)
+
 - [ ] Utworzyć `form-core-element-internals.js` export
 - [ ] Napisać skrypty migracji
 - [ ] Dodać testy Element Internals API
 
 ### 3. Tydzień 2 (Faza 1)
+
 - [ ] Migracja LionInput (proof of concept)
 - [ ] Validation approach
 - [ ] GO/NO-GO decision
 
 ### 4. Tygodnie 3-7 (Fazy 2-6)
+
 - [ ] Migracja pozostałych komponentów
 - [ ] Testing & verification
 - [ ] Dokumentacja
 
 ### 5. Po zakończeniu Implementation Plan
+
 - [ ] Rozpocząć Cleanup Plan
 - [ ] Deprecation starego kodu
 - [ ] Final optimization

@@ -2,7 +2,7 @@
 
 /**
  * Skrypt do automatycznej migracji komponentów na Element Internals
- * 
+ *
  * Użycie:
  *   node scripts/migrate-to-element-internals.js input
  *   node scripts/migrate-to-element-internals.js --all
@@ -77,10 +77,9 @@ function migrateComponent(componentName, options = {}) {
       `${dryRun ? '📋' : '✅'} ${dryRun ? 'Would migrate' : 'Migrated'} ${componentName}`,
     );
     return { success: true, changedFiles };
-  } 
-    console.log(`⏭️  No changes needed for ${componentName}`);
-    return { success: true, noChanges: true };
-  
+  }
+  console.log(`⏭️  No changes needed for ${componentName}`);
+  return { success: true, noChanges: true };
 }
 
 function main() {
