@@ -1,6 +1,5 @@
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
-// eslint-disable-next-line no-unused-vars -- Used in HTML fixtures
-import { LionForm } from '@lion/ui/form.js';
+import '@lion/ui/define/lion-form.js';
 import { LionField, Required, MinLength } from '@lion/ui/form-core-element-internals.js';
 
 /**

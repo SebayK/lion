@@ -73,6 +73,23 @@ export class LionForm extends LionFieldset {
   _submit(ev) {
     ev.preventDefault();
     ev.stopPropagation();
+
+    // Run validation before submission (unless novalidate is set)
+    if (!this.noValidate) {
+      // Use Lion's validation system (which uses Element Internals internally)
+      const isValid = this.checkValidity();
+      
+      if (!isValid) {
+        // Show validation messages
+        this.reportValidity();
+        // Set submitted state even when validation fails
+        this.submitted = true;
+        // Focus first erroneous field
+        this._setFocusOnFirstErroneousFormElement(/** @type { * & FormRegistrarHost } */ (this));
+        return; // Block submission
+      }
+    }
+
     this.submitGroup();
 
     // Collect form data using Element Internals (automatic!)
