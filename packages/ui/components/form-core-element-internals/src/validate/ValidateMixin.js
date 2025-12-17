@@ -630,7 +630,7 @@ export const ValidateMixinImplementation = superclass =>
       if (firstError) {
         const { validator, outcome } = firstError;
         const vCtor = /** @type {typeof Validator} */ (validator.constructor);
-        const {validatorName} = vCtor;
+        const { validatorName } = vCtor;
 
         // Get the message - it can be a boolean or a string
         // If it's a boolean, we'll get the message later asynchronously
@@ -750,6 +750,104 @@ export const ValidateMixinImplementation = superclass =>
         this._internals.setValidity({});
       }
     }
+
+    // ========================================================================
+    // Element Internals Public API
+    // ========================================================================
+
+    /**
+     * Checks validity using the native Element Internals API.
+     * This method integrates with the browser's form validation system.
+     *
+     * @returns {boolean} True if the field is valid, false otherwise
+     * @public
+     */
+    checkValidity() {
+      if (!this._internals) {
+        // Fallback for components without Element Internals
+        return !this.hasFeedbackFor.includes('error');
+      }
+      return this._internals.checkValidity();
+    }
+
+    /**
+     * Reports validity to the user using native browser validation UI.
+     * This will show validation tooltips/messages if the field is invalid.
+     *
+     * @returns {boolean} True if the field is valid, false otherwise
+     * @public
+     */
+    reportValidity() {
+      if (!this._internals) {
+        // Fallback: trigger validation and return state
+        this.validate();
+        return !this.hasFeedbackFor.includes('error');
+      }
+      return this._internals.reportValidity();
+    }
+
+    /**
+     * Gets the current validity state of the form control.
+     * Returns a ValidityState object with flags like valueMissing, tooShort, etc.
+     *
+     * @returns {ValidityState} The validity state object
+     * @public
+     * @readonly
+     */
+    get validity() {
+      if (this._internals) {
+        return this._internals.validity;
+      }
+
+      // Fallback: create a ValidityState-like object
+      const hasError = this.hasFeedbackFor.includes('error');
+      return /** @type {ValidityState} */ ({
+        valid: !hasError,
+        customError: hasError,
+        valueMissing: false,
+        typeMismatch: false,
+        patternMismatch: false,
+        tooLong: false,
+        tooShort: false,
+        rangeUnderflow: false,
+        rangeOverflow: false,
+        stepMismatch: false,
+        badInput: false,
+      });
+    }
+
+    /**
+     * Gets the validation message for the form control.
+     *
+     * @returns {string} The validation message
+     * @public
+     * @readonly
+     */
+    get validationMessage() {
+      if (this._internals) {
+        return this._internals.validationMessage;
+      }
+      return '';
+    }
+
+    /**
+     * Indicates whether the form control is a candidate for constraint validation.
+     *
+     * @returns {boolean} True if the control participates in validation
+     * @public
+     * @readonly
+     */
+    get willValidate() {
+      if (this._internals) {
+        return this._internals.willValidate;
+      }
+      // Fallback: form controls are generally validatable unless disabled
+      return !this.disabled;
+    }
+
+    // ========================================================================
+    // End Element Internals Public API
+    // ========================================================================
 
     /**
      * @private
