@@ -124,24 +124,24 @@
 
 ## Metryki Fazy 1
 
-| Metryka | Wartość | Cel | Status |
-|---------|---------|-----|--------|
-| formResetCallback() | ✅ Działa | ✅ Działa | ✅ |
-| Testy Element Internals | 0 failures | 0 failures | ✅ |
-| Komponenty zmigrowane | 1/18 (6%) | 1 | ✅ |
-| Coverage | 94.71% | ≥94.21% | ✅ (+0.5%) |
-| Failed tests (Chromium) | 0 | 0 | ✅ |
-| Failed tests (Firefox) | 0 | 0 | ✅ |
-| Czas realizacji | ~1h | 3-4 dni | ✅ Ahead! |
+| Metryka                 | Wartość    | Cel        | Status     |
+| ----------------------- | ---------- | ---------- | ---------- |
+| formResetCallback()     | ✅ Działa  | ✅ Działa  | ✅         |
+| Testy Element Internals | 0 failures | 0 failures | ✅         |
+| Komponenty zmigrowane   | 1/18 (6%)  | 1          | ✅         |
+| Coverage                | 94.71%     | ≥94.21%    | ✅ (+0.5%) |
+| Failed tests (Chromium) | 0          | 0          | ✅         |
+| Failed tests (Firefox)  | 0          | 0          | ✅         |
+| Czas realizacji         | ~1h        | 3-4 dni    | ✅ Ahead!  |
 
 ---
 
 ## Znalezione Problemy
 
-| Problem | Severity | Status |
-|---------|----------|--------|
-| Konflikty testów między systemami | 🟡 Expected | Tracked |
-| Test import z form-core | 🟢 Niski | Deferred to Phase 6 |
+| Problem                           | Severity    | Status              |
+| --------------------------------- | ----------- | ------------------- |
+| Konflikty testów między systemami | 🟡 Expected | Tracked             |
+| Test import z form-core           | 🟢 Niski    | Deferred to Phase 6 |
 
 ---
 
@@ -158,11 +158,13 @@
 ## Następne Kroki
 
 ### Immediate:
+
 1. ✅ GO decision podjęta
 2. ⏳ Commit Fazy 1
 3. ⏳ Rozpoczęcie Fazy 2
 
 ### Phase 2 Tasks:
+
 - [ ] Migrować LionTextarea
 - [ ] Migrować LionSelect
 - [ ] Migrować LionFieldset

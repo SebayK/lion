@@ -14,7 +14,7 @@
 
 ## 🔍 Obecna Implementacja
 
-### LionForm._submit() - Aktualna Logika
+### LionForm.\_submit() - Aktualna Logika
 
 ```javascript
 // packages/ui/components/form/src/LionForm.js:58-67
@@ -55,15 +55,17 @@ submitGroup() {
 ### 1. Natywna Walidacja Formularza
 
 **Brak wywołań**:
+
 ```javascript
 // ❌ NIE UŻYWANE w LionForm:
-this._formNode.checkValidity()    // Sprawdza czy formularz jest valid
-this._formNode.reportValidity()   // Pokazuje błędy walidacji użytkownikowi
+this._formNode.checkValidity(); // Sprawdza czy formularz jest valid
+this._formNode.reportValidity(); // Pokazuje błędy walidacji użytkownikowi
 ```
 
 ### 2. Integracja z Element Internals
 
 Komponenty mają Element Internals (`setValidity()`), ale:
+
 - ❌ LionForm nie sprawdza `form.checkValidity()` przed submitem
 - ❌ Nie wykorzystuje natywnego mechanizmu `reportValidity()`
 - ❌ Użytkownik nie dostaje natywnych browser tooltips
@@ -72,7 +74,7 @@ Komponenty mają Element Internals (`setValidity()`), ale:
 
 ## 🎯 Jak Powinno Działać (Rekomendacja)
 
-### Ulepszona Metoda _submit()
+### Ulepszona Metoda \_submit()
 
 ```javascript
 /**
@@ -83,22 +85,22 @@ Komponenty mają Element Internals (`setValidity()`), ale:
 _submit(ev) {
   ev.preventDefault();
   ev.stopPropagation();
-  
+
   // 1. Najpierw sprawdź natywną walidację
   if (!this._formNode.checkValidity()) {
     // Formularz nie jest valid - pokaż błędy
     this._formNode.reportValidity();
-    
+
     // Ustaw submitted dla pokazania błędów w Lion
     this.submitGroup();
-    
+
     // Focus na pierwszym błędnym polu
     this._setFocusOnFirstErroneousFormElement(this);
-    
+
     // NIE dispatchuj submit event
     return;
   }
-  
+
   // 2. Formularz valid - kontynuuj submit
   this.submitGroup();
   this.dispatchEvent(new Event('submit', { bubbles: true }));
@@ -129,19 +131,20 @@ reportValidity() {
 
 ## 📊 Porównanie
 
-| Feature | Obecnie | Z Poprawką | Benefit |
-|---------|---------|-----------|---------|
-| Walidacja przed submit | ❌ Nie | ✅ Tak | Zapobiega invalid submits |
-| Browser validation UI | ❌ Nie | ✅ Tak | Natywne tooltips |
-| Element Internals integration | ⚠️ Częściowa | ✅ Pełna | Standards-compliant |
-| checkValidity() API | ❌ Nie | ✅ Tak | Programmatic access |
-| reportValidity() API | ❌ Nie | ✅ Tak | Manual trigger |
+| Feature                       | Obecnie      | Z Poprawką | Benefit                   |
+| ----------------------------- | ------------ | ---------- | ------------------------- |
+| Walidacja przed submit        | ❌ Nie       | ✅ Tak     | Zapobiega invalid submits |
+| Browser validation UI         | ❌ Nie       | ✅ Tak     | Natywne tooltips          |
+| Element Internals integration | ⚠️ Częściowa | ✅ Pełna   | Standards-compliant       |
+| checkValidity() API           | ❌ Nie       | ✅ Tak     | Programmatic access       |
+| reportValidity() API          | ❌ Nie       | ✅ Tak     | Manual trigger            |
 
 ---
 
 ## 🎯 Benefity Implementacji
 
 ### 1. Natywne Browser Tooltips
+
 ```html
 <!-- Użytkownik zobaczy natywny tooltip: -->
 <lion-input name="email" required>
@@ -150,16 +153,19 @@ reportValidity() {
 ```
 
 ### 2. Standards-Compliant
+
 - ✅ Zgodność z HTML5 Form Validation
 - ✅ Wykorzystanie Element Internals
 - ✅ Kompatybilność z platform API
 
 ### 3. Lepsze UX
+
 - Natywne komunikaty w języku przeglądarki
 - Automatyczne scrollowanie do błędów
 - Konsystentne zachowanie z innymi formularzami
 
 ### 4. Programmatic API
+
 ```javascript
 const form = document.querySelector('lion-form');
 
@@ -207,13 +213,13 @@ reportValidity() {
 }
 ```
 
-### Faza 2: Zintegrować z _submit() (1h)
+### Faza 2: Zintegrować z \_submit() (1h)
 
 ```javascript
 _submit(ev) {
   ev.preventDefault();
   ev.stopPropagation();
-  
+
   // Waliduj przed submitem
   if (!this.checkValidity()) {
     this.reportValidity();
@@ -221,7 +227,7 @@ _submit(ev) {
     this._setFocusOnFirstErroneousFormElement(this);
     return; // Blokuj submit jeśli invalid
   }
-  
+
   // Submit tylko jeśli valid
   this.submitGroup();
   this.dispatchEvent(new Event('submit', { bubbles: true }));
@@ -240,13 +246,13 @@ static get properties() {
 _submit(ev) {
   ev.preventDefault();
   ev.stopPropagation();
-  
+
   // Sprawdź tylko jeśli noValidate = false
   if (!this.noValidate && !this.checkValidity()) {
     // ... validation logic
     return;
   }
-  
+
   // ... submit logic
 }
 ```
@@ -262,12 +268,12 @@ it('prevents submit when form is invalid', async () => {
       </form>
     </lion-form>
   `);
-  
+
   const submitSpy = sinon.spy();
   form.addEventListener('submit', submitSpy);
-  
+
   form.submit();
-  
+
   expect(submitSpy).to.not.have.been.called;
   expect(form.checkValidity()).to.be.false;
 });
@@ -276,16 +282,20 @@ it('allows submit when form is valid', async () => {
   const form = await fixture(html`
     <lion-form>
       <form>
-        <lion-input name="email" .validators=${[new Required()]} .modelValue=${'test@test.com'}></lion-input>
+        <lion-input
+          name="email"
+          .validators=${[new Required()]}
+          .modelValue=${'test@test.com'}
+        ></lion-input>
       </form>
     </lion-form>
   `);
-  
+
   const submitSpy = sinon.spy();
   form.addEventListener('submit', submitSpy);
-  
+
   form.submit();
-  
+
   expect(submitSpy).to.have.been.called;
   expect(form.checkValidity()).to.be.true;
 });
@@ -300,12 +310,14 @@ it('allows submit when form is valid', async () => {
 Dodanie walidacji może **zablokować submit** formularzy które obecnie są invalid:
 
 **Przed**:
+
 ```javascript
 // Invalid form - submit przechodzi ❌
 form.submit(); // Event zostaje dispatched
 ```
 
 **Po zmianach**:
+
 ```javascript
 // Invalid form - submit blokowany ✅
 form.submit(); // Event NIE zostaje dispatched
@@ -314,6 +326,7 @@ form.submit(); // Event NIE zostaje dispatched
 ### 🛡️ Mitigation Strategy
 
 1. **Opcja 1**: Dodać `novalidate` attribute
+
 ```html
 <lion-form novalidate>
   <!-- Stare zachowanie - bez walidacji -->
@@ -321,12 +334,14 @@ form.submit(); // Event NIE zostaje dispatched
 ```
 
 2. **Opcja 2**: Major version bump (v2.0)
+
 ```
 Breaking: LionForm now validates before submit
 Use novalidate attribute to disable
 ```
 
 3. **Opcja 3**: Soft rollout
+
 ```javascript
 // Domyślnie wyłączone (v1.x)
 static get properties() {
@@ -369,7 +384,7 @@ static get properties() {
 ```javascript
 const form = document.querySelector('lion-form');
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', e => {
   // Submit tylko jeśli form valid
   console.log('Form submitted!', form.serializedValue);
 });
@@ -394,7 +409,7 @@ if (form.checkValidity()) {
 ### Przykład 3: Custom Validation
 
 ```javascript
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', e => {
   // Dodatkowa custom validation
   if (!customBusinessLogicCheck()) {
     e.preventDefault();
@@ -408,30 +423,33 @@ form.addEventListener('submit', (e) => {
 ## ✅ Wnioski
 
 ### Obecny Stan
+
 - ⚠️ LionForm NIE waliduje przed submitem
 - ⚠️ NIE wykorzystuje `checkValidity()` / `reportValidity()`
 - ⚠️ Element Internals nie w pełni wykorzystany
 
 ### Impact
+
 - **Severity**: Medium
 - **User Impact**: Formularze mogą być submitowane z błędami
 - **Standards Compliance**: Częściowa
 
 ### Rekomendacja
+
 ✅ **Dodać natywną walidację** jako enhancement  
 ✅ **Zachować backwards compatibility** z `novalidate`  
-✅ **Planować na v2.0** jako default behavior  
+✅ **Planować na v2.0** jako default behavior
 
 ---
 
 ## 📊 Priority Assessment
 
-| Aspekt | Rating | Uwagi |
-|--------|--------|-------|
-| Urgency | Medium | Nie blokuje, ale warto dodać |
-| Impact | High | Lepsze UX i standards compliance |
-| Effort | Low | 4-6 godzin (implementation + tests) |
-| Risk | Low | Można mitigować z `novalidate` |
+| Aspekt  | Rating | Uwagi                               |
+| ------- | ------ | ----------------------------------- |
+| Urgency | Medium | Nie blokuje, ale warto dodać        |
+| Impact  | High   | Lepsze UX i standards compliance    |
+| Effort  | Low    | 4-6 godzin (implementation + tests) |
+| Risk    | Low    | Można mitigować z `novalidate`      |
 
 **Recommended Action**: Dodać do backlog jako high-priority enhancement
 

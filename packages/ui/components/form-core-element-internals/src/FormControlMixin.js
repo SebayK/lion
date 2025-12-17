@@ -4,6 +4,7 @@ import { css, html, nothing } from 'lit';
 import { getAriaElementsInRightDomOrder } from './utils/getAriaElementsInRightDomOrder.js';
 import { Unparseable } from './validate/Unparseable.js';
 import { FormRegisteringMixin } from './registration/FormRegisteringMixin.js';
+import { FormDataMixin } from './FormDataMixin.js';
 
 /**
  * @typedef {import('lit').TemplateResult} TemplateResult
@@ -40,7 +41,7 @@ import { FormRegisteringMixin } from './registration/FormRegisteringMixin.js';
 const FormControlMixinImplementation = superclass =>
   // eslint-disable-next-line no-shadow, no-unused-vars
   // @ts-ignore https://github.com/microsoft/TypeScript/issues/36821#issuecomment-588375051
-  class FormControlMixin extends FormRegisteringMixin(DisabledMixin(SlotMixin(superclass))) {
+  class FormControlMixin extends FormDataMixin(FormRegisteringMixin(DisabledMixin(SlotMixin(superclass)))) {
     /** @type {any} */
     static get properties() {
       return {

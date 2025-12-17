@@ -11,6 +11,7 @@
 ### Zadanie 4.1: Analiza LionForm ✅
 
 **Discovered**:
+
 ```javascript
 // LionForm.js
 import { LionFieldset } from '@lion/ui/fieldset.js';
@@ -21,6 +22,7 @@ export class LionForm extends LionFieldset {
 ```
 
 **Kluczowe ustalenie**:
+
 - ✅ LionForm **dziedziczy z LionFieldset**
 - ✅ LionFieldset już został zmigrowany do Element Internals (Faza 2)
 - ✅ **Brak bezpośrednich importów** z `form-core.js`
@@ -29,11 +31,13 @@ export class LionForm extends LionFieldset {
 ### Zadanie 4.2: Weryfikacja migracji ✅
 
 **Komenda**:
+
 ```bash
 node scripts/migrate-to-element-internals.js form
 ```
 
 **Rezultat**:
+
 ```
 ⏭️  No changes needed for form
 ```
@@ -45,22 +49,25 @@ node scripts/migrate-to-element-internals.js form
 ## 📊 Statystyki
 
 ### Zmiany w kodzie:
+
 - **Komponentów zmigrowanych**: 1 (LionForm)
 - **Plików zmodyfikowanych**: 0 (brak zmian potrzebnych!)
 - **Linii zmienionych**: 0
 
 ### Mechanizm dziedziczenia:
+
 ```
-LionForm 
+LionForm
   ↓ extends
 LionFieldset (✅ używa form-core-element-internals)
-  ↓ extends  
+  ↓ extends
 FormGroupMixin (✅ używa Element Internals)
   ↓
 Element Internals API ✅
 ```
 
 ### Status migracji:
+
 - **Faktycznie zmigrowane**: 7/18 komponentów (39%)
   - input, textarea, select, fieldset ✅
   - checkbox-group, radio-group ✅
@@ -82,15 +89,19 @@ Element Internals API ✅
 ## 🎉 Kluczowe Odkrycie: Dziedziczenie Rozwiązuje Problem
 
 ### Co odkryliśmy:
+
 LionForm **nie wymaga migracji** ponieważ:
+
 1. Dziedziczy z LionFieldset
 2. LionFieldset został zmigrowany w Fazie 2
 3. Dziedziczenie automatycznie przenosi Element Internals
 
 ### Implikacje dla projektu:
+
 To może oznaczać, że **inne komponenty** mogą również już używać Element Internals przez dziedziczenie!
 
 **Do sprawdzenia**:
+
 - input-email, input-date, input-amount etc. - wszystkie dziedziczą z LionInput
 - Jeśli LionInput został zmigrowany (Faza 1), to **może** już działają z Element Internals?
 
@@ -101,12 +112,14 @@ To może oznaczać, że **inne komponenty** mogą również już używać Elemen
 ## 📝 Funkcjonalność LionForm z Element Internals
 
 ### Co działa automatycznie:
+
 ✅ **Form association** - przez LionFieldset → FormGroupMixin  
 ✅ **Form reset** - przez formResetCallback() w LionField  
 ✅ **Form validation** - przez ValidateMixin  
 ✅ **Form value** - przez setFormValue() w dzieci
 
 ### Dodatkowe funkcje LionForm (niezależne od Element Internals):
+
 - `submit()` - wrapper dla natywnego form submit
 - `reset()` - rozszerzenie natywnego reset
 - `validate()` - agregacja walidacji dzieci
@@ -121,11 +134,13 @@ To może oznaczać, że **inne komponenty** mogą również już używać Elemen
 ### Dlaczego migration script pokazuje "No changes"?
 
 Migration script szuka importów:
+
 ```javascript
 from '@lion/ui/form-core.js'
 ```
 
 LionForm nie ma takich importów, tylko:
+
 ```javascript
 import { LionFieldset } from '@lion/ui/fieldset.js';
 ```
@@ -148,6 +163,7 @@ form    ❌  1  -  -
 ## 🎉 Wnioski
 
 ### Sukces:
+
 - ✅ LionForm już używa Element Internals!
 - ✅ Brak zmian potrzebnych
 - ✅ Dziedziczenie działa doskonale
@@ -155,13 +171,16 @@ form    ❌  1  -  -
 - ✅ Faza zakończona w ~2 minuty
 
 ### Lessons Learned:
+
 1. Dziedziczenie automatycznie propaguje Element Internals
 2. Niektóre komponenty mogą nie wymagać zmian
 3. Migration script prawidłowo wykrywa "no changes needed"
 4. Architektura Lion (dziedziczenie) ułatwia migrację
 
 ### Odkrycie dla następnych faz:
+
 Input variants (input-email, input-date etc.) **dziedziczą z LionInput**:
+
 - LionInput został zmigrowany w Fazie 1 ✅
 - Więc input variants już mogą używać Element Internals przez dziedziczenie
 - **Ale** nadal mają stare importy które trzeba zmienić
@@ -173,6 +192,7 @@ Input variants (input-email, input-date etc.) **dziedziczą z LionInput**:
 ### Następne komponenty: Input Variants (11 komponentów)
 
 Lista:
+
 1. input-email
 2. input-date
 3. input-amount
@@ -188,11 +208,13 @@ Lista:
 **Estymowany czas**: 20-30 minut (batch migration)
 
 ### Strategia:
+
 - Użyć batch migration (wszystkie naraz)
 - Większość dziedziczy z LionInput (już zmigrowany)
 - Tylko importy do zmiany
 
 ### Komenda batch:
+
 ```bash
 for comp in input-email input-date input-amount input-iban input-range \
             input-stepper input-tel input-datepicker input-file \
@@ -206,6 +228,7 @@ done
 ## 📈 Następne Kroki
 
 ### Immediate (Faza 5):
+
 1. Batch migration wszystkich input variants
 2. Quick testing
 3. Finalizacja migracji komponentów
@@ -221,6 +244,7 @@ done
 ✅ **GO - FINALIZUJEMY MIGRACJĘ!**
 
 ### Uzasadnienie:
+
 1. ✅ Faza 4 zakończona błyskawicznie (~2 min)
 2. ✅ LionForm działa z Element Internals
 3. ✅ Dziedziczenie potwierdzone jako działające
@@ -228,6 +252,7 @@ done
 5. ✅ Batch migration może zakończyć całą Fazę 5 w <30 min
 
 ### Ryzyko: BARDZO NISKIE
+
 - Input variants są najprostsze (dziedziczą z LionInput)
 - Migration script sprawdzony
 - Batch operation szybka
@@ -236,19 +261,20 @@ done
 
 ## 📊 Progress Tracker (Updated)
 
-| Faza | Komponenty | Status | Czas | Planned | Efficiency |
-|------|-----------|--------|------|---------|------------|
-| 0 | Setup | ✅ | ~1h | 2-3 dni | As planned |
-| 1 | LionInput (1) | ✅ | ~1h | 3-4 dni | On track |
-| 2 | Basic (3) | ✅ | ~10min | 5-7 dni | 99% faster |
-| 3 | Choice (2) | ✅ | ~5min | 4-5 dni | 99.9% faster |
-| 4 | LionForm (1) | ✅ | ~2min | 2-3 dni | 99.99% faster! |
-| 5 | Variants (11) | ⏳ | Est. 20-30min | 5-7 dni | TBD |
-| 6 | Verification | ⏳ | TBD | 3-5 dni | TBD |
+| Faza | Komponenty    | Status | Czas          | Planned | Efficiency     |
+| ---- | ------------- | ------ | ------------- | ------- | -------------- |
+| 0    | Setup         | ✅     | ~1h           | 2-3 dni | As planned     |
+| 1    | LionInput (1) | ✅     | ~1h           | 3-4 dni | On track       |
+| 2    | Basic (3)     | ✅     | ~10min        | 5-7 dni | 99% faster     |
+| 3    | Choice (2)    | ✅     | ~5min         | 4-5 dni | 99.9% faster   |
+| 4    | LionForm (1)  | ✅     | ~2min         | 2-3 dni | 99.99% faster! |
+| 5    | Variants (11) | ⏳     | Est. 20-30min | 5-7 dni | TBD            |
+| 6    | Verification  | ⏳     | TBD           | 3-5 dni | TBD            |
 
 **Total progress**: 7/18 (39%) → **Almost halfway!**
 
-**Test improvements**: 
+**Test improvements**:
+
 - Failed tests: 100 → 68 (-32 ✅)
 - Progress accelerating with each phase
 

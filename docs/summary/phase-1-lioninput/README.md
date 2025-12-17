@@ -9,7 +9,9 @@
 ## 📁 Dokumentacja
 
 ### SUMMARY.md
+
 Pełne podsumowanie Fazy 1:
+
 - Wykonane zadania (formResetCallback, poprawki testów, migracja)
 - Statystyki (0 failures, 6% zmigrowane, +0.5% coverage)
 - Znalezione problemy (konflikty testów, import)
@@ -17,7 +19,9 @@ Pełne podsumowanie Fazy 1:
 - Rekomendacje dla Fazy 2
 
 ### CHECKLIST.md
+
 Kompletna checklist wszystkich zadań Fazy 1:
+
 - Pre-implementation
 - Implementacja formResetCallback()
 - Poprawka 4 testów
@@ -51,10 +55,12 @@ Kompletna checklist wszystkich zadań Fazy 1:
 ## ⚠️ Znalezione Problemy
 
 ### 1. Konflikty testów (🟡 Expected)
+
 Pełny test suite pokazuje konflikty bo komponenty używają różnych systemów.  
 **Rozwiązanie**: To normalne - zniknie po pełnej migracji.
 
 ### 2. Test import (🟢 Niski)
+
 Plik `lion-input.test.js` importuje z starego `form-core.js`.  
 **Rozwiązanie**: Odłożone do Fazy 6 (Cleanup).
 
@@ -65,6 +71,7 @@ Plik `lion-input.test.js` importuje z starego `form-core.js`.
 ### ✅ **GO - KONTYNUUJEMY DO FAZY 2**
 
 **Uzasadnienie**:
+
 - Proof of concept udany
 - Wszystkie testy przechodzą
 - Brak blokerów
@@ -77,6 +84,7 @@ Plik `lion-input.test.js` importuje z starego `form-core.js`.
 **Faza 2: Podstawowe Komponenty** (5-7 dni)
 
 Komponenty do migracji:
+
 1. LionTextarea
 2. LionSelect
 3. LionFieldset

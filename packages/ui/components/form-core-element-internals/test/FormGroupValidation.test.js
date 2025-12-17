@@ -1,10 +1,5 @@
 import { LionFieldset } from '@lion/ui/fieldset.js';
-import {
-  LionField,
-  Required,
-  MinLength,
-  MaxLength,
-} from '@lion/ui/form-core-element-internals.js';
+import { LionField, Required, MinLength, MaxLength } from '@lion/ui/form-core-element-internals.js';
 import { expect, fixture, html } from '@open-wc/testing';
 
 /**

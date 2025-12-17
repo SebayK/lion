@@ -18,11 +18,13 @@ class TestFieldAPI extends LionField {
 customElements.define('test-field-api', TestFieldAPI);
 
 describe('ValidateMixin - Element Internals Public API', () => {
-
   describe('checkValidity()', () => {
     it('returns true when field is valid', async () => {
       const el = await fixture(html`
-        <test-field-api .validators=${[new Required()]} .modelValue=${'valid value'}></test-field-api>
+        <test-field-api
+          .validators=${[new Required()]}
+          .modelValue=${'valid value'}
+        ></test-field-api>
       `);
 
       expect(el.checkValidity()).to.be.true;
@@ -60,8 +62,8 @@ describe('ValidateMixin - Element Internals Public API', () => {
 
     it('returns true when all validators pass', async () => {
       const el = await fixture(html`
-        <test-field-api 
-          .validators=${[new Required(), new MinLength(3), new MaxLength(10)]} 
+        <test-field-api
+          .validators=${[new Required(), new MinLength(3), new MaxLength(10)]}
           .modelValue=${'valid'}
         ></test-field-api>
       `);
@@ -77,7 +79,7 @@ describe('ValidateMixin - Element Internals Public API', () => {
           <test-field-api name="field" .validators=${[new Required()]}></test-field-api>
         </form>
       `);
-      const field = form.querySelector("test-field-api");
+      const field = form.querySelector('test-field-api');
 
       await field.validate();
 
@@ -88,10 +90,14 @@ describe('ValidateMixin - Element Internals Public API', () => {
     it('works with valid form submission', async () => {
       const form = await fixture(html`
         <form>
-          <test-field-api name="field" .validators=${[new Required()]} .modelValue=${'value'}></test-field-api>
+          <test-field-api
+            name="field"
+            .validators=${[new Required()]}
+            .modelValue=${'value'}
+          ></test-field-api>
         </form>
       `);
-      const field = form.querySelector("test-field-api");
+      const field = form.querySelector('test-field-api');
 
       await field.validate();
 
@@ -268,7 +274,7 @@ describe('ValidateMixin - Element Internals Public API', () => {
           <button type="submit">Submit</button>
         </form>
       `);
-      const field = form.querySelector("test-field-api");
+      const field = form.querySelector('test-field-api');
 
       await field.validate();
 
@@ -279,11 +285,15 @@ describe('ValidateMixin - Element Internals Public API', () => {
     it('allows form submission when checkValidity passes', async () => {
       const form = await fixture(html`
         <form>
-          <test-field-api name="field" .validators=${[new Required()]} .modelValue=${'value'}></test-field-api>
+          <test-field-api
+            name="field"
+            .validators=${[new Required()]}
+            .modelValue=${'value'}
+          ></test-field-api>
           <button type="submit">Submit</button>
         </form>
       `);
-      const field = form.querySelector("test-field-api");
+      const field = form.querySelector('test-field-api');
 
       await field.validate();
 

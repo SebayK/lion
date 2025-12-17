@@ -29,8 +29,9 @@
 ## 🎉 Największy Sukces: -32 Failed Tests!
 
 Migracja choice groups **rozwiązała konflikty** testów:
+
 - ❌ Było: 100 failed tests
-- ✅ Teraz: 68 failed tests  
+- ✅ Teraz: 68 failed tests
 - **Improvement: 32% redukcja!**
 
 ---

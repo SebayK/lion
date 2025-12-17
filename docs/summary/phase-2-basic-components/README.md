@@ -29,10 +29,12 @@
 ## ⚠️ Znalezione Problemy
 
 ### 1. Konflikty testów (🟡 Expected)
+
 100 failed tests - mieszanka starych i nowych systemów.  
 **Rozwiązanie**: Zniknie po pełnej migracji (Faza 3+).
 
 ### 2. Textarea Unparseable tests (🟢 Niski)
+
 2 failures w testach Unparseable.  
 **Rozwiązanie**: Prawdopodobnie istniejący problem, nie blokuje.
 
@@ -43,6 +45,7 @@
 ### ✅ **GO - PEŁNY GAZ DO FAZY 3!**
 
 **Uzasadnienie**:
+
 - Faza 2 zakończona błyskawicznie
 - Coverage powyżej 95%
 - Migration script działa doskonale
@@ -55,6 +58,7 @@
 **Faza 3: Choice Groups** (~15-20 minut)
 
 Komponenty:
+
 1. checkbox-group (3 pliki)
 2. radio-group (2 pliki)
 

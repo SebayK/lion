@@ -25,6 +25,7 @@ Znaleziono **5 kluczowych luk** w wykorzystaniu Element Internals API:
 **Problem**: ValidateMixin NIE ekspozuje tych metod Element Internals
 
 **Obecny Stan**:
+
 ```javascript
 // ValidateMixin ma:
 async validate() { ... } // Lion custom validation
@@ -35,6 +36,7 @@ reportValidity() // Native Element Internals
 ```
 
 **Co tracimy**:
+
 - ❌ Natywną walidację przed submitem
 - ❌ Browser validation tooltips
 - ❌ Zgodność z platform API
@@ -44,11 +46,12 @@ reportValidity() // Native Element Internals
 
 ---
 
-### 2. Nie używamy _internals.validity (property) ⚠️ MEDIUM
+### 2. Nie używamy \_internals.validity (property) ⚠️ MEDIUM
 
 **Problem**: Ustawiamy validity przez `setValidity()`, ale nigdy nie czytamy
 
 **Obecny Stan**:
+
 ```javascript
 // Ustawiamy:
 this._internals.setValidity(flags, message); ✅
@@ -60,6 +63,7 @@ this._internals.willValidate // boolean (readonly)
 ```
 
 **Co tracimy**:
+
 - ❌ Dostęp do aktualnego ValidityState
 - ❌ Programmatic sprawdzanie czy field is valid
 - ❌ Dostęp do validation message
@@ -73,10 +77,12 @@ this._internals.willValidate // boolean (readonly)
 **Problem**: Nie implementujemy tego lifecycle callback
 
 **Dlaczego to może być OK**:
+
 - DisabledMixin już obsługuje `disabled` attribute
 - Element Internals `disabled` jest optional
 
 **Ale**:
+
 ```javascript
 // Gdy parent <fieldset disabled>, Element Internals wywołuje:
 formDisabledCallback(disabled) {
@@ -93,6 +99,7 @@ formDisabledCallback(disabled) {
 **Problem**: Nie implementujemy session restore
 
 **Use case**:
+
 ```javascript
 // Gdy browser restore session (back/forward):
 formStateRestoreCallback(state, mode) {
@@ -138,6 +145,7 @@ formStateRestoreCallback(state, mode) {
    - Dodajemy `checkValidity()` i `reportValidity()` jako wrapper
 
 **Przeciw LionForm**:
+
 - LionForm to tylko wrapper dla `<form>`
 - Nie ma bezpośredniego dostępu do Element Internals
 - Musiałby delegować do dzieci (skomplikowane)
@@ -201,40 +209,35 @@ get validationMessage() {
 ```
 
 **Testy**:
+
 ```javascript
 describe('ValidateMixin - Element Internals Methods', () => {
   it('checkValidity returns false when invalid', async () => {
-    const el = await fixture(html`
-      <test-field .validators=${[new Required()]}></test-field>
-    `);
-    
+    const el = await fixture(html` <test-field .validators=${[new Required()]}></test-field> `);
+
     expect(el.checkValidity()).to.be.false;
   });
-  
+
   it('checkValidity returns true when valid', async () => {
     const el = await fixture(html`
       <test-field .validators=${[new Required()]} .modelValue=${'value'}></test-field>
     `);
-    
+
     expect(el.checkValidity()).to.be.true;
   });
-  
+
   it('reportValidity shows native tooltip', async () => {
-    const el = await fixture(html`
-      <test-field .validators=${[new Required()]}></test-field>
-    `);
-    
+    const el = await fixture(html` <test-field .validators=${[new Required()]}></test-field> `);
+
     const result = el.reportValidity();
-    
+
     expect(result).to.be.false;
     // Browser shows tooltip (can't test directly)
   });
-  
+
   it('validity property reflects current state', async () => {
-    const el = await fixture(html`
-      <test-field .validators=${[new Required()]}></test-field>
-    `);
-    
+    const el = await fixture(html` <test-field .validators=${[new Required()]}></test-field> `);
+
     expect(el.validity.valid).to.be.false;
     expect(el.validity.valueMissing).to.be.true;
   });
@@ -271,7 +274,7 @@ checkValidity() {
  */
 reportValidity() {
   let allValid = true;
-  
+
   this.formElements.forEach(child => {
     if (typeof child.reportValidity === 'function') {
       const valid = child.reportValidity();
@@ -280,7 +283,7 @@ reportValidity() {
       }
     }
   });
-  
+
   return allValid;
 }
 
@@ -292,12 +295,12 @@ get validity() {
   if (this._internals) {
     return this._internals.validity;
   }
-  
+
   // Aggregate validity from children
-  const hasInvalidChild = this.formElements.some(child => 
+  const hasInvalidChild = this.formElements.some(child =>
     child.validity && !child.validity.valid
   );
-  
+
   return {
     valid: !hasInvalidChild,
     // ... other flags
@@ -322,7 +325,7 @@ get validity() {
 _submit(ev) {
   ev.preventDefault();
   ev.stopPropagation();
-  
+
   // OPCJA 1: Użyj checkValidity() z FormGroupMixin
   if (!this.checkValidity()) {
     // Form invalid - pokaż błędy
@@ -331,7 +334,7 @@ _submit(ev) {
     this._setFocusOnFirstErroneousFormElement(this);
     return; // Block submit
   }
-  
+
   // OPCJA 2: Użyj natywnego form.checkValidity()
   // (to wymaga aby wszystkie dzieci były w form.elements)
   if (this._formNode && !this._formNode.checkValidity()) {
@@ -339,7 +342,7 @@ _submit(ev) {
     this.submitGroup();
     return;
   }
-  
+
   // Form valid - proceed with submit
   this.submitGroup();
   this.dispatchEvent(new Event('submit', { bubbles: true }));
@@ -351,7 +354,7 @@ _submit(ev) {
 checkValidity() {
   // OPCJA 1: Deleguj do FormGroupMixin
   return super.checkValidity();
-  
+
   // OPCJA 2: Użyj natywnego form
   // return this._formNode ? this._formNode.checkValidity() : super.checkValidity();
 }
@@ -374,7 +377,7 @@ static get properties() {
 _submit(ev) {
   ev.preventDefault();
   ev.stopPropagation();
-  
+
   // Sprawdź tylko jeśli noValidate !== true
   if (!this.noValidate && !this.checkValidity()) {
     this.reportValidity();
@@ -382,7 +385,7 @@ _submit(ev) {
     this._setFocusOnFirstErroneousFormElement(this);
     return;
   }
-  
+
   this.submitGroup();
   this.dispatchEvent(new Event('submit', { bubbles: true }));
 }
@@ -401,7 +404,7 @@ _submit(ev) {
 formDisabledCallback(disabled) {
   // Sync with our disabled property
   this.disabled = disabled;
-  
+
   // Optional: trigger custom logic
   if (disabled) {
     this.__onDisabled();
@@ -415,17 +418,17 @@ formDisabledCallback(disabled) {
 // W LionField:
 formStateRestoreCallback(state, mode) {
   // mode: 'restore' | 'autocomplete'
-  
+
   if (mode === 'restore') {
     // Restore from browser session
     this.modelValue = state;
   }
-  
+
   // For autocomplete, browser handles it
 }
 ```
 
-**3. Expose _internals properties**:
+**3. Expose \_internals properties**:
 
 ```javascript
 // W ValidateMixin - już pokazane w Fazie A
@@ -442,29 +445,32 @@ get willValidate() { return this._internals ? this._internals.willValidate : tru
 
 ### Timeline
 
-| Faza | Zadanie | Czas | Priority | Status |
-|------|---------|------|----------|--------|
-| A | ValidateMixin methods | 4-6h | HIGH | ⏳ Recommended |
-| B | FormGroupMixin aggregation | 2-3h | HIGH | ⏳ Recommended |
-| C | LionForm integration | 2-3h | MEDIUM | ⏳ Optional |
-| D | Optional callbacks | 3-4h | LOW | ⏳ Nice-to-have |
-| **TOTAL** | **Full implementation** | **11-16h** | - | - |
+| Faza      | Zadanie                    | Czas       | Priority | Status          |
+| --------- | -------------------------- | ---------- | -------- | --------------- |
+| A         | ValidateMixin methods      | 4-6h       | HIGH     | ⏳ Recommended  |
+| B         | FormGroupMixin aggregation | 2-3h       | HIGH     | ⏳ Recommended  |
+| C         | LionForm integration       | 2-3h       | MEDIUM   | ⏳ Optional     |
+| D         | Optional callbacks         | 3-4h       | LOW      | ⏳ Nice-to-have |
+| **TOTAL** | **Full implementation**    | **11-16h** | -        | -               |
 
 ### Minimum Viable Implementation
 
 **Tylko Faza A + B**: 6-9 godzin
+
 - ✅ checkValidity() w każdym komponencie
-- ✅ reportValidity() w każdym komponencie  
+- ✅ reportValidity() w każdym komponencie
 - ✅ Agregacja w grupach
 - ✅ Programmatic validation API
 
 **Pełna Implementacja (A+B+C)**: 8-12 godzin
+
 - ✅ Wszystko z MVP
 - ✅ Walidacja przed submitem w LionForm
 - ✅ Natywne browser tooltips
 - ✅ novalidate option
 
 **Z Optional (A+B+C+D)**: 11-16 godzin
+
 - ✅ Wszystko powyżej
 - ✅ Lifecycle callbacks
 - ✅ State restoration
@@ -480,17 +486,19 @@ get willValidate() { return this._internals ? this._internals.willValidate : tru
 ✅ **FAZA B** - FormGroupMixin aggregation
 
 **Dlaczego**:
+
 - Największy impact
 - Zgodność ze standardami
 - Używalne bez LionForm changes
 - Każdy komponent dostaje checkValidity()
 
-**Deliverable**: 
+**Deliverable**:
+
 ```javascript
 // Każdy Lion component:
-lionInput.checkValidity() // ✅ Działa
-lionTextarea.reportValidity() // ✅ Działa
-lionFieldset.checkValidity() // ✅ Agregacja dzieci
+lionInput.checkValidity(); // ✅ Działa
+lionTextarea.reportValidity(); // ✅ Działa
+lionFieldset.checkValidity(); // ✅ Agregacja dzieci
 ```
 
 ### Short-term (Sprint 2)
@@ -498,15 +506,17 @@ lionFieldset.checkValidity() // ✅ Agregacja dzieci
 ✅ **FAZA C** - LionForm integration
 
 **Dlaczego**:
+
 - Walidacja przed submitem
 - Lepsze UX
 - Zgodność z HTML5 forms
 
 **Deliverable**:
+
 ```javascript
 // LionForm:
-form.submit() // Waliduje przed submitem ✅
-form.checkValidity() // ✅ Działa
+form.submit(); // Waliduje przed submitem ✅
+form.checkValidity(); // ✅ Działa
 ```
 
 ### Long-term (v2.0)
@@ -514,6 +524,7 @@ form.checkValidity() // ✅ Działa
 ⏳ **FAZA D** - Optional enhancements
 
 **Dlaczego później**:
+
 - Nice-to-have, nie must-have
 - Małe use cases
 - Można dodać w razie potrzeby
@@ -527,18 +538,21 @@ form.checkValidity() // ✅ Działa
 #### 1. LionForm submission block
 
 **Przed**:
+
 ```javascript
 // Invalid form - submit przechodzi
 form.submit(); // ✅ Event dispatched
 ```
 
 **Po (Faza C)**:
+
 ```javascript
 // Invalid form - submit blokowany
 form.submit(); // ❌ Event NOT dispatched
 ```
 
 **Mitigacja**:
+
 ```html
 <lion-form novalidate>
   <!-- Stare zachowanie -->
@@ -548,15 +562,17 @@ form.submit(); // ❌ Event NOT dispatched
 #### 2. checkValidity() może zwracać inny wynik
 
 **Przed** (custom logic):
+
 ```javascript
 // Bazuje na hasFeedbackFor
-!this.hasFeedbackFor.includes('error')
+!this.hasFeedbackFor.includes('error');
 ```
 
 **Po** (Element Internals):
+
 ```javascript
 // Bazuje na _internals.checkValidity()
-this._internals.checkValidity()
+this._internals.checkValidity();
 ```
 
 **Mitigacja**: Testy pokażą różnice, można dostosować mapowanie
@@ -570,7 +586,7 @@ this._internals.checkValidity()
 ✅ setValidity() - ustawiamy validity  
 ✅ setFormValue() - ustawiamy wartość  
 ✅ formResetCallback() - reset działa  
-✅ ValidityStateFlags mapping - validatory zmapowane  
+✅ ValidityStateFlags mapping - validatory zmapowane
 
 ### Co nam BRAKUJE:
 
@@ -579,12 +595,12 @@ this._internals.checkValidity()
 ❌ validity property - readonly access  
 ❌ validationMessage property - readonly access  
 ❌ formDisabledCallback() - optional  
-❌ formStateRestoreCallback() - optional  
+❌ formStateRestoreCallback() - optional
 
 ### Priorytet Implementacji:
 
 1. **HIGH** - Faza A (ValidateMixin methods) - 4-6h
-2. **HIGH** - Faza B (FormGroupMixin) - 2-3h  
+2. **HIGH** - Faza B (FormGroupMixin) - 2-3h
 3. **MEDIUM** - Faza C (LionForm) - 2-3h
 4. **LOW** - Faza D (Optional) - 3-4h
 
@@ -593,7 +609,7 @@ this._internals.checkValidity()
 ✅ **ValidateMixin** - checkValidity(), reportValidity(), validity, validationMessage  
 ✅ **FormGroupMixin** - agregacja checkValidity() z dzieci  
 ✅ **LionForm** - integracja z submission + novalidate  
-⏳ **LionField** - optional lifecycle callbacks  
+⏳ **LionField** - optional lifecycle callbacks
 
 ---
 

@@ -20,6 +20,7 @@
 ### 1. Element Internals API - Implementacja ✅
 
 **attachInternals()** - Używane w `LionField.js`:
+
 ```javascript
 // Line 29-34
 static formAssociated = true;
@@ -29,6 +30,7 @@ constructor() {
   this._internals = this.attachInternals();
 }
 ```
+
 ✅ **POPRAWNE** - attachInternals() wywołany w konstruktorze
 
 ---
@@ -36,6 +38,7 @@ constructor() {
 ### 2. setValidity() - Walidacja ✅
 
 **ValidateMixin.js** (lines 735-752):
+
 ```javascript
 const { flags, message, validator } = this.__mapToValidityStateFlags(this.__validationResult);
 
@@ -50,6 +53,7 @@ if (Object.keys(flags).length > 0) {
   this._internals.setValidity({});
 }
 ```
+
 ✅ **POPRAWNE** - setValidity() z właściwymi ValidityStateFlags
 
 ---
@@ -57,6 +61,7 @@ if (Object.keys(flags).length > 0) {
 ### 3. ValidityStateFlags Mapping ✅
 
 **ValidateMixin.js** (lines 640-666):
+
 ```javascript
 switch (validatorName) {
   case 'Required':
@@ -85,6 +90,7 @@ switch (validatorName) {
     flags.customError = true; ✅
 }
 ```
+
 ✅ **POPRAWNE** - Wszystkie popularne validatory zmapowane
 
 ---
@@ -92,11 +98,13 @@ switch (validatorName) {
 ### 4. setFormValue() - Wartości formularza ✅
 
 **FormatMixin.js** (lines 226-227):
+
 ```javascript
 if (this._internals) {
   this._internals.setFormValue(this.serializedValue);
 }
 ```
+
 ✅ **POPRAWNE** - setFormValue() aktualizuje wartość formularza
 
 ---
@@ -104,6 +112,7 @@ if (this._internals) {
 ### 5. formResetCallback() - Reset formularza ✅
 
 **LionField.js** (lines 80-91):
+
 ```javascript
 /**
  * Called when parent form is reset
@@ -114,6 +123,7 @@ formResetCallback() {
   this.reset();
 }
 ```
+
 ✅ **POPRAWNE** - Form lifecycle callback zaimplementowany
 
 ---
@@ -121,6 +131,7 @@ formResetCallback() {
 ### 6. reset() - Resetowanie stanu ✅
 
 **LionField.js** (lines 66-79):
+
 ```javascript
 reset() {
   this.modelValue = this._initialModelValue;
@@ -134,6 +145,7 @@ reset() {
   }
 }
 ```
+
 ✅ **POPRAWNE** - Reset czyści validity przez Element Internals
 
 ---
@@ -142,47 +154,52 @@ reset() {
 
 ### Element Internals API Usage
 
-| API Method | Wystąpienia | Lokalizacje |
-|-----------|-------------|-------------|
-| `attachInternals()` | 1 | LionField.js |
-| `setValidity()` | 2 | ValidateMixin.js |
-| `setFormValue()` | 1 | FormatMixin.js |
-| `formResetCallback()` | 1 | LionField.js |
-| **Total** | **5** | **3 pliki** |
+| API Method            | Wystąpienia | Lokalizacje      |
+| --------------------- | ----------- | ---------------- |
+| `attachInternals()`   | 1           | LionField.js     |
+| `setValidity()`       | 2           | ValidateMixin.js |
+| `setFormValue()`      | 1           | FormatMixin.js   |
+| `formResetCallback()` | 1           | LionField.js     |
+| **Total**             | **5**       | **3 pliki**      |
 
 ### Stary API (deprecated)
 
-| Old API | Wystąpienia | Status |
-|---------|-------------|--------|
-| `this.validity =` | **0** | ✅ Usunięte |
-| Custom validity | **0** | ✅ Zastąpione Element Internals |
+| Old API           | Wystąpienia | Status                          |
+| ----------------- | ----------- | ------------------------------- |
+| `this.validity =` | **0**       | ✅ Usunięte                     |
+| Custom validity   | **0**       | ✅ Zastąpione Element Internals |
 
 ---
 
 ## ✅ Checklist Weryfikacyjna
 
 ### Core Features
+
 - [x] **formAssociated = true** - deklaracja w LionField
 - [x] **attachInternals()** - wywołany w constructor
-- [x] **this._internals** - przechowywany jako property
+- [x] **this.\_internals** - przechowywany jako property
 
 ### Validity State
+
 - [x] **setValidity()** - używany w ValidateMixin
 - [x] **ValidityStateFlags** - poprawne mapowanie
 - [x] **validationMessage** - przekazywany do setValidity
 - [x] **Reset validity** - setValidity({}) przy braku błędów
 
 ### Form Value
+
 - [x] **setFormValue()** - używany w FormatMixin
 - [x] **serializedValue** - przekazywany do setFormValue
 - [x] **Update on change** - wartość aktualizowana przy zmianie
 
 ### Form Lifecycle
+
 - [x] **formResetCallback()** - zaimplementowany
 - [x] **reset()** - czyści validity
-- [x] **_initialModelValue** - zapisywany w firstUpdated
+- [x] **\_initialModelValue** - zapisywany w firstUpdated
 
 ### Validators Mapping
+
 - [x] **Required** → valueMissing
 - [x] **MinLength** → tooShort
 - [x] **MaxLength** → tooLong
@@ -197,15 +214,17 @@ reset() {
 ## 🎯 Kompletność Implementacji
 
 ### Zaimplementowane ✅
+
 1. ✅ Form Association (attachInternals)
 2. ✅ Validity State (setValidity + flags)
 3. ✅ Form Value (setFormValue)
 4. ✅ Form Reset (formResetCallback)
 5. ✅ Validator Mapping (wszystkie popularne)
 6. ✅ Error Messages (validationMessage)
-7. ✅ State Management (_internals property)
+7. ✅ State Management (\_internals property)
 
 ### Nie zaimplementowane (opcjonalne) ⏳
+
 - ⏳ formDisabledCallback() - nie potrzebny (DisabledMixin działa)
 - ⏳ formStateRestoreCallback() - nie potrzebny obecnie
 - ⏳ formAssociatedCallback() - nie potrzebny obecnie
@@ -217,27 +236,35 @@ reset() {
 ## 🔬 Deep Dive - Kluczowe Pliki
 
 ### 1. LionField.js
+
 **Element Internals**: ✅ Fully implemented
+
 - attachInternals() w constructor
 - formResetCallback() dla form.reset()
 - setValidity() w reset()
 - formAssociated = true
 
 ### 2. ValidateMixin.js
+
 **Element Internals**: ✅ Fully implemented
-- __mapToValidityStateFlags() - mapowanie validatorów
-- __updateInternalsValidity() - aktualizacja validity
+
+- \_\_mapToValidityStateFlags() - mapowanie validatorów
+- \_\_updateInternalsValidity() - aktualizacja validity
 - setValidity() z flags i message
 - Wszystkie popularne validatory zmapowane
 
 ### 3. FormatMixin.js
+
 **Element Internals**: ✅ Fully implemented
-- setFormValue() w __syncValueUpward()
+
+- setFormValue() w \_\_syncValueUpward()
 - serializedValue przekazywany do formularza
 - Wartość aktualizowana przy zmianie modelValue
 
 ### 4. FormControlMixin.js
+
 **Element Internals**: ✅ Compatible
+
 - Nie ma bezpośrednich wywołań (LionField extends to)
 - Współpracuje z Element Internals przez dziedziczenie
 
@@ -248,6 +275,7 @@ reset() {
 ### ✅ TAK - form-core-element-internals jest W PEŁNI zmigrowany!
 
 **Potwierdzenie**:
+
 1. ✅ Wszystkie kluczowe API Element Internals użyte
 2. ✅ Brak pozostałości starego systemu (0 wystąpień `this.validity =`)
 3. ✅ Poprawne mapowanie validatorów na ValidityStateFlags
@@ -265,25 +293,26 @@ reset() {
 
 ### Metody użyte w form-core-element-internals:
 
-| Metoda | Gdzie | Kiedy | Status |
-|--------|-------|-------|--------|
-| `attachInternals()` | LionField constructor | Przy tworzeniu | ✅ |
-| `setValidity()` | ValidateMixin | Przy walidacji | ✅ |
-| `setFormValue()` | FormatMixin | Przy zmianie wartości | ✅ |
-| `formResetCallback()` | LionField | Przy form.reset() | ✅ |
+| Metoda                | Gdzie                 | Kiedy                 | Status |
+| --------------------- | --------------------- | --------------------- | ------ |
+| `attachInternals()`   | LionField constructor | Przy tworzeniu        | ✅     |
+| `setValidity()`       | ValidateMixin         | Przy walidacji        | ✅     |
+| `setFormValue()`      | FormatMixin           | Przy zmianie wartości | ✅     |
+| `formResetCallback()` | LionField             | Przy form.reset()     | ✅     |
 
 ### Properties użyte:
 
-| Property | Gdzie | Co przechowuje | Status |
-|----------|-------|----------------|--------|
-| `_internals` | LionField | ElementInternals instance | ✅ |
-| `formAssociated` | LionField (static) | true | ✅ |
+| Property         | Gdzie              | Co przechowuje            | Status |
+| ---------------- | ------------------ | ------------------------- | ------ |
+| `_internals`     | LionField          | ElementInternals instance | ✅     |
+| `formAssociated` | LionField (static) | true                      | ✅     |
 
 ---
 
 ## 🚀 Standards Compliance
 
 **form-core-element-internals** jest zgodny z:
+
 - ✅ W3C Form-Associated Custom Elements spec
 - ✅ WHATWG HTML Standard (Element Internals)
 - ✅ ValidityStateFlags interface
@@ -293,14 +322,14 @@ reset() {
 
 ## 📊 Metryki Jakości
 
-| Metryka | Wartość | Target | Status |
-|---------|---------|--------|--------|
-| Element Internals API coverage | 100% | 100% | ✅ |
-| Old API removed | 100% | 100% | ✅ |
-| Validator mapping | 8/8 main | 8/8 | ✅ |
-| Lifecycle callbacks | 1/3 needed | 1/3 | ✅ |
-| Code coverage | 96.07% | 95% | ✅ |
-| Tests passing | 4293/4369 | >95% | ✅ |
+| Metryka                        | Wartość    | Target | Status |
+| ------------------------------ | ---------- | ------ | ------ |
+| Element Internals API coverage | 100%       | 100%   | ✅     |
+| Old API removed                | 100%       | 100%   | ✅     |
+| Validator mapping              | 8/8 main   | 8/8    | ✅     |
+| Lifecycle callbacks            | 1/3 needed | 1/3    | ✅     |
+| Code coverage                  | 96.07%     | 95%    | ✅     |
+| Tests passing                  | 4293/4369  | >95%   | ✅     |
 
 ---
 

@@ -11,6 +11,7 @@
 **LionForm nie wymaga migracji!**
 
 Dlaczego?
+
 - Dziedziczy z **LionFieldset** (zmigrowany w Fazie 2)
 - Element Internals automatycznie przez dziedziczenie ✅
 - Brak importów z `form-core.js` do zmiany
@@ -19,7 +20,7 @@ Dlaczego?
 
 ## 📊 Quick Stats
 
-- **Komponent**: LionForm  
+- **Komponent**: LionForm
 - **Zmian**: 0 (nie potrzebne!)
 - **Czas**: ~2 minuty
 - **Progress**: 7/18 (39%)
@@ -30,10 +31,10 @@ Dlaczego?
 ## 🎉 Jak to działa
 
 ```
-LionForm 
+LionForm
   ↓ extends
 LionFieldset (✅ Element Internals)
-  ↓ extends  
+  ↓ extends
 FormGroupMixin (✅ Element Internals)
 ```
 
@@ -55,8 +56,9 @@ Wszystko działa automatycznie przez dziedziczenie!
 **Faza 5: Input Variants** (~20-30 minut)
 
 11 komponentów:
+
 - input-email, input-date, input-amount
-- input-iban, input-range, input-stepper  
+- input-iban, input-range, input-stepper
 - input-tel, input-datepicker, input-file
 - input-amount-dropdown, input-tel-dropdown
 

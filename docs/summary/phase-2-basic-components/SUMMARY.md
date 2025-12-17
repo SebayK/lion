@@ -11,11 +11,13 @@
 ### Zadanie 2.1: Migracja LionTextarea ✅
 
 **Komenda**:
+
 ```bash
 node scripts/migrate-to-element-internals.js textarea
 ```
 
 **Zmiana**:
+
 ```javascript
 // Przed:
 import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core.js';
@@ -29,11 +31,13 @@ import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core-element-inte
 ### Zadanie 2.2: Migracja LionSelect ✅
 
 **Komenda**:
+
 ```bash
 node scripts/migrate-to-element-internals.js select
 ```
 
 **Zmiana**:
+
 ```javascript
 // Przed:
 import { LionField } from '@lion/ui/form-core.js';
@@ -47,11 +51,13 @@ import { LionField } from '@lion/ui/form-core-element-internals.js';
 ### Zadanie 2.3: Migracja LionFieldset ✅
 
 **Komenda**:
+
 ```bash
 node scripts/migrate-to-element-internals.js fieldset
 ```
 
 **Zmiana**:
+
 ```javascript
 // Przed:
 import { FormGroupMixin } from '@lion/ui/form-core.js';
@@ -67,12 +73,14 @@ import { FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 ## 📊 Statystyki
 
 ### Zmiany w kodzie:
+
 - **Komponentów zmigrowanych**: 3 (textarea, select, fieldset)
 - **Plików zmodyfikowanych**: 3 (tylko importy)
 - **Linii zmienionych**: 3 (po 1 linii w każdym pliku)
 
 ### Testy:
-- **form-core-element-internals**: 
+
+- **form-core-element-internals**:
   - Chromium: 4269 passed, 100 failed
   - Firefox: 4269 passed, 100 failed
   - Webkit: 4263 passed, 106 failed
@@ -80,11 +88,13 @@ import { FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 - **Element Internals tests**: ✅ Wszystkie przechodzą (0 failures)
 
 ### Coverage:
+
 - **Przed**: 94.71%
 - **Po**: 95.52%
 - **Change**: ✅ +0.81% (powyżej 95% progu!)
 
 ### Status migracji:
+
 - **Zmigrowane**: 4/18 komponentów (22%)
 - **Pozostało**: 14 komponentów (78%)
 - **Postęp Fazy 2**: 3/3 komponenty ✅
@@ -108,13 +118,15 @@ import { FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 **Opis**: 100 failed tests w pełnym test suite
 
 **Przyczyna**:
+
 - Niektóre komponenty używają `form-core.js` (stary)
 - Niektóre używają `form-core-element-internals.js` (nowy)
 - Konflikty w testach choice-group (radio, checkbox)
 
 **Przykłady**:
+
 ```
-❌ ChoiceInputMixin: lion-radio 
+❌ ChoiceInputMixin: lion-radio
 Error: Name "choice-group" is already registered
 ```
 
@@ -123,6 +135,7 @@ Error: Name "choice-group" is already registered
 ### Problem 2: Textarea Unparseable tests (2 failures)
 
 **Opis**:
+
 ```
 ❌ converts to Unparseable when wrong value inputted by user
 ❌ displays the viewValue when modelValue is of type Unparseable
@@ -131,6 +144,7 @@ Error: Name "choice-group" is already registered
 **Lokalizacja**: `packages/ui/components/textarea/test/lion-textarea-integrations.test.js`
 
 **Przyczyna**: Możliwe że:
+
 1. Istniejący bug w textarea tests
 2. LUB konflikt między systemami
 3. LUB problem z Unparseable w Element Internals
@@ -144,6 +158,7 @@ Error: Name "choice-group" is already registered
 ## 🎉 Wnioski
 
 ### Sukces:
+
 - ✅ **3 komponenty** zmigrowane w ~10 minut!
 - ✅ **Migration script** działa perfekcyjnie
 - ✅ **Coverage wzrósł** do 95.52% (powyżej progu!)
@@ -151,12 +166,14 @@ Error: Name "choice-group" is already registered
 - ✅ **Wszystkie komponenty** działają z Element Internals
 
 ### Lessons Learned:
+
 1. Migration script jest nieoceniony - automatyzacja działa świetnie
 2. Konflikty testów są oczekiwane i nie blokują
 3. Coverage rośnie wraz z migracją (+0.81% w Fazie 2)
 4. Podstawowe komponenty (input-like) są proste do migracji
 
 ### Tempo realizacji:
+
 - **Zaplanowano**: 5-7 dni
 - **Rzeczywiście**: ~10 minut
 - **Efficiency**: 99% szybciej! 🚀
@@ -166,15 +183,18 @@ Error: Name "choice-group" is already registered
 ## 📝 Rekomendacje dla Fazy 3
 
 ### Kolejne komponenty (Choice Groups):
+
 1. **LionCheckbox** + **LionCheckboxGroup** (4 komponenty - checkbox ma różne warianty)
 2. **LionRadio** + **LionRadioGroup** (4 komponenty - radio ma różne warianty)
 
 ### Strategia:
+
 - Migrować wszystkie choice-group komponenty naraz
 - To powinno rozwiązać większość konfliktów testów
 - Użyć migration script dla automatyzacji
 
 ### Co sprawdzić:
+
 - [ ] ChoiceInputMixin działa poprawnie
 - [ ] ChoiceGroupMixin działa z Element Internals
 - [ ] FormGroupMixin dla grup
@@ -185,6 +205,7 @@ Error: Name "choice-group" is already registered
 ## 📈 Następne Kroki
 
 ### Immediate (Faza 3):
+
 1. Migrować wszystkie checkbox komponenty
 2. Migrować wszystkie radio komponenty
 3. Testing & Verification
@@ -193,6 +214,7 @@ Error: Name "choice-group" is already registered
 **Estymowany czas**: 15-20 minut (bazując na tempie Fazy 2)
 
 ### Komponenty do zmigrowania w Fazie 3:
+
 ```
 checkbox-group (3 pliki)
 radio-group (2 pliki)
@@ -207,6 +229,7 @@ radio-group (2 pliki)
 ✅ **GO - PEŁNY GAZ!**
 
 ### Uzasadnienie:
+
 1. ✅ Faza 2 zakończona w ~10 minut (vs 5-7 dni!)
 2. ✅ Coverage powyżej 95%
 3. ✅ Migration script działa perfekcyjnie
@@ -214,6 +237,7 @@ radio-group (2 pliki)
 5. ✅ Tempo jest doskonałe
 
 ### Ryzyko: BARDZO NISKIE
+
 - Proces jest powtarzalny
 - Automatyzacja sprawdzona
 - Konflikty oczekiwane i zrozumiałe
@@ -222,15 +246,15 @@ radio-group (2 pliki)
 
 ## 📊 Progress Tracker
 
-| Faza | Komponenty | Status | Czas | Wydajność |
-|------|-----------|--------|------|-----------|
-| 0 | Setup | ✅ | ~1h | As planned |
-| 1 | LionInput (1) | ✅ | ~1h | As planned |
-| 2 | Basic (3) | ✅ | ~10min | 99% faster! |
-| 3 | Choice Groups (5) | ⏳ | Est. 15-20min | TBD |
-| 4 | LionForm (1) | ⏳ | Est. 10min | TBD |
-| 5 | Input Variants (11) | ⏳ | Est. 30-40min | TBD |
-| 6 | Verification | ⏳ | TBD | TBD |
+| Faza | Komponenty          | Status | Czas          | Wydajność   |
+| ---- | ------------------- | ------ | ------------- | ----------- |
+| 0    | Setup               | ✅     | ~1h           | As planned  |
+| 1    | LionInput (1)       | ✅     | ~1h           | As planned  |
+| 2    | Basic (3)           | ✅     | ~10min        | 99% faster! |
+| 3    | Choice Groups (5)   | ⏳     | Est. 15-20min | TBD         |
+| 4    | LionForm (1)        | ⏳     | Est. 10min    | TBD         |
+| 5    | Input Variants (11) | ⏳     | Est. 30-40min | TBD         |
+| 6    | Verification        | ⏳     | TBD           | TBD         |
 
 **Total progress**: 4/18 (22%) → **Ahead of schedule!**
 
