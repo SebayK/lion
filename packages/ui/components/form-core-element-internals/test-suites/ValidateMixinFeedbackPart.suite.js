@@ -2,7 +2,7 @@ import { LitElement } from 'lit';
 import { getLocalizeManager } from '@lion/ui/localize-no-side-effects.js';
 import { localizeTearDown } from '@lion/ui/localize-test-helpers.js';
 import { defineCE, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
-import { getFormControlMembers, AlwaysInvalid } from '@lion/ui/form-core-test-helpers.js';
+import { getFormControlMembers, AlwaysInvalid } from '@lion/ui/form-core-element-internals-test-helpers.js';
 import sinon from 'sinon';
 import {
   DefaultSuccess,
@@ -11,7 +11,7 @@ import {
   Required,
   ValidateMixin,
   Validator,
-} from '@lion/ui/form-core.js';
+} from '@lion/ui/form-core-element-internals.js';
 
 /**
  * @typedef {import('../types/validate/validate.js').FeedbackMessageData} FeedbackMessageData

@@ -55,8 +55,8 @@
         {
           "project": "importing-target-project",
           "files": [
-            "./target-src/find-customelements/multiple.js",
             "./target-src/match-imports/root-level-imports.js",
+            "./target-src/find-customelements/multiple.js",
             "./target-src/match-subclasses/ExtendedComp.js"
           ]
         }

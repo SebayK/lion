@@ -1,5 +1,5 @@
 import { LitElement } from 'lit';
-import { IsNumber, Required, LionField, Validator, FormGroupMixin } from '@lion/ui/form-core.js';
+import { IsNumber, Required, LionField, Validator, FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 import '@lion/ui/define/lion-field.js';
 import '@lion/ui/define/lion-validation-feedback.js';
 
@@ -14,7 +14,7 @@ import {
   unsafeStatic,
 } from '@open-wc/testing';
 import sinon from 'sinon';
-import { getFormControlMembers } from '@lion/ui/form-core-test-helpers.js';
+import { getFormControlMembers } from '@lion/ui/form-core-element-internals-test-helpers.js';
 
 /**
  * @param {{ tagString?: string, childTagString?:string }} [cfg]

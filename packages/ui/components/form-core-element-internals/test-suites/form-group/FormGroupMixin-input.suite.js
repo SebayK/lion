@@ -4,7 +4,7 @@ import '@lion/ui/define/lion-validation-feedback.js';
 import { LionInput } from '@lion/ui/input.js';
 import { localizeTearDown } from '@lion/ui/localize-test-helpers.js';
 import { defineCE, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
-import { FormGroupMixin } from '@lion/ui/form-core.js';
+import { FormGroupMixin } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * @typedef {import('@lion/ui/form-core.js').LionField} LionField

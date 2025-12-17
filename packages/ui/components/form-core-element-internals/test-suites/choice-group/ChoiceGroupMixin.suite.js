@@ -7,7 +7,7 @@ import {
   Required,
   ChoiceGroupMixin,
   ChoiceInputMixin,
-} from '@lion/ui/form-core.js';
+} from '@lion/ui/form-core-element-internals.js';
 import { LionInput } from '@lion/ui/input.js';
 import { expect, fixture, fixtureSync, html, unsafeStatic } from '@open-wc/testing';
 import sinon from 'sinon';

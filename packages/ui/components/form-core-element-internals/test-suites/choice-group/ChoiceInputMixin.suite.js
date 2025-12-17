@@ -1,8 +1,8 @@
-import { Required, ChoiceInputMixin } from '@lion/ui/form-core.js';
+import { Required, ChoiceInputMixin } from '@lion/ui/form-core-element-internals.js';
 import { LionInput } from '@lion/ui/input.js';
 import { expect, fixture, html, unsafeStatic } from '@open-wc/testing';
 
-import { getFormControlMembers } from '@lion/ui/form-core-test-helpers.js';
+import { getFormControlMembers } from '@lion/ui/form-core-element-internals-test-helpers.js';
 import sinon from 'sinon';
 
 class ChoiceInput extends ChoiceInputMixin(LionInput) {

@@ -3,7 +3,7 @@ import {
   FormRegisteringMixin,
   FormRegistrarMixin,
   FormRegistrarPortalMixin,
-} from '@lion/ui/form-core.js';
+} from '@lion/ui/form-core-element-internals.js';
 import { defineCE, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
 import { LitElement } from 'lit';
 import sinon from 'sinon';

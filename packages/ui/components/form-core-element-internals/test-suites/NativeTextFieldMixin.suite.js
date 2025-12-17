@@ -1,6 +1,6 @@
 import { defineCE, expect, fixture, html, triggerFocusFor, unsafeStatic } from '@open-wc/testing';
-import { getFormControlMembers } from '@lion/ui/form-core-test-helpers.js';
-import { NativeTextFieldMixin } from '@lion/ui/form-core.js';
+import { getFormControlMembers } from '@lion/ui/form-core-element-internals-test-helpers.js';
+import { NativeTextFieldMixin } from '@lion/ui/form-core-element-internals.js';
 import { sendKeys } from '@web/test-runner-commands';
 import { browserDetection } from '@lion/ui/core.js';
 import { LitElement } from 'lit';

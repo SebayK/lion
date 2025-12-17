@@ -9,8 +9,8 @@ import {
   unsafeStatic,
 } from '@open-wc/testing';
 import sinon from 'sinon';
-import { getFormControlMembers } from '@lion/ui/form-core-test-helpers.js';
-import { InteractionStateMixin, ValidateMixin, MinLength } from '@lion/ui/form-core.js';
+import { getFormControlMembers } from '@lion/ui/form-core-element-internals-test-helpers.js';
+import { InteractionStateMixin, ValidateMixin, MinLength } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * @param {{tagString?: string, allowedModelValueTypes?: Array.<ArrayConstructor | ObjectConstructor | NumberConstructor | BooleanConstructor | StringConstructor | DateConstructor>}} [customConfig]

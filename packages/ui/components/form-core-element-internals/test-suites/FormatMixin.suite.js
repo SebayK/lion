@@ -2,8 +2,8 @@ import { LitElement } from 'lit';
 import { parseDate } from '@lion/ui/localize-no-side-effects.js';
 import { aTimeout, defineCE, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
 import sinon from 'sinon';
-import { Unparseable, Validator, FormatMixin } from '@lion/ui/form-core.js';
-import { getFormControlMembers, mimicUserInput } from '@lion/ui/form-core-test-helpers.js';
+import { Unparseable, Validator, FormatMixin } from '@lion/ui/form-core-element-internals.js';
+import { getFormControlMembers, mimicUserInput } from '@lion/ui/form-core-element-internals-test-helpers.js';
 
 const isLionInputStepper = (/** @type {FormatClass} */ el) => 'valueTextMapping' in el;
 

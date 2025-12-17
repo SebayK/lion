@@ -4,7 +4,7 @@ import {
   AsyncAlwaysInvalid,
   AsyncAlwaysValid,
   getFormControlMembers,
-} from '@lion/ui/form-core-test-helpers.js';
+} from '@lion/ui/form-core-element-internals-test-helpers.js';
 import {
   EqualsLength,
   MaxLength,
@@ -14,7 +14,7 @@ import {
   Unparseable,
   ValidateMixin,
   Validator,
-} from '@lion/ui/form-core.js';
+} from '@lion/ui/form-core-element-internals.js';
 import { aTimeout, defineCE, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
 import { LitElement } from 'lit';
 import sinon from 'sinon';

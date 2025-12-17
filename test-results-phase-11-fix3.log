@@ -1,0 +1,2248 @@
+
+> test
+> run-p test:browser test:node
+
+
+> test:browser
+> web-test-runner --coverage
+
+
+> test:node
+> npm run test:node --workspaces --if-present
+
+
+> singleton-manager@1.8.0 test:node
+> mocha test-node
+
+
+
+  SingletonManagerClass
+    ✔ returns undefined and has false if not set
+    ✔ return value and has true if set
+    ✔ does not override existing keys (e.g. subsequential calls for the same keys are ignored)
+    ✔ should return the same value with two SingletonManager instances
+
+
+  4 passing (3ms)
+
+
+> babel-plugin-extend-docs@0.5.3 test:node
+> mocha test-node
+
+
+
+  babel-plugin-extend-docs
+    ✔ replaces src class imports (1)
+    ✔ renames classes everywhere
+    ✔ replaces src class imports (2)
+    ✔ replaces src class imports (3)
+    ✔ replaces local src class imports (6)
+    ✔ replaces `@lion` class imports
+    ✔ does NOT replace imports not in the config
+    ✔ replaces `@lion` tag imports
+    ✔ replaces tags in function occurrences
+    ✔ replaces tags in static get scopedElements()
+    ✔ replaces tags in static scopedElements =
+    ✔ replaces tags also if using ${{key: 'value'}}
+    ✔ will not touch content of tags
+    ✔ will not replace opening tags that are not the exact same tag name
+    ✔ will not replace closing tags that are not the exact same tag name
+    ✔ replaces nested tags in function occurrences
+    ✔ replaces tags in classes occurrences
+    ✔ supports import assertions
+    - doesn't care about namespace imports
+
+  babel-plugin-extend-docs: integration tests
+    ✔ works for the demo
+
+  babel-plugin-extend-docs: validateOptions
+    ✔ throws if no changes array is provided
+    ✔ throws if tag change does not have a valid to, from, and paths property
+    ✔ throws if variable change does not have a valid to, from, and paths property
+    ✔ does NOT throws if "to path" could be found on file system
+
+
+  23 passing (48ms)
+  1 pending
+
+
+> @lion/nodejs-helpers@0.1.0 test:node
+> mocha 'test-node/**/*.test.js'
+
+
+Firefox:  |▏                             | 0/193 test files | 0 passed, 0 failed
+Chromium: |█                             | 0/193 test files | 0 passed, 0 failed
+Webkit:   |                              | 0/193 test files | 0 passed, 0 failed
+
+Running tests...
+
+Running 193 test files...
+
+
+
+
+  Public API
+    ✔ should expose the agreed public API
+
+  bypassExportMap simple export map case
+    ✔ creates a corresponding export file with the same name, for every .js file under exports directory
+    ✔ generated exports have all the exports, the original exports have
+    1) All the generated export/import point to resolvable sources and they match with original exports
+
+  components import other components and native + 3rd party imports
+    ✔ does not update the source for 3rd party import/export
+    ✔ transforms relative path values as expected
+
+  multiple export map items
+    ✔ processes both export map items
+
+  deep search exports directory
+    ✔ creates found nested directories under outputDir
+
+  Exceptions/error handling
+    ✔ throws in case packageDir can not be accessed
+    ✔ throws in case a file with the same name exists under outputDir
+    can not resolve resource
+      ✔ throws in case require.resolve can not resolve source
+
+  Bypass import map task
+    ✔ resolves imports for #icon/oj-icons/
+    ✔ resolves imports for #icon/oj-sun-icons/
+
+  Exceptions/error handling
+    ✔ throws in case packageDir can not be accessed
+
+
+  13 passing (105ms)
+  1 failing
+
+  1) bypassExportMap simple export map case
+       All the generated export/import point to resolvable sources and they match with original exports:
+     Error: ENOENT: no such file or directory, open '/Users/sebastian/Projects/lion/packages-node/nodejs-helpers/test-node/fixtures/simple-export-map/accordion.d.ts'
+      at async open (node:internal/fs/promises:641:25)
+      at async readFile (node:internal/fs/promises:1245:14)
+      at async file:///Users/sebastian/Projects/lion/packages-node/nodejs-helpers/test-node/tasks/bypass-export-map.test.js:150:28
+      at async Promise.all (index 0)
+      at async Context.<anonymous> (file:///Users/sebastian/Projects/lion/packages-node/nodejs-helpers/test-node/tasks/bypass-export-map.test.js:143:5)
+
+
+
+npm error Lifecycle script `test:node` failed with error:
+npm error code 1
+npm error path /Users/sebastian/Projects/lion/packages-node/nodejs-helpers
+npm error workspace @lion/nodejs-helpers@0.1.0
+npm error location /Users/sebastian/Projects/lion/packages-node/nodejs-helpers
+npm error command failed
+npm error command sh -c mocha 'test-node/**/*.test.js'
+
+
+> providence-analytics@0.19.1 test:node
+> npm run test:node:unit && npm run test:node:e2e
+
+
+> providence-analytics@0.19.1 test:node:unit
+> mocha './{test-node,src}/**/*.test.js'
+
+
+
+  ✔ finds class definitions
+  ✔ finds mixin definitions
+  ✔ stores superClasses
+  ✔ handles multiple classes per file
+  ✔ stores the tagName of a custom element
+  ✔ allows different notations for defining a custom element
+  ✔ stores the rootFile of a custom element
+  ✔ stores "[inline]" constructors
+  ✔ stores "[current]" rootFile
+  ✔ stores the locally exported specifier in the rootFile 
+  ✔ finds all occurrences of custom elements
+  CLI helpers
+    pathsArrayFromCs
+      ✔ allows absolute paths
+      ✔ allows relative paths
+      ✔ allows globs
+      ✔ allows multiple comma separated paths
+    pathsArrayFromCollectionName
+      ✔ gets collections from external target config
+      ✔ gets collections from external reference config
+    appendProjectDependencyPaths
+      ✔ adds bower and node dependencies
+      ✔ allows a regex filter
+      ✔ allows to filter out only npm or bower deps
+    Extend docs
+      ✔ rewrites monorepo package paths when analysis is run from monorepo root (49ms)
+      ✔ does not check for match compatibility (target and reference) in monorepo targets
+
+  Providence CLI
+    ✔ calls providence
+    ✔ creates a QueryConfig
+    Global options
+      ✔ "-e --extensions"
+      ✔ "-t --search-target-paths"
+      ✔ "-r --reference-paths"
+      ✔ "--search-target-collection"
+      ✔ "--reference-collection"
+      ✔ "-a --allowlist"
+      ✔ "--allowlist-reference"
+      ✔ "--allowlist-mode"
+      ✔ "--allowlist-mode-reference"
+      ✔ "-D --debug"
+      ✔ "--write-log-file"
+      ✔ "--target-dependencies"
+      ✔ "--target-dependencies /^with-regex/"
+      ✔ "--skip-check-match-compatibility"
+      ✔ "--fallback-to-babel"
+    Commands
+      Analyze
+        ✔ calls providence
+        Options
+          ✔ "-c --config" (40ms)
+
+  Dashboard Server
+    Happy flow
+      Index
+        ✔ returns an index on '/'
+      App assets
+        ✔ returns (static) js assets via app/*
+      Menu data
+        ✔ returns json object based on output
+      Results
+        ✔ returns json object based on output
+      Config file "providence.conf.(m)js"
+        ✔ returns providence.conf.mjs found in cwd
+        - returns providence.conf.js found in cwd
+    Unhappy flow
+      Config file "providence.conf.(m)js"
+        - throws when no providence.conf.(m)js found
+        - throws when providence.conf.(m)js is not an esm module
+
+  Members
+    ✔ stores methods
+    ✔ stores props
+    - filters out platform members
+    - filters out LitElement members
+    - filters out Lion members
+
+  Export notations
+    ✔ supports "export const x = 0;" (named specifier)
+    ✔ supports "export default class X {};" (default export)
+    ✔ supports "export default x => x * 3;" (default function export)
+    ✔ supports "export {default as x} from 'y';" (default re-export)
+    ✔ supports "import {x} from 'y'; export default x;" (named re-export as default)
+    ✔ supports "import x from 'y'; export default x" (default re-export as default)
+    ✔ supports "const x = 0; export default x;" (default, referenced export)
+    ✔ supports "class X {}; export default X;" (default, referenced ClassDeclaration export)
+    ✔ supports "function x() {}; export default x;" (default, referenced FunctionDeclaration export)
+    ✔ supports "export { x } from 'my/source'" (re-export named specifier)
+    ✔ supports [export { x as y } from 'my/source'] (re-export renamed specifier)
+    ✔ supports [export styles from './styles.css' assert { type: "css" }] (import assertions)
+    ✔ supports [import styles from './styles.css' assert { type: "css" }; export default styles;] (import assertions)
+    ✔ stores meta info(local name) of renamed specifiers
+    ✔ supports "export { x, y } from 'my/source';" (multiple re-exported named specifiers)
+    ✔ stores rootFileMap of an exported Identifier
+    ✔ stores rootFileMap of an exported Identifier
+    ✔ correctly handles empty files
+
+  Export variable types
+    ✔ classes
+    ✔ functions
+
+  Options
+    - "metaConfig.categoryConfig"
+
+  Import notations
+    ✔ supports [import 'imported/source'] (no specifiers)
+    ✔ supports [import x from 'imported/source'] (default specifier)
+    ✔ supports [import { x } from 'imported/source'] (named specifier)
+    ✔ supports [import { x, y } from 'imported/source'] (multiple named specifiers)
+    ✔ supports [import x, { y, z } from 'imported/source'] (default and named specifiers)
+    ✔ supports [import { x as y } from 'imported/source'] (renamed specifiers)
+    ✔ supports [import * as all from 'imported/source'] (namespace specifiers)
+    - stores meta info(local name) of renamed specifiers
+    ✔ supports [import('my/source')] (dynamic imports)
+    ✔ supports [import(pathReference)] (dynamic imports with variable source)
+    ✔ supports [import styles from "@css/lib/styles.css" assert { type: "css" }] (import assertions)
+    ✔ supports [export styles from "@css/lib/styles.css" assert { type: "css" }] (import assertions)
+    Re-exports
+      ✔ supports [export { x } from 'imported/source'] (re-exported named specifiers)
+      ✔ supports [export { x  as y } from 'imported/source'] (re-exported renamed specifiers)
+      - supports [export x from 'imported/source'] (re-exported default specifiers)
+      ✔ supports [export * as x from 'imported/source'] (re-exported namespace specifiers)
+    Filter out false positives
+      ✔ doesn't support [object.import('my/source')] (import method members)
+
+  Default post processing
+    ✔ only stores external sources
+    ✔ normalizes source paths
+
+  Options
+    ✔ "keepInternalSources"
+    ✔ "keepOriginalSourceExtensions"
+    - "sortBySpecifier"
+
+  Extracting exports
+    ✔ identifies all direct export specifiers consumed by target
+    ✔ identifies all indirect (transitive) export specifiers consumed by target
+    ✔ matches namespaced specifiers consumed by target
+    Inside small example project
+      ✔ identifies all direct export specifiers consumed by "importing-target-project" (77ms)
+      ✔ identifies all indirect export specifiers consumed by "importing-target-project" (74ms)
+      ✔ matches namespaced specifiers consumed by "importing-target-project" (58ms)
+
+  Matching
+    ✔ produces a list of all matches, sorted by project
+    ✔ correctly merges/dedupes double found exports
+    ✔ correctly merges/dedupes double found file matches when imported in different ways
+    Inside small example project
+      ✔ produces a list of all matches, sorted by project (79ms)
+
+  Configuration
+    ✔ allows to provide results of FindExportsAnalyzer and FindImportsAnalyzer (52ms)
+    - allows to provide results of FindExportsAnalyzer and FindImportsAnalyzer from external jsons
+
+  Variables
+    ✔ outputs an array result with from/to classes and paths (56ms)
+    Features
+      ✔ identifies all "from" and "to" classes
+      ✔ identifies all "from" and "to" paths
+      ✔ prefixes project paths
+      ✔ allows duplicate reference extensions (like "WolfRadio extends LionRadio" and
+        "WolfChip extends LionRadio")
+      "to" path of target project
+        ✔ gives back "to" path closest to root
+        ✔ gives back "to" path that matches mainEntry if found (44ms)
+    Options
+      ✔ filters out duplicates based on prefixes (so "WolfRadio extends LionRadio"
+        is kept, "WolfChip extends LionRadio" is removed) (39ms)
+
+  Tags
+    ✔ outputs an array result with from/to tag names and paths (54ms)
+    - allows class definition and customElement to be in same file
+    Features
+      ✔ identifies all "from" and "to" tagnames (71ms)
+      ✔ identifies all "from" and "to" paths
+      ✔ prefixes project paths
+
+  Full structure
+    ✔ outputs a "name", "variable" and "tag" entry (66ms)
+
+  Match Features
+    ✔ identifies all directly imported class extensions
+    ✔ identifies all indirectly imported (transitive) class extensions
+    ✔ identifies Mixins
+
+  Extracting exports
+    Inside small example project
+      ✔ identifies all indirect export specifiers consumed by "importing-target-project"
+      ✔ identifies all direct export specifiers consumed by "importing-target-project"
+
+  Matching
+    - produces a list of all matches, sorted by project
+
+  Analyzer
+    Public api
+      ✔ has a "name" string
+      ✔ has an "execute" function
+      ✔ has a "requiredAst" string
+      ✔ has a "requiresReference" boolean
+
+  Prepare phase
+    - looks for a cached result
+    ✔ exposes a ".targetMeta" object
+    ✔ exposes a ".targetData" object
+    ✔ exposes a ".identifier" string
+
+  Traverse phase
+    ✔ schedules a Babel visitor
+    ✔ merges multiple Babel visitors for performance
+    ✔ traverses Babel visitor and stores traversal result
+
+  Postprocess phase
+    ✔ optionally post processes traversal result
+
+  Performance
+    ✔ memoizes execute functions
+
+  Finalize phase
+    - returns an AnalyzerQueryResult
+
+  InputDataService
+    Configuration
+      ✔ allows to set referenceProjectPaths
+      ✔ allows to set targetProjectPaths
+    Methods
+      ✔ "createDataObject"
+      ✔ "targetProjectPaths"
+      ✔ "getReferenceProjectPaths"
+      "getMonoRepoPackages"
+        ✔ supports npm/yarn workspaces
+        ✔ supports lerna
+      "gatherFilesFromDir"
+        ✔ gathers a list of files
+        ✔ allows passing a depth which stops at nested depth
+        ✔ allows passing extensions
+        ✔ allows passing excluded folders
+        ✔ allows passing excluded files
+        ✔ allows passing exclude globs
+        ✔ does not support non globs in "allowlist"
+        ✔ omits node_modules and bower_components at root level by default
+        ✔ allows to add root level files
+        ✔ allows deeper globs
+        Default config
+          ✔ omits config files by default
+          ✔ omits hidden files by default
+          ✔ custom "allowlist" will take precedence over "allowlistMode"
+          AllowlistMode
+            ✔ autodetects allowlistMode
+            ✔ filters npm "files" entries when allowlistMode is "npm"
+            ✔ filters .gitignore entries when allowlistMode is "git"
+            ✔ filters no entries when allowlistMode is "all"
+            ✔ filters npm export map entries when allowlistMode is "export-map"
+          Default allowlist
+            ✔ merges default config filter with configured filter
+            ✔ allows to omit default config filter
+      "getPathsFromExportMap"
+        ✔ gets "internalExportMapPaths", "exposedExportMapPaths"
+        ✔ supports 1-on-1 path maps in export map entry
+        ✔ supports "./*" root mappings
+        ✔ supports "*" on file level inside key and value of export map entry
+        ✔ supports "*" on folder level inside key and value of export map entry
+        - supports private internal => ""./features/private-internal/*": null"
+        ResolveMode
+          ✔ has nodeResolveMode "default" when nothing specified
+          ✔ supports nodeResolveMode "require"
+          ✔ supports other arbitrary nodeResolveModes (like "develop")
+          ✔ without "*" in key
+        Deprecated root mappings ("/" instead of "/*")
+          ✔ works for values defined as strings
+          ✔ works for values defined as objects
+
+  QueryService
+    Methods
+      Retrieving QueryConfig
+        "getQueryConfigFromAnalyzer"
+          - accepts a constructor as first argument
+          - accepts a string as first argument
+      Ast retrieval
+        ✔ "addAstToProjectsData"
+
+  getSourceCodeFragmentOfDeclaration
+    Named specifiers
+      ✔ finds source code for directly declared specifiers
+      ✔ finds source code for referenced specifiers
+      ✔ finds source code for rereferenced specifiers
+      ✔ finds source code for imported referenced specifiers
+      Different types of declarations
+        ✔ handles class declarations
+        ✔ handles function declarations
+    [default] specifiers
+      ✔ finds source code for directly declared specifiers
+      ✔ finds source code for referenced specifiers
+      ✔ finds source code for rereferenced specifiers
+      Different types of declarations
+        ✔ handles class declarations
+        ✔ handles function declarations
+
+  Memoize
+    With primitives
+      Numbers
+        ✔ returns cached result when called with same parameters
+        ✔ returns cached result per function for same args
+      Strings
+        ✔ returns cached result when called with same parameters
+        ✔ returns cached result per function for same args
+    With non primitives
+      Arrays
+        ✔ returns cached result when called with same parameters
+        ✔ returns cached result per function for same args
+      Objects
+        ✔ returns cached result when called with same parameters
+        ✔ returns cached result per function for same args
+      When non primitives (references) are returned
+        ✔ will be affected by edited non primitive returns
+    Asynchronous
+      ✔ returns cached result when called with same parameters
+      ✔ returns cached result per function for same args
+    Cache
+      ✔ "memoizedFn.clearCache()" clears the cache for a memoized fn"
+      Strategies
+        lfu (least frequently used) strategy
+          ✔ has lfu strategy by default
+          ✔ removes least used from cache
+        lru (least recently used) strategy
+          ✔ can set lru strategy"
+          ✔ removes least recently used from cache
+
+  oxcTraverse
+    Visitor
+      ✔ traverses an swc AST based on <Node.type> visitor
+      ✔ supports "enter" as a generic arrival handler
+      ✔ supports "enter" and "exit" as generic handlers inside <Node.type> handlers
+      ✔ supports "root" as alternative for Program
+      ✔ does not fail on object prototype built-ins (like "toString")
+    Paths
+      - adds {
+      node: SwcNode;
+      parent: SwcNode;
+      stop: function;
+      scope: SwcScope;
+      parentPath: SwcPath;
+    }
+      - supports getPathFromNode
+    Scopes
+      Lexical scoping
+        ✔ creates scopes for blocks
+        ✔ creates scopes for nested FunctionDeclaration
+        ✔ creates scopes for ClassDeclaration
+        ✔ creates scopes SwitchStatement
+        ✔ creates scopes for ObjectExpression
+        ✔ works for KeyValueProperty
+      Bindings
+        ✔ binds const and lets to block scope
+        ✔ binds vars to function scope
+    Babel compatibility
+      ✔ handles all kinds of lexical scopes and bindings in a similar way
+      ✔ handles all kinds of lexical scopes and bindings in a similar way 2
+
+  resolveImportPath
+    ✔ resolves file in same project
+    ✔ resolves file in different projects
+    ✔ resolves export maps
+    ✔ resolves native node modules
+
+  trackdownIdentifier
+    ✔ tracks down identifier to root file (file that declares identifier)
+    ✔ tracks down transitive and renamed identifiers
+    ✔ tracks down default identifiers
+    ✔ does not track down external sources
+    ✔ identifies import map entries as internal sources
+    ✔ self-referencing projects are recognized as internal source
+    ✔ tracks down locally declared, reexported identifiers (without a source defined)
+    ✔ works with multiple re-exports in a file
+
+  trackDownIdentifierFromScope
+    ✔ gives back [current] if currentFilePath contains declaration
+    ✔ tracks down re-exported identifiers
+    ✔ tracks down extended classes from a re-export
+    ✔ handles edge cases
+
+  traverseHtml
+    ✔ finds different tag names
+    ✔ traverses different levels in DOM order
+    ✔ allows to stop traversal (for performance)
+    ✔ allows to traverse within a path
+
+
+  229 passing (2s)
+  20 pending
+
+
+> providence-analytics@0.19.1 test:node:e2e
+> mocha './test-node/**/*.e2e.js' --timeout 60000
+
+
+
+  CLI helpers against filesystem
+    appendProjectDependencyPaths
+      ✔ allows a regex filter
+
+  Analyzers file-system integration
+    ✔ "find-customelements" analyzer
+    ✔ "find-imports" analyzer
+    ✔ "find-exports" analyzer
+    1) "find-classes" analyzer
+    2) "match-imports" analyzer
+    ✔ "match-subclasses" analyzer
+[31m   error [0m [analyzePerAstFile]: /Users/sebastian/Projects/lion/packages-node/providence-analytics/test-helpers/project-mocks/importing-target-project/target-src/match-subclasses/internalProxy.d.ts throws: TypeError: Cannot read properties of null (reading 'type')
+    ✔ "match-paths" analyzer (90ms)
+
+
+  6 passing (406ms)
+  2 failing
+
+  1) Analyzers file-system integration
+       "find-classes" analyzer:
+
+      AssertionError: expected [ { …(2) }, { …(2) }, { …(2) } ] to deeply equal [ { …(2) }, { …(2) } ]
+      + expected - actual
+
+             }
+           ]
+         }
+         {
+      -    "file": "./target-src/match-subclasses/ExtendedComp.d.ts"
+      -    "result": [
+      -      {
+      -        "isMixin": false
+      -        "members": {
+      -          "methods": [
+      -            {
+      -              "accessType": "public"
+      -              "name": "method"
+      -            }
+      -            {
+      -              "accessType": "protected"
+      -              "name": "_protectedMethod"
+      -            }
+      -            {
+      -              "accessType": "private"
+      -              "name": "__privateMethod"
+      -            }
+      -            {
+      -              "accessType": "protected"
+      -              "name": "$protectedMethod"
+      -            }
+      -            {
+      -              "accessType": "private"
+      -              "name": "$$privateMethod"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "connectedCallback"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "disconnectedCallback"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "requestUpdate"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "createRenderRoot"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "render"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "updated"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "firstUpdated"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "update"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "shouldUpdate"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "name": "onLocaleUpdated"
+      -            }
+      -          ]
+      -          "props": [
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "set"
+      -                "get"
+      -              ]
+      -              "name": "staticGetterSetter"
+      -              "static": true
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "get"
+      -              ]
+      -              "name": "attributes"
+      -              "static": true
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "get"
+      -              ]
+      -              "name": "styles"
+      -              "static": true
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "get"
+      -              ]
+      -              "name": "localizeNamespaces"
+      -              "static": true
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "set"
+      -                "get"
+      -              ]
+      -              "name": "getterSetter"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "get"
+      -              ]
+      -              "name": "updateComplete"
+      -            }
+      -            {
+      -              "accessType": "public"
+      -              "kind": [
+      -                "get"
+      -              ]
+      -              "name": "slots"
+      -            }
+      -          ]
+      -        }
+      -        "name": "ExtendedComp"
+      -      }
+      -    ]
+      -  }
+      -  {
+           "file": "./target-src/match-subclasses/ExtendedComp.js"
+           "result": [
+             {
+               "isMixin": false
+      
+      at Context.<anonymous> (file:///Users/sebastian/Projects/lion/packages-node/providence-analytics/test-node/program/analyzers/e2e/all-analyzers.e2e.js:150:35)
+
+  2) Analyzers file-system integration
+       "match-imports" analyzer:
+
+      AssertionError: expected [ { …(2) }, { …(2) }, { …(2) }, …(5) ] to deeply equal [ { …(2) }, { …(2) }, { …(2) }, …(5) ]
+      + expected - actual
+
+           }
+           "matchesPerProject": [
+             {
+               "files": [
+      +          "./target-src/match-imports/root-level-imports.js"
+                 "./target-src/match-subclasses/internalProxy.js"
+      -          "./target-src/match-imports/root-level-imports.js"
+               ]
+               "project": "importing-target-project"
+             }
+           ]
+--
+           }
+           "matchesPerProject": [
+             {
+               "files": [
+      +          "./target-src/find-customelements/multiple.js"
+      +          "./target-src/match-imports/root-level-imports.js"
+                 "./target-src/match-subclasses/ExtendedComp.js"
+      -          "./target-src/match-imports/root-level-imports.js"
+      -          "./target-src/find-customelements/multiple.js"
+               ]
+               "project": "importing-target-project"
+             }
+           ]
+      
+      at Context.<anonymous> (file:///Users/sebastian/Projects/lion/packages-node/providence-analytics/test-node/program/analyzers/e2e/all-analyzers.e2e.js:150:35)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+
+
+npm error Lifecycle script `test:node:e2e` failed with error:
+npm error code 2
+npm error path /Users/sebastian/Projects/lion/packages-node/providence-analytics
+npm error workspace providence-analytics@0.19.1
+npm error location /Users/sebastian/Projects/lion/packages-node/providence-analytics
+npm error command failed
+npm error command sh -c mocha './test-node/**/*.e2e.js' --timeout 60000
+npm error Lifecycle script `test:node` failed with error:
+npm error code 2
+npm error path /Users/sebastian/Projects/lion/packages-node/providence-analytics
+npm error workspace providence-analytics@0.19.1
+npm error location /Users/sebastian/Projects/lion/packages-node/providence-analytics
+npm error command failed
+npm error command sh -c npm run test:node:unit && npm run test:node:e2e
+
+
+> publish-docs@0.2.1 test:node
+> mocha test-node
+
+
+
+  PublishDocs
+    ✔ reads all md files and replaces their content if reference is found
+    ✔ can copy asset files via copyPattern
+    ✔ adjust links to full absolute urls
+    ✔ adjust links to use commit sha if available as environment "GITHUB_SHA" variable
+
+
+  4 passing (44ms)
+
+
+> remark-extend@0.5.3 test:node
+> mocha test-node
+
+
+
+  remarkExtend
+    ✔ does no modifications if no action is found
+    ✔ can import another file
+    ✔ will rewrite image urls/paths but not links
+    ✔ can import another file from a start point
+    ✔ can import another file from a start to an end point
+    ✔ can do replacements on imports
+    ✔ can do global replacements, that run before local replacements
+    ✔ throws if an import file does not exist
+    ✔ throws if an start selector can not be found
+    ✔ throws if an end selector can not be found
+    ✔ can import a block (from start headline to next headline same level)
+    ✔ can import the last block (from start headline to end of file)
+    ✔ can import a block content (from start headline (excluding) to next headline same level)
+    ✔ can import a small block (from start headline to next headline of any level)
+    ✔ can import a small block content (from start headline (excluding) to next headline of any level)
+    ✔ resolves imports via node resolution
+    ✔ throws if importBlock is used not with headlines
+    ✔ can import multiple files
+    ✔ can import files with a table
+    ✔ supports files with frontmatter
+
+
+  20 passing (74ms)
+
+
+> rocket-preset-extend-lion-docs@0.4.1 test:node
+> mocha test-node
+
+
+
+  generateExtendDocsConfig
+    ✔ works for packages with a single class and tag export
+    - works if there is no npm scope sub folder
+    ✔ can handle exports without a prefix
+    ✔ can customize the target
+    - works for packages with multiple class and tag exports
+
+  getPublicApiOfPkg
+    ✔ 01: works for star exports
+    ✔ 03: works for file exports
+    ✔ 04: ignores none js files
+
+  remarkExtendLionDocsTransformJs
+    ✔ processes all instance of code and code snippets (53ms)
+    ✔ processes html stories
+    ✔ keeps import assertions in tact
+
+  remarkUrlToLocal
+    ✔ convert urls to local
+    ✔ does not touch issue urls
+    ✔ does not touch urls to the repo
+    ✔ works with images
+
+
+  13 passing (116ms)
+  2 pending
+
+[2K[1A[2K[GFirefox:  |███▍                          | 21/193 test files | 291 passed, 0 failed, 1 skipped
+Chromium: |████████████▉                 | 77/193 test files | 1242 passed, 29 failed, 9 skipped
+Webkit:   |                              | 0/193 test files | 0 passed, 0 failed
+
+Running tests...
+
+
+[2K[1A[2K[GFirefox:  |████▌                         | 28/193 test files | 493 passed, 0 failed, 1 skipped
+Chromium: |█████████████████████████████▊| 186/193 test files | 3219 passed, 49 failed, 38 skipped
+Webkit:   |                              | 0/193 test files | 0 passed, 0 failed
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/calendar/test/lion-calendar.test.js:
+
+ ❌ browserContext.newPage: Target page, context or browser has been closed  (failed on Firefox)
+    browserContext.newPage: Target page, context or browser has been closed
+        at PlaywrightLauncher.createPage (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/index.js:35:155)
+        at PlaywrightLauncher.createNewPage (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:68:43)
+        at async PlaywrightLauncher.startSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:42:22)
+
+
+[2K[1A[2K[Gpackages/ui/components/combobox/test/lion-combobox.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session dSIE3hO5knJcR_dPYBoWS is already stopped  (failed on Chromium)
+    Error: Session dSIE3hO5knJcR_dPYBoWS is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+
+
+[2K[1A[2K[Gpackages/ui/components/fieldset/test/lion-fieldset.test.js:
+
+ ❌ FormGroupMixin > throws if same name without ending [] is used
+      AssertionError: expected undefined to be an instance of TypeError
+        at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+        at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+        at g (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:2065:9)
+        at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+        at runFormGroupMixinSuite/</< (packages/ui/components/form-core-element-internals/test-suites/form-group/FormGroupMixin.suite.js:184:27)
+
+ ❌ FormGroupMixin > disables/enables all its formElements if it becomes disabled/enabled
+      AssertionError: expected true to equal false
+      + expected - actual
+      
+      -true
+      +false
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runFormGroupMixinSuite/</< (packages/ui/components/form-core-element-internals/test-suites/form-group/FormGroupMixin.suite.js:466:49)
+
+
+[2K[1A[2K[GFirefox:  |██████                        | 38/193 test files | 723 passed, 2 failed, 2 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████▌               | 88/193 test files | 1730 passed, 45 failed, 9 skipped
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/form/test/lion-form.test.js:
+
+ ❌ <lion-form> > sets focus on submit to the first erroneous form element within a fieldset
+      TypeError: dispatchSpy.args[0] is undefined
+        at packages/ui/components/form/test/lion-form.test.js:250:12
+
+ ❌ <lion-form> > sets focus on submit to the first form element within a erroneous fieldset
+      TypeError: dispatchSpy.args[0] is undefined
+        at packages/ui/components/form/test/lion-form.test.js:271:12
+
+ ❌ <lion-form> > sets focus on submit to the first form element within a erroneous fieldset within another fieldset
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form/test/lion-form.test.js:295:11
+
+ ❌ <lion-form> > sets focus on submit to the first form element within a erroneous listbox within a fieldset
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form/test/lion-form.test.js:334:11
+
+ ❌ <lion-form> > sets focus on submit to the first form element within a erroneous checkbox-group
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form/test/lion-form.test.js:353:11
+
+ ❌ <lion-form> > sets focus on submit to the first form element within a erroneous radio-group
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form/test/lion-form.test.js:375:11
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/choice-group/ChoiceGroupMixin.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session F8DGDPePGPnPErxZWRv7C is already stopped  (failed on Chromium)
+    Error: Session F8DGDPePGPnPErxZWRv7C is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+ ❌ ChoiceGroupMixin: choice-input-group > expect child nodes to only fire one model-value-changed event per instance (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue (failed on Firefox and Webkit)
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+
+[2K[1A[2K[GFirefox:  |███████▌                      | 48/193 test files | 932 passed, 11 failed, 2 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |█████████████████████████████ | 181/193 test files | 3494 passed, 73 failed, 39 skipped
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/choice-group/ChoiceInputMixin.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session LjSR1Hqq-cjw7hNAa46y4 is already stopped  (failed on Chromium)
+    Error: Session LjSR1Hqq-cjw7hNAa46y4 is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+ ❌ ChoiceInputMixin: undefined > fires one "model-value-changed" event if choiceValue or checked state or modelValue changed (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceInputMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceInputMixin.suite.js:67:26)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/choice-group/CustomChoiceGroupMixin.integrations.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session nXJKaHkvGARKv9km9KFRP is already stopped  (failed on Chromium)
+    Error: Session nXJKaHkvGARKv9km9KFRP is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue (failed on Firefox and Webkit)
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+ ❌ ChoiceGroupMixin: multiple-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: multiple-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue (failed on Firefox and Webkit)
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ [ 'female' ] ] }
+      + expected - actual
+      
+         "gender[]": [
+           [
+             "female"
+           ]
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:698:46)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue (failed on Firefox and Webkit)
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+ ❌ ChoiceGroupMixin: multiple-allow-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance (failed on Firefox and Webkit)
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: multiple-allow-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue (failed on Firefox and Webkit)
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ [ 'female' ] ] }
+      + expected - actual
+      
+         "gender[]": [
+           [
+             "female"
+           ]
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:698:46)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/choice-group/CustomChoiceGroupMixin.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session O7iNvJox8TMou08XqQF0j is already stopped  (failed on Chromium)
+    Error: Session O7iNvJox8TMou08XqQF0j is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/form-group/FormGroupMixin.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session LCAZ4tqM_XvJHAVu9_rZ1 is already stopped  (failed on Chromium)
+    Error: Session LCAZ4tqM_XvJHAVu9_rZ1 is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core/test/utils/SyncUpdatableMixin.test.js:
+
+ ❌ Tests were interrupted because the browser disconnected.  (failed on Chromium)
+
+ ❌ Error: Session A6oq0N-FIOnb42guheWp0 is already stopped  (failed on Chromium)
+    Error: Session A6oq0N-FIOnb42guheWp0 is already stopped
+        at PlaywrightLauncher.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-playwright/dist/PlaywrightLauncher.js:81:19)
+        at TestScheduler.stopSession (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:136:100)
+        at EventEmitter.<anonymous> (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/runner/TestScheduler.js:26:28)
+        at EventEmitter.emit (node:events:531:35)
+        at TestSessionManager.emit (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/utils/EventEmitter.js:16:24)
+        at TestSessionManager.updateStatus (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/test-session/TestSessionManager.js:32:14)
+        at TestRunnerApiPlugin._setSessionFailed (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:206:23)
+        at TestRunnerApiPlugin._waitForDisconnect (/Users/sebastian/Projects/lion/node_modules/@web/test-runner-core/dist/server/plugins/api/testRunnerApiPlugin.js:197:18)
+        at runNextTicks (node:internal/process/task_queues:65:5)
+        at listOnTimeout (node:internal/timers:549:9)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core-element-internals/test/FormGroupValidation.test.js:
+
+ ❌ FormGroupMixin - checkValidity() and reportValidity() > Edge Cases > handles children becoming valid after initial validation
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form-core-element-internals/test/FormGroupValidation.test.js:358:13
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:
+
+ 🚧 Browser logs on Firefox:
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:34:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:34:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:173:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:173:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:255:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:255:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:272:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:272:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:289:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:289:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:340:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:340:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:426:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:426:17)
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:441:27
+        at setTimeout handler* (packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:441:17)
+ 🚧 Browser logs on Chromium:
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:34:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:173:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:255:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:272:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:289:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:340:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:426:27
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:441:27
+ 🚧 Browser logs on Webkit:
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:34:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:173:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:255:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:272:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:289:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:340:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:426:33
+      TypeError: el.submit is not a function. (In 'el.submit()', 'el.submit' is undefined)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:441:33
+
+ ❌ LionForm - Element Internals Submission Flow > Validation Before Submit > allows submission when form is valid
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:34)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > Validation Before Submit > blocks submission when form is invalid
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:64:10
+
+ ❌ LionForm - Element Internals Submission Flow > Validation Before Submit > calls checkValidity() before submission
+      TypeError: form is undefined
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:82:37
+
+ ❌ LionForm - Element Internals Submission Flow > Validation Before Submit > calls reportValidity() when form is invalid
+      TypeError: form is undefined
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:116:38
+
+ ❌ LionForm - Element Internals Submission Flow > Validation Before Submit > sets submitted state even when validation fails
+      AssertionError: expected undefined to be false
+        at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+        at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+        at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1072:9)
+        at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+        at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:147:13
+
+ ❌ LionForm - Element Internals Submission Flow > novalidate Attribute > skips validation when novalidate is set
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:173)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > novalidate Attribute > validates when novalidate is false
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:201:10
+
+ ❌ LionForm - Element Internals Submission Flow > novalidate Attribute > can toggle novalidate dynamically
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:229:10
+
+ ❌ LionForm - Element Internals Submission Flow > FormData in Submit Event > includes FormData in event.detail
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:255)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > FormData in Submit Event > includes serializedValue for backward compatibility
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:272)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > FormData in Submit Event > FormData and serializedValue match
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:289)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > Complex Validation Scenarios > validates nested fieldsets
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:322:10
+
+ ❌ LionForm - Element Internals Submission Flow > Complex Validation Scenarios > allows submission when all nested fields are valid
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:340)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > Complex Validation Scenarios > validates fields with multiple validators
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:367:10
+
+ ❌ LionForm - Element Internals Submission Flow > Focus Management > focuses first erroneous field when validation fails
+      TypeError: el.submit is not a function
+        at packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js:400:10
+
+ ❌ LionForm - Element Internals Submission Flow > Backward Compatibility > maintains old behavior when event listener ignores detail
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:426)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+ ❌ LionForm - Element Internals Submission Flow > Backward Compatibility > submit event is still a CustomEvent with bubbles
+      Error: TypeError: el.submit is not a function (http://localhost:8000/packages/ui/components/form-core-element-internals/test/LionFormSubmission.test.js?wtr-session-id=OeYQFM1UHuyXZ8iLeQZ19:441)
+        at S.on/D.onerror (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258618)
+        at OnErrorEventHandlerNonNull*S.on (node_modules/@web/test-runner-mocha/dist/autorun.js:1:258583)
+        at Ys.prototype._addEventListener (node_modules/@web/test-runner-mocha/dist/autorun.js:1:205384)
+        at Ys.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214215)
+        at Ys.prototype.runAsync/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214603)
+        at Ys.prototype.runAsync (node_modules/@web/test-runner-mocha/dist/autorun.js:1:214581)
+        at _.prototype.run/< (node_modules/@web/test-runner-mocha/dist/autorun.js:1:254941)
+        at _.prototype.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:255103)
+        at tu.run (node_modules/@web/test-runner-mocha/dist/autorun.js:1:259592)
+        at node_modules/@web/test-runner-mocha/dist/autorun.js:1:267587
+        at async* (node_modules/@web/test-runner-mocha/dist/autorun.js:1:267767)
+
+Firefox:  |███████████▎                  | 73/193 test files | 1436 passed, 40 failed, 8 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core-element-internals/test/choice-group/ChoiceGroupMixin.test.js:
+
+ ❌ ChoiceGroupMixin: choice-input-group > expect child nodes to only fire one model-value-changed event per instance
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core-element-internals/test/choice-group/CustomChoiceGroupMixin.integrations.test.js:
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: custom-choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+ ❌ ChoiceGroupMixin: multiple-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: multiple-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ [ 'female' ] ] }
+      + expected - actual
+      
+         "gender[]": [
+           [
+             "female"
+           ]
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:698:46)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ 'female' ] }
+      + expected - actual
+      
+       {
+         "gender[]": [
+           "female"
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:696:46)
+
+ ❌ ChoiceGroupMixin: allow-custom-choice-input-group > Modelvalue event propagation > sends one event for single select choice-groups
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:738:45)
+
+ ❌ ChoiceGroupMixin: multiple-allow-custom-choice-input-group > expect child nodes to only fire one model-value-changed event per instance
+      AssertionError: expected 2 to equal 1
+      + expected - actual
+      
+      -2
+      +1
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:480:26)
+
+ ❌ ChoiceGroupMixin: multiple-allow-custom-choice-input-group > Integration with a parent form/fieldset > will serialize all children with their serializedValue
+      AssertionError: expected { Object (gender[]) } to deeply equal { 'gender[]': [ [ 'female' ] ] }
+      + expected - actual
+      
+         "gender[]": [
+           [
+             "female"
+           ]
+      -    {
+      -      "checked": true
+      -      "value": "female"
+      -    }
+      -    {
+      -      "checked": false
+      -      "value": "other"
+      -    }
+         ]
+       }
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at l (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1467:9)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1406:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runChoiceGroupMixinSuite/</</< (packages/ui/components/form-core/test-suites/choice-group/ChoiceGroupMixin.suite.js:698:46)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-core-element-internals/test/form-group/FormGroupMixin.test.js:
+
+ ❌ FormGroupMixin > throws if same name without ending [] is used
+      AssertionError: expected undefined to be an instance of TypeError
+        at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+        at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+        at g (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:2065:9)
+        at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+        at runFormGroupMixinSuite/</< (packages/ui/components/form-core-element-internals/test-suites/form-group/FormGroupMixin.suite.js:184:27)
+
+ ❌ FormGroupMixin > disables/enables all its formElements if it becomes disabled/enabled
+      AssertionError: expected true to equal false
+      + expected - actual
+      
+      -true
+      +false
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runFormGroupMixinSuite/</< (packages/ui/components/form-core-element-internals/test-suites/form-group/FormGroupMixin.suite.js:466:49)
+
+
+[2K[1A[2K[Gpackages/ui/components/form-integrations/test/form-group-methods.test.js:
+
+ ❌ Submitting/Resetting/Clearing Form > pressing submit button of a form should make submitted true for all fields
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form-integrations/test/form-group-methods.test.js:86:13
+      at packages/ui/components/form-integrations/test/form-group-methods.test.js:85:17
+
+ ❌ Submitting/Resetting/Clearing Form > calling resetGroup() should reset all metadata (interaction states and initial values)
+      AssertionError: expected false to be true
+      + expected - actual
+      
+      -false
+      +true
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at n.exports<[5]</t.exports/< (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1037:9)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7959:28)
+      at e (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9372:21)
+      at packages/ui/components/form-integrations/test/form-group-methods.test.js:117:13
+      at packages/ui/components/form-integrations/test/form-group-methods.test.js:116:17
+
+
+[2K[1A[2K[GFirefox:  |███████████████               | 97/193 test files | 1889 passed, 57 failed, 14 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/input-amount-dropdown/test/LionInputAmountDropdown.test.js:
+
+ ❌ LionInputAmountDropdown > Dropdown display > calls `templates.dropdown` with TemplateDataForDropdownInputAmount object (failed on Webkit)
+      AssertionError: expected { Object (refs, data) } to deeply equal { Object (data, refs) }
+      + expected - actual
+      
+           "regionMetaList": [
+             {
+               "currencyCode": "EUR"
+               "currencySymbol": "€"
+      -        "nameForLocale": "euro"
+      +        "nameForLocale": "Euro"
+             }
+           ]
+           "regionMetaListPreferred": [
+             {
+               "currencyCode": "GBP"
+      -        "currencySymbol": "GBP"
+      -        "nameForLocale": "funt szterling"
+      +        "currencySymbol": "£"
+      +        "nameForLocale": "British Pound"
+             }
+           ]
+         }
+         "refs": {
+      
+      at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:121:47
+
+ ❌ LionInputAmountDropdown > Dropdown display > can override "all-currencies-label" (failed on Webkit)
+      TypeError: Attempted to wrap dropdown which is already wrapped
+        at checkWrappedMethod (node_modules/sinon/pkg/sinon-esm.js:4751:34)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4816:31)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:169:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:165:62
+        --------------
+        at extendObjectWithWrappedMethods (node_modules/sinon/pkg/sinon-esm.js:4857:43)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4845:35)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:111:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:104:100
+
+ ❌ LionInputAmountDropdown > Dropdown display > can override "preferred-currencies-label" (failed on Webkit)
+      TypeError: Attempted to wrap dropdown which is already wrapped
+        at checkWrappedMethod (node_modules/sinon/pkg/sinon-esm.js:4751:34)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4816:31)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:188:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:184:68
+        --------------
+        at extendObjectWithWrappedMethods (node_modules/sinon/pkg/sinon-esm.js:4857:43)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4845:35)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:111:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:104:100
+
+ ❌ WithFormControlInputAmountDropdown > LionInputAmountDropdown > Dropdown display > calls `templates.dropdown` with TemplateDataForDropdownInputAmount object (failed on Webkit)
+      AssertionError: expected { Object (refs, data) } to deeply equal { Object (data, refs) }
+      + expected - actual
+      
+           "regionMetaList": [
+             {
+               "currencyCode": "EUR"
+               "currencySymbol": "€"
+      -        "nameForLocale": "euro"
+      +        "nameForLocale": "Euro"
+             }
+           ]
+           "regionMetaListPreferred": [
+             {
+               "currencyCode": "GBP"
+      -        "currencySymbol": "GBP"
+      -        "nameForLocale": "funt szterling"
+      +        "currencySymbol": "£"
+      +        "nameForLocale": "British Pound"
+             }
+           ]
+         }
+         "refs": {
+      
+      at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:121:47
+
+ ❌ WithFormControlInputAmountDropdown > LionInputAmountDropdown > Dropdown display > can override "all-currencies-label" (failed on Webkit)
+      TypeError: Attempted to wrap dropdown which is already wrapped
+        at checkWrappedMethod (node_modules/sinon/pkg/sinon-esm.js:4751:34)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4816:31)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:169:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:165:62
+        --------------
+        at extendObjectWithWrappedMethods (node_modules/sinon/pkg/sinon-esm.js:4857:43)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4845:35)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:111:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:104:100
+
+ ❌ WithFormControlInputAmountDropdown > LionInputAmountDropdown > Dropdown display > can override "preferred-currencies-label" (failed on Webkit)
+      TypeError: Attempted to wrap dropdown which is already wrapped
+        at checkWrappedMethod (node_modules/sinon/pkg/sinon-esm.js:4751:34)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4816:31)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:188:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:184:68
+        --------------
+        at extendObjectWithWrappedMethods (node_modules/sinon/pkg/sinon-esm.js:4857:43)
+        at wrapMethod (node_modules/sinon/pkg/sinon-esm.js:4845:35)
+        at spy (node_modules/sinon/pkg/sinon-esm.js:3430:42)
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:111:30
+        at packages/ui/components/input-amount-dropdown/test-suites/LionInputAmountDropdown.suite.js:104:100
+
+
+[2K[1A[2K[GFirefox:  |██████████████████▏           | 117/193 test files | 2355 passed, 57 failed, 25 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[Gpackages/ui/components/input-stepper/test/lion-input-stepper-integrations.test.js:
+
+ ❌ FormatMixin > ModelValue > Unparseable values > converts to Unparseable when wrong value inputted by user
+      AssertionError: expected { Object (type, viewValue) } to be an instance of Unparseable
+        at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+        at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+        at g (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:2065:9)
+        at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+        at runFormatMixinSuite/</</</< (packages/ui/components/form-core/test-suites/FormatMixin.suite.js:231:42)
+
+ ❌ FormatMixin > ModelValue > Unparseable values > displays the viewValue when modelValue is of type Unparseable
+      AssertionError: expected 'NaN' to equal 'foo'
+      + expected - actual
+      
+      -NaN
+      +foo
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runFormatMixinSuite/</</</< (packages/ui/components/form-core/test-suites/FormatMixin.suite.js:264:31)
+
+
+[2K[1A[2K[Gpackages/ui/components/input-tel/test/LionInputTel.test.js:
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager has loaded before init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:125:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager has loaded before init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable and contains parentheses
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:136:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager is resolved after init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:125:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager is resolved after init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable and contains parentheses
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:136:34)
+
+
+[2K[1A[2K[Gpackages/ui/components/input-tel-dropdown/test/LionInputTelDropdown.test.js:
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager has loaded before init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:125:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager has loaded before init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable and contains parentheses
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:136:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager is resolved after init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:125:34)
+
+ ❌ LionInputTel > Region codes > When PhoneUtilManager is resolved after init > Computation of readonly accessor `.activeRegion` > deducts it from value when modelValue is unparseable and contains parentheses
+      AssertionError: expected 'GB' to equal 'NL'
+      + expected - actual
+      
+      -GB
+      +NL
+      
+      at r (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9574:12)
+      at n.exports<[3]</t.exports/i.prototype.assert (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:250:12)
+      at p (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:1409:11)
+      at c (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:7884:24)
+      at handleDom (node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.js:102:16)
+      at f (node_modules/@esm-bundle/chai/node_modules/.pnpm/chai@4.3.4/node_modules/chai/chai.js:9164:32)
+      at runActiveRegionTests/</< (packages/ui/components/input-tel/test-suites/LionInputTel.suite.js:136:34)
+
+Firefox:  |████████████████████▊         | 134/193 test files | 2751 passed, 67 failed, 29 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[GFirefox:  |█████████████████████████     | 161/193 test files | 3213 passed, 67 failed, 34 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[GFirefox:  |█████████████████████████████ | 187/193 test files | 3593 passed, 67 failed, 39 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Running tests...
+
+
+[2K[1A[2K[GFirefox:  |██████████████████████████████| 193/193 test files | 3736 passed, 67 failed, 40 skipped
+Chromium: |██████████████████████████████| 193/193 test files | 3474 passed, 53 failed, 41 skipped
+Webkit:   |██████████████████████████████| 193/193 test files | 3821 passed, 73 failed, 41 skipped
+
+Code coverage: 91.84 %
+Coverage for lines failed with 89.18 % compared to configured 95 %
+Coverage for statements failed with 89.18 % compared to configured 95 %
+Coverage for functions failed with 93.18 % compared to configured 95 %
+View full coverage report at coverage/lcov-report/index.html
+
+Finished running tests in 110.2s, failed to meet coverage threshold.
+
+
+ERROR: "test:node" exited with 2.
