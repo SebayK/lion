@@ -7,10 +7,12 @@ Ten katalog zawiera podsumowania i przeglądy projektu migracji Element Internal
 ## 📄 Dostępne dokumenty:
 
 ### 1. **element-internals-project-overview.md**
+
 **Rozmiar**: ~6KB  
 **Przeznaczenie**: Quick reference dla projektu
 
 **Zawiera**:
+
 - Executive summary
 - Roadmap wizualizacja (3 fazy)
 - Status aktualny
@@ -23,10 +25,12 @@ Ten katalog zawiera podsumowania i przeglądy projektu migracji Element Internal
 ---
 
 ### 2. **element-internals-completeness-check.md**
+
 **Rozmiar**: ~4KB  
 **Przeznaczenie**: Ocena gotowości dokumentacji
 
 **Zawiera**:
+
 - 8 kluczowych pytań (wszystkie: TAK ✅)
 - Lista co JEST w dokumentacji
 - Lista co MOŻE brakować (opcjonalne)
@@ -64,19 +68,25 @@ Pełna dokumentacja znajduje się w: `/docs/element-internals/`
 ## 🎯 Dla kogo jest ten katalog?
 
 ### Project Managers / Tech Leads:
+
 → Czytaj: `element-internals-project-overview.md`
+
 - Szybki przegląd statusu
 - Metryki i timeline
 - Checkpoints
 
 ### Developerzy rozpoczynający pracę:
+
 → Czytaj: `element-internals-completeness-check.md`
+
 - Sprawdź czy dokumentacja jest kompletna
 - Upewnij się że wszystko jest jasne
 - Potem przejdź do głównego planu
 
 ### Stakeholders:
+
 → Czytaj: `element-internals-project-overview.md` (sekcja Executive Summary)
+
 - Cel projektu
 - Zakres i timeline
 - Oczekiwane rezultaty
@@ -85,15 +95,15 @@ Pełna dokumentacja znajduje się w: `/docs/element-internals/`
 
 ## 📊 Quick Stats (aktualny stan):
 
-| Metric | Value |
-|--------|-------|
-| **Komponenty do migracji** | 20 |
-| **Zmigrowane** | 0 (0%) |
-| **Fazy do wykonania** | 6 |
-| **Ukończone fazy** | 0 |
-| **Estymowany czas** | 5-7 tygodni |
-| **Status dokumentacji** | ✅ Ready (9.6/10) |
-| **Status projektu** | 🎯 Ready to Start |
+| Metric                     | Value             |
+| -------------------------- | ----------------- |
+| **Komponenty do migracji** | 20                |
+| **Zmigrowane**             | 0 (0%)            |
+| **Fazy do wykonania**      | 6                 |
+| **Ukończone fazy**         | 0                 |
+| **Estymowany czas**        | 5-7 tygodni       |
+| **Status dokumentacji**    | ✅ Ready (9.6/10) |
+| **Status projektu**        | 🎯 Ready to Start |
 
 ---
 
@@ -118,6 +128,7 @@ git checkout -b feature/element-internals-migration
 ## 📅 Aktualizacje
 
 Te dokumenty summary są aktualizowane:
+
 - Po każdym checkpoincie
 - Co tydzień (status update)
 - Po zakończeniu każdej fazy

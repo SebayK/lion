@@ -8,14 +8,17 @@
 ## 📋 Executive Summary
 
 ### Cel projektu:
+
 Migracja wszystkich komponentów formularzy Lion Web Components z custom form-core na natywne **Element Internals API**.
 
 ### Zakres:
+
 - **20 komponentów** do migracji
 - **5-7 tygodni** realizacji
 - **3 fazy** projektu: Migration (✅) → Implementation (🎯) → Cleanup (📅)
 
 ### Rezultat:
+
 - Natywna integracja z `<form>`
 - Szybsza walidacja (+20-30%)
 - Mniejszy bundle (-10% po cleanup)
@@ -78,14 +81,16 @@ Migracja wszystkich komponentów formularzy Lion Web Components z custom form-co
 ## 📊 Status Aktualny (Implementation Phase)
 
 ### Ukończone:
+
 ✅ Analiza form-core-element-internals  
 ✅ Analiza testów jednostkowych  
 ✅ Identyfikacja 20 komponentów do migracji  
 ✅ Przygotowanie planu implementacji  
 ✅ Przygotowanie skryptów automatyzacji  
-✅ Przygotowanie nowych testów (templates)  
+✅ Przygotowanie nowych testów (templates)
 
 ### Następne:
+
 🎯 Faza 0: Przygotowanie środowiska (2-3 dni)
 
 ---
@@ -95,38 +100,41 @@ Migracja wszystkich komponentów formularzy Lion Web Components z custom form-co
 **Status**: 0/20 zmigrowanych (0%)
 
 ### Priorytet 1-5 (szczegóły w planie implementacji):
+
 1. LionInput (testowy)
-2-4. Podstawowe (Textarea, Select, Fieldset)
-5-8. Groups (Checkbox, Radio)
-9. LionForm
-10-20. Input variants (11 komponentów)
+   2-4. Podstawowe (Textarea, Select, Fieldset)
+   5-8. Groups (Checkbox, Radio)
+2. LionForm
+   10-20. Input variants (11 komponentów)
 
 ---
 
 ## ⏱️ Timeline
 
-| Faza | Dni | Komponenty | Status |
-|------|-----|------------|--------|
-| **0** | 2-3 | Setup | ⏳ Pending |
-| **1** | 3-4 | 1 (LionInput) | ⏳ Pending |
-| **2** | 5-7 | 3 | ⏳ Pending |
-| **3** | 4-5 | 4 | ⏳ Pending |
-| **4** | 2-3 | 1 (LionForm) | ⏳ Pending |
-| **5** | 5-7 | 11 | ⏳ Pending |
-| **6** | 3-5 | Verification | ⏳ Pending |
-| **TOTAL** | **24-34** | **20** | **0%** |
+| Faza      | Dni       | Komponenty    | Status     |
+| --------- | --------- | ------------- | ---------- |
+| **0**     | 2-3       | Setup         | ⏳ Pending |
+| **1**     | 3-4       | 1 (LionInput) | ⏳ Pending |
+| **2**     | 5-7       | 3             | ⏳ Pending |
+| **3**     | 4-5       | 4             | ⏳ Pending |
+| **4**     | 2-3       | 1 (LionForm)  | ⏳ Pending |
+| **5**     | 5-7       | 11            | ⏳ Pending |
+| **6**     | 3-5       | Verification  | ⏳ Pending |
+| **TOTAL** | **24-34** | **20**        | **0%**     |
 
 ---
 
 ## 🎯 Metryki Sukcesu
 
 ### Wymagane (Must Have):
+
 - [ ] 100% testów przechodzi
 - [ ] 0 TypeScript errors
 - [ ] 0 console warnings
 - [ ] Code coverage ≥ baseline
 
 ### Docelowe (Target):
+
 - [ ] Walidacja: +20-30% szybsza
 - [ ] Bundle: max +2% (tymczasowo)
 - [ ] Wszystkie komponenty zmigrowane
@@ -136,6 +144,7 @@ Migracja wszystkich komponentów formularzy Lion Web Components z custom form-co
 ## 🚀 Jak Rozpocząć
 
 ### Krok 1: Setup (Dziś)
+
 ```bash
 # Review dokumentacji
 cd /Users/sebastian/Projects/lion/docs/element-internals
@@ -145,6 +154,7 @@ cat README-element-internals.md
 ```
 
 ### Krok 2: Przygotowanie (Tydzień 1)
+
 ```bash
 # Checkout branch
 git checkout -b feature/element-internals-migration
@@ -153,6 +163,7 @@ git checkout -b feature/element-internals-migration
 ```
 
 ### Krok 3: Proof of Concept (Tydzień 2)
+
 ```bash
 # Migracja LionInput
 node scripts/migrate-to-element-internals.js input

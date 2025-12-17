@@ -193,16 +193,16 @@
 
 ## Metryki Fazy 0
 
-| Metryka | Wartość | Cel | Status |
-|---------|---------|-----|--------|
-| Utworzonych plików | 7 | 6+ | ✅ |
-| Skryptów działających | 3/3 | 3/3 | ✅ |
-| Export point | 1 | 1 | ✅ |
-| Nowych testów | 2 | 2 | ✅ |
-| Testów passing | ~90% | >80% | ✅ |
-| Komponentów zmigrowanych | 0/18 | 0 | ✅ |
-| Code coverage | 94.21% | 90%+ | ✅ |
-| Czas realizacji | ~1h | 2-3 dni | ✅ Ahead! |
+| Metryka                  | Wartość | Cel     | Status    |
+| ------------------------ | ------- | ------- | --------- |
+| Utworzonych plików       | 7       | 6+      | ✅        |
+| Skryptów działających    | 3/3     | 3/3     | ✅        |
+| Export point             | 1       | 1       | ✅        |
+| Nowych testów            | 2       | 2       | ✅        |
+| Testów passing           | ~90%    | >80%    | ✅        |
+| Komponentów zmigrowanych | 0/18    | 0       | ✅        |
+| Code coverage            | 94.21%  | 90%+    | ✅        |
+| Czas realizacji          | ~1h     | 2-3 dni | ✅ Ahead! |
 
 ---
 
@@ -219,11 +219,13 @@
 ## Następne Kroki
 
 ### Immediate:
+
 1. ✅ Przegląd z zespołem (ten checklist)
 2. ⏳ Decyzja o commicie Fazy 0
 3. ⏳ Rozpoczęcie Fazy 1 (LionInput migration)
 
 ### Phase 1 Prerequisites:
+
 - ✅ Export point dostępny
 - ✅ Skrypty gotowe
 - ✅ Testy przygotowane

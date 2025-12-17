@@ -9,7 +9,9 @@
 ## 📁 Pliki w tym folderze
 
 ### SUMMARY.md
+
 Główne podsumowanie Fazy 0:
+
 - Wykonane zadania
 - Statystyki
 - Osiągnięte cele
@@ -17,7 +19,9 @@ Główne podsumowanie Fazy 0:
 - Rekomendacje dla Fazy 1
 
 ### ISSUES.md
+
 Szczegółowa lista znalezionych problemów:
+
 - Problem 1: Form Reset nie działa automatycznie (🔴 Wysoki)
 - Problem 2: Validation async (🟡 Średni)
 - Problem 3: Code Coverage <95% (🟢 Niski)
@@ -25,13 +29,16 @@ Szczegółowa lista znalezionych problemów:
 - Problem 5: Istniejące failures (⚪ Ignorowane)
 
 Każdy problem zawiera:
+
 - Opis
 - Root Cause
 - Rozwiązanie
 - Status
 
 ### CHECKLIST.md
+
 Kompletna checklist wszystkich zadań Fazy 0:
+
 - Pre-migration checklist
 - Zadanie 0.1: Export Point
 - Zadanie 0.2: Skrypty
@@ -69,6 +76,7 @@ Kompletna checklist wszystkich zadań Fazy 0:
 **Faza 1: LionInput - Proof of Concept** (3-4 dni)
 
 Zadania:
+
 1. Zaimplementować `formResetCallback()` w LionField
 2. Poprawić 4 failed tests
 3. Migrować LionInput
