@@ -176,6 +176,10 @@ const FormatMixinImplementation = superclass =>
      * @returns {string} serializedValue
      */
     serializer(v) {
+      // Handle Unparseable values - return the viewValue instead of the object
+      if (v instanceof Unparseable) {
+        return v.viewValue || '';
+      }
       return v !== undefined ? v : '';
     }
 

@@ -173,10 +173,11 @@ const FormRegistrarMixinImplementation = superclass =>
         } else if (!this.formElements[name]) {
           this.formElements[name] = child;
         } else {
-          console.info('Error Node:', child); // eslint-disable-line no-console
-          throw new TypeError(
-            `Name "${name}" is already registered - if you want an array add [] to the end`,
-          );
+          // If a name is already registered, convert to array (for choice groups)
+          if (!Array.isArray(this.formElements[name])) {
+            this.formElements[name] = [this.formElements[name]];
+          }
+          this.formElements[name].push(child);
         }
       }
     }
