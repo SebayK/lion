@@ -20,6 +20,51 @@
   },
   "queryOutput": [
     {
+      "file": "./target-src/find-customelements/multiple.js",
+      "result": [
+        {
+          "name": null,
+          "isMixin": true,
+          "superClasses": [
+            {
+              "name": "HTMLElement",
+              "isMixin": false,
+              "rootFile": {
+                "file": "[current]",
+                "specifier": "HTMLElement"
+              }
+            }
+          ],
+          "members": {
+            "props": [],
+            "methods": []
+          }
+        },
+        {
+          "name": "ExtendedOnTheFly",
+          "isMixin": false,
+          "superClasses": [
+            {
+              "isMixin": true,
+              "rootFile": {
+                "file": "[current]"
+              }
+            },
+            {
+              "isMixin": false,
+              "rootFile": {
+                "file": "[current]"
+              }
+            }
+          ],
+          "members": {
+            "props": [],
+            "methods": []
+          }
+        }
+      ]
+    },
+    {
       "file": "./target-src/match-subclasses/ExtendedComp.d.ts",
       "result": [
         {
@@ -297,51 +342,6 @@
                 "accessType": "public"
               }
             ]
-          }
-        }
-      ]
-    },
-    {
-      "file": "./target-src/find-customelements/multiple.js",
-      "result": [
-        {
-          "name": null,
-          "isMixin": true,
-          "superClasses": [
-            {
-              "name": "HTMLElement",
-              "isMixin": false,
-              "rootFile": {
-                "file": "[current]",
-                "specifier": "HTMLElement"
-              }
-            }
-          ],
-          "members": {
-            "props": [],
-            "methods": []
-          }
-        },
-        {
-          "name": "ExtendedOnTheFly",
-          "isMixin": false,
-          "superClasses": [
-            {
-              "isMixin": true,
-              "rootFile": {
-                "file": "[current]"
-              }
-            },
-            {
-              "isMixin": false,
-              "rootFile": {
-                "file": "[current]"
-              }
-            }
-          ],
-          "members": {
-            "props": [],
-            "methods": []
           }
         }
       ]
