@@ -1,9 +1,9 @@
 import { fixture, expect, html } from '@open-wc/testing';
-import { LionField , Required } from '@lion/ui/form-core-element-internals.js';
+import { LionField, Required } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * Testy integracji Element Internals API
- * 
+ *
  * Te testy sprawdzają:
  * - Integrację z natywnym <form>
  * - setValidity() i ValidityState
@@ -125,6 +125,7 @@ describe('Element Internals Integration', () => {
       expect(el._internals.validity.valid).to.be.false;
 
       el.modelValue = 'now valid';
+      await el.updateComplete;
       await el.validate();
       expect(el._internals.validity.valid).to.be.true;
     });
@@ -143,9 +144,7 @@ describe('Element Internals Integration', () => {
     });
 
     it('applies :valid when field is valid', async () => {
-      const el = await fixture(html`
-        <test-field-ei .modelValue=${'value'}></test-field-ei>
-      `);
+      const el = await fixture(html` <test-field-ei .modelValue=${'value'}></test-field-ei> `);
 
       expect(el.matches(':valid')).to.be.true;
       expect(el.matches(':invalid')).to.be.false;
@@ -160,6 +159,7 @@ describe('Element Internals Integration', () => {
       expect(el.matches(':invalid')).to.be.true;
 
       el.modelValue = 'value';
+      await el.updateComplete;
       await el.validate();
       expect(el.matches(':valid')).to.be.true;
     });

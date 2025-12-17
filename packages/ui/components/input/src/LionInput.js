@@ -1,4 +1,4 @@
-import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core.js';
+import { LionField, NativeTextFieldMixin } from '@lion/ui/form-core-element-internals.js';
 
 /**
  * LionInput: extension of lion-field with native input element in place and user friendly API.

@@ -66,6 +66,13 @@ export class LionField extends FormControlMixin(
   reset() {
     this.modelValue = this._initialModelValue;
     this.resetInteractionState();
+    // Clear validation feedback
+    this.hasFeedbackFor = [];
+    this.showsFeedbackFor = [];
+    // Reset Element Internals validity
+    if (this._internals) {
+      this._internals.setValidity({});
+    }
   }
 
   /**
@@ -75,6 +82,16 @@ export class LionField extends FormControlMixin(
   clear() {
     // TODO: [v1] set to undefined
     this.modelValue = '';
+  }
+
+  /**
+   * Called when parent form is reset
+   * Part of Form-Associated Custom Elements API
+   * @see https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example
+   */
+  formResetCallback() {
+    // Reset to initial value (calls existing reset logic)
+    this.reset();
   }
 
   /**
