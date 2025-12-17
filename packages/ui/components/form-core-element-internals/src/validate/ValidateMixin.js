@@ -630,7 +630,7 @@ export const ValidateMixinImplementation = superclass =>
       if (firstError) {
         const { validator, outcome } = firstError;
         const vCtor = /** @type {typeof Validator} */ (validator.constructor);
-        const validatorName = vCtor.validatorName;
+        const {validatorName} = vCtor;
 
         // Get the message - it can be a boolean or a string
         // If it's a boolean, we'll get the message later asynchronously
