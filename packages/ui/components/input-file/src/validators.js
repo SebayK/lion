@@ -1,4 +1,4 @@
-import { Validator } from '@lion/ui/form-core.js';
+import { Validator } from '@lion/ui/form-core-element-internals.js';
 import { getLocalizeManager } from '@lion/ui/localize-no-side-effects.js';
 
 /**

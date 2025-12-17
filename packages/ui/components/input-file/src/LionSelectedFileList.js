@@ -1,5 +1,5 @@
 import { uuid } from '@lion/ui/core.js';
-import { LionValidationFeedback } from '@lion/ui/form-core.js';
+import { LionValidationFeedback } from '@lion/ui/form-core-element-internals.js';
 import { LocalizeMixin } from '@lion/ui/localize.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';

@@ -1,4 +1,4 @@
-import { IsNumber, Validator } from '@lion/ui/form-core.js';
+import { IsNumber, Validator } from '@lion/ui/form-core-element-internals.js';
 import { currencyUtil } from './currencyUtil.js';
 
 /**

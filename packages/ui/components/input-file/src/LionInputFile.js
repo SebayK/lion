@@ -1,4 +1,4 @@
-import { LionField } from '@lion/ui/form-core.js';
+import { LionField } from '@lion/ui/form-core-element-internals.js';
 import { LocalizeMixin } from '@lion/ui/localize.js';
 import { css, html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';

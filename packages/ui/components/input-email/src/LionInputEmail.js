@@ -1,4 +1,4 @@
-import { IsEmail } from '@lion/ui/form-core.js';
+import { IsEmail } from '@lion/ui/form-core-element-internals.js';
 import { LionInput } from '@lion/ui/input.js';
 import { LocalizeMixin } from '@lion/ui/localize-no-side-effects.js';
 

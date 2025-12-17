@@ -1,4 +1,4 @@
-import { Unparseable } from '@lion/ui/form-core.js';
+import { Unparseable } from '@lion/ui/form-core-element-internals.js';
 import { LocalizeMixin } from '@lion/ui/localize-no-side-effects.js';
 import { LionInput } from '@lion/ui/input.js';
 

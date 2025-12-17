@@ -1,7 +1,7 @@
 import { html, css, render, nothing } from 'lit';
 import { formatNumber, LocalizeMixin, parseNumber } from '@lion/ui/localize-no-side-effects.js';
 import { LionInput } from '@lion/ui/input.js';
-import { IsNumber, MinNumber, MaxNumber } from '@lion/ui/form-core.js';
+import { IsNumber, MinNumber, MaxNumber } from '@lion/ui/form-core-element-internals.js';
 import { localizeNamespaceLoader } from './localizeNamespaceLoader.js';
 
 /**

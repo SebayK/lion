@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file, import/no-extraneous-dependencies */
 
 import { getLocalizeManager } from '@lion/ui/localize-no-side-effects.js';
-import { Unparseable, Validator } from '@lion/ui/form-core.js';
+import { Unparseable, Validator } from '@lion/ui/form-core-element-internals.js';
 import { isValidIBAN } from 'ibantools';
 
 let loaded = false;

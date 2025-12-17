@@ -1,7 +1,7 @@
 import { css } from 'lit';
 import { LionInput } from '@lion/ui/input.js';
 import { getCurrencyName, LocalizeMixin } from '@lion/ui/localize-no-side-effects.js';
-import { IsNumber } from '@lion/ui/form-core.js';
+import { IsNumber } from '@lion/ui/form-core-element-internals.js';
 import { formatAmount, formatCurrencyLabel } from './formatters.js';
 import { parseAmount } from './parsers.js';
 

@@ -4,7 +4,7 @@ import { uuid } from '@lion/ui/core.js';
 import { html, css } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LionInputDate } from '@lion/ui/input-date.js';
-import { IsDate } from '@lion/ui/form-core.js';
+import { IsDate } from '@lion/ui/form-core-element-internals.js';
 import {
   OverlayMixin,
   withBottomSheetConfig,

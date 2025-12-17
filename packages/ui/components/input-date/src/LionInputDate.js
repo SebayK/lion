@@ -1,4 +1,4 @@
-import { IsDate } from '@lion/ui/form-core.js';
+import { IsDate } from '@lion/ui/form-core-element-internals.js';
 import { LionInput } from '@lion/ui/input.js';
 import { formatDate, LocalizeMixin, parseDate } from '@lion/ui/localize-no-side-effects.js';
 
