@@ -242,9 +242,10 @@ describe('lion-switch', () => {
       const button = _inputNode;
       let checkedValueInEvent;
 
-      el.addEventListener('checked-changed', e => {
-        expect(e.target).to.equal(el);
-        checkedValueInEvent = e.target?.modelValue.checked;
+      el.addEventListener('checked-changed', ({ target }) => {
+        const { modelValue } = /** @type {LionSwitch} */ (target);
+        expect(target).to.equal(el);
+        checkedValueInEvent = modelValue?.checked;
       });
 
       // Simulate click to toggle on
