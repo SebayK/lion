@@ -1,8 +1,5 @@
 import { LionFieldset } from '@lion/ui/fieldset.js';
-
-/**
- * @typedef {import('../../form-core/types/registration/FormRegistrarMixinTypes.js').FormRegistrarHost} FormRegistrarHost
- */
+import { FormController } from './FormController.js';
 
 const throwFormNodeError = () => {
   throw new Error(
@@ -18,6 +15,11 @@ const throwFormNodeError = () => {
 export class LionForm extends LionFieldset {
   constructor() {
     super();
+    /** @type {FormController} */
+    this.formController = new FormController(this, {
+      trigger: 'submit',
+      errorAction: 'focus',
+    });
     /** @protected */
     this._submit = this._submit.bind(this);
     /** @protected */
@@ -60,10 +62,7 @@ export class LionForm extends LionFieldset {
     ev.stopPropagation();
     this.submitGroup();
     this.dispatchEvent(new Event('submit', { bubbles: true }));
-
-    if (this.hasFeedbackFor?.includes('error')) {
-      this._setFocusOnFirstErroneousFormElement(/** @type { * & FormRegistrarHost } */ (this));
-    }
+    this.formController.handleSubmitted();
   }
 
   reset() {
@@ -83,22 +82,6 @@ export class LionForm extends LionFieldset {
     ev.stopPropagation();
     this.resetGroup();
     this.dispatchEvent(new Event('reset', { bubbles: true }));
-  }
-
-  /**
-   * @param {FormRegistrarHost} element
-   * @protected
-   */
-  _setFocusOnFirstErroneousFormElement(element) {
-    const firstFormElWithError =
-      element.formElements.find(child => child.hasFeedbackFor.includes('error')) ||
-      element.formElements[0];
-
-    if (firstFormElWithError._focusableNode) {
-      firstFormElWithError._focusableNode.focus();
-    } else {
-      this._setFocusOnFirstErroneousFormElement(firstFormElWithError);
-    }
   }
 
   /** @private */

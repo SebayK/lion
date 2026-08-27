@@ -374,4 +374,53 @@ describe('<lion-form>', () => {
     button.click();
     expect(isActiveElement(radioEl._focusableNode)).to.be.true;
   });
+
+  it('supports scroll strategy for erroneous element on submit', async () => {
+    const el = await fixture(html`
+      <lion-form>
+        <form>
+          <${childTag} name="firstName" .modelValue=${'Foo'} .validators=${[
+            new Required(),
+          ]}></${childTag}>
+          <${childTag} name="lastName" .validators=${[new Required()]}></${childTag}>
+          <button type="submit">submit</button>
+        </form>
+      </lion-form>
+    `);
+    const button = /** @type {HTMLButtonElement} */ (el.querySelector('button'));
+    el.formController.setConfig({
+      trigger: 'submit',
+      errorAction: 'scroll',
+      scrollIntoViewOptions: { block: 'nearest' },
+    });
+    // @ts-ignore [allow-protected] in test
+    const scrollSpy = spy(el.formElements[1]._inputNode, 'scrollIntoView');
+    button.click();
+    expect(scrollSpy.calledOnce).to.be.true;
+    expect(scrollSpy.args[0][0]).to.deep.equal({ block: 'nearest' });
+  });
+
+  it('supports validate trigger flow from controller', async () => {
+    const submitSpy = spy();
+    const el = await fixture(html`
+      <lion-form @submit=${submitSpy}>
+        <form>
+          <${childTag} name="firstName" .modelValue=${'Foo'} .validators=${[
+            new Required(),
+          ]}></${childTag}>
+          <${childTag} name="lastName" .validators=${[new Required()]}></${childTag}>
+        </form>
+      </lion-form>
+    `);
+    const validateSpy = spy(el, 'validate');
+    el.formController.setConfig({
+      trigger: 'validate',
+      errorAction: 'focus',
+    });
+    await el.formController.execute();
+    expect(validateSpy.calledOnce).to.be.true;
+    expect(submitSpy.called).to.be.false;
+    // @ts-ignore [allow-protected] in test
+    expect(isActiveElement(el.formElements[1]._inputNode)).to.be.true;
+  });
 });
