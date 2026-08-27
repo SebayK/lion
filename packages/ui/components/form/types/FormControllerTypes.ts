@@ -1,3 +1,4 @@
+import { FormControlsCollection } from '../../form-core/src/registration/FormControlsCollection.js';
 import { ReactiveControllerHost } from 'lit';
 import { FormControl } from '../../form-core/types/form-group/FormGroupMixinTypes.js';
 import { FormRegistrarHost } from '../../form-core/types/registration/FormRegistrarMixinTypes.js';
@@ -7,10 +8,7 @@ export type FormControllerTrigger = 'submit' | 'validate';
 export type FormControllerErrorAction = 'focus' | 'scroll';
 
 export interface FormControlWithFeedback extends FormControl {
-  hasFeedbackFor: string[];
   _focusableNode?: HTMLElement;
-  focus?(): void;
-  scrollIntoView(options?: ScrollIntoViewOptions): void;
 }
 
 export interface FormControllerConfig {
@@ -24,7 +22,6 @@ export interface FormControllerHost
     FormRegistrarHost,
     ValidateHost,
     HTMLElement {
-  hasFeedbackFor: string[];
   submit(): void;
-  formElements: FormControlWithFeedback[];
+  formElements: FormControlsCollection & { [x: string]: any };
 }

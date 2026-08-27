@@ -15,12 +15,18 @@ export class FormController {
   constructor(host, config = {}) {
     this.host = host;
     this.host.addController(this);
-    this._config = {
+    /** @type {FormControllerConfig} */
+    const initialConfig = {
       trigger: 'submit',
       errorAction: 'focus',
       scrollIntoViewOptions: undefined,
       ...config,
     };
+    this._config = initialConfig;
+  }
+
+  hostConnected() {
+    this._config = { ...this._config };
   }
 
   /**
@@ -90,11 +96,14 @@ export class FormController {
     }
 
     if (this._config.errorAction === 'scroll') {
-      this._scrollToFormElement(firstErroneousFormElement, this._config.scrollIntoViewOptions);
+      FormController._scrollToFormElement(
+        firstErroneousFormElement,
+        this._config.scrollIntoViewOptions,
+      );
       return;
     }
 
-    this._focusFormElement(firstErroneousFormElement);
+    FormController._focusFormElement(firstErroneousFormElement);
   }
 
   /**
@@ -114,7 +123,7 @@ export class FormController {
       return undefined;
     }
 
-    if (this._hasFocusableNode(firstFormElWithError)) {
+    if (FormController._hasFocusableNode(firstFormElWithError)) {
       return firstFormElWithError;
     }
 
@@ -125,15 +134,15 @@ export class FormController {
    * @param {FormControlWithFeedback} formElement
    * @returns {formElement is FormControlWithFeedback & {_focusableNode: HTMLElement}}
    */
-  _hasFocusableNode(formElement) {
+  static _hasFocusableNode(formElement) {
     return !!formElement._focusableNode;
   }
 
   /**
    * @param {FormControlWithFeedback} formElement
    */
-  _focusFormElement(formElement) {
-    if (this._hasFocusableNode(formElement)) {
+  static _focusFormElement(formElement) {
+    if (FormController._hasFocusableNode(formElement)) {
       formElement._focusableNode.focus();
       return;
     }
@@ -145,8 +154,8 @@ export class FormController {
    * @param {FormControlWithFeedback} formElement
    * @param {ScrollIntoViewOptions | undefined} scrollIntoViewOptions
    */
-  _scrollToFormElement(formElement, scrollIntoViewOptions) {
-    if (this._hasFocusableNode(formElement)) {
+  static _scrollToFormElement(formElement, scrollIntoViewOptions) {
+    if (FormController._hasFocusableNode(formElement)) {
       formElement._focusableNode.scrollIntoView(scrollIntoViewOptions);
       return;
     }
