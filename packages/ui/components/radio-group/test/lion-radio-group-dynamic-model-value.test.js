@@ -86,9 +86,7 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     await group.registrationComplete;
 
     expect(group.modelValue).to.equal('offer2');
-    const checkedRadio = group.formElements.find(
-      (/** @type {any} */ el) => el.checked,
-    );
+    const checkedRadio = group.formElements.find((/** @type {any} */ el) => el.checked);
     expect(checkedRadio?.choiceValue).to.equal('offer2');
   });
 
@@ -145,9 +143,7 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     await group.registrationComplete;
 
     expect(group.serializedValue).to.equal('offer2');
-    const checkedRadio = group.formElements.find(
-      (/** @type {any} */ el) => el.checked,
-    );
+    const checkedRadio = group.formElements.find((/** @type {any} */ el) => el.checked);
     expect(checkedRadio?.choiceValue).to.equal('offer2');
   });
 
@@ -204,10 +200,7 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     await group.registrationComplete;
 
     expect(group.formattedValue).to.equal('offer2');
-    const checkedRadio = group.formElements.find(
-      (/** @type {any} */ el) => el.checked,
-    );
+    const checkedRadio = group.formElements.find((/** @type {any} */ el) => el.checked);
     expect(checkedRadio?.choiceValue).to.equal('offer2');
   });
 });
-
