@@ -92,3 +92,4 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     expect(checkedRadio?.choiceValue).to.equal('offer2');
   });
 });
+
