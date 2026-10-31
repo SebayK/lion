@@ -61,22 +61,11 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
         return el.choiceValue === val;
       };
 
-      if (this.__isInitialModelValue) {
-        this.registrationComplete.then(() => {
-          this.__isInitialModelValue = false;
-          this._setCheckedElements(value, checkCondition);
-          this.requestUpdate('modelValue', this._oldModelValue);
-        });
-      } else if (this.formElements.length === 0) {
-        // formElements is empty: either the group has no children yet, or children were
-        // replaced in the same render cycle (e.g. dynamic list from a parent wrapper).
-        // Store the value so addFormElement can apply it once the first child registers.
-        this.__pendingModelValue = { value, checkCondition };
-        this.requestUpdate('modelValue', this._oldModelValue);
-      } else {
+      this._setValueWhenReady(() => {
         this._setCheckedElements(value, checkCondition);
         this.requestUpdate('modelValue', this._oldModelValue);
-      }
+        this._oldModelValue = this.modelValue;
+      });
       this._oldModelValue = this.modelValue;
     }
 
@@ -103,19 +92,10 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
        */
       const checkCondition = (el, val) => el.serializedValue.value === val;
 
-      if (this.__isInitialSerializedValue) {
-        this.registrationComplete.then(() => {
-          this.__isInitialSerializedValue = false;
-          this._setCheckedElements(value, checkCondition);
-          this.requestUpdate('serializedValue');
-        });
-      } else if (this.formElements.length === 0) {
-        this.__pendingSerializedValue = { value, checkCondition };
-        this.requestUpdate('serializedValue');
-      } else {
+      this._setValueWhenReady(() => {
         this._setCheckedElements(value, checkCondition);
         this.requestUpdate('serializedValue');
-      }
+      });
     }
 
     get formattedValue() {
@@ -133,16 +113,9 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
        */
       const checkCondition = (el, val) => el.formattedValue === val;
 
-      if (this.__isInitialFormattedValue) {
-        this.registrationComplete.then(() => {
-          this.__isInitialFormattedValue = false;
-          this._setCheckedElements(value, checkCondition);
-        });
-      } else if (this.formElements.length === 0) {
-        this.__pendingFormattedValue = { value, checkCondition };
-      } else {
+      this._setValueWhenReady(() => {
         this._setCheckedElements(value, checkCondition);
-      }
+      });
     }
 
     get operationMode() {
@@ -167,46 +140,10 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
        * @protected
        */
       this._repropagationRole = 'choice-group';
-      /** @private */
-      this.__isInitialModelValue = true;
-      /** @private */
-      this.__isInitialSerializedValue = true;
-      /** @private */
-      this.__isInitialFormattedValue = true;
-      /**
-       * Holds a modelValue set imperatively (via property binding) while formElements is still
-       * empty — i.e. after registrationComplete resolved once (so __isInitialModelValue is false)
-       * but before the new batch of child elements has registered. Consumed by addFormElement.
-       * @type {{ value: any; checkCondition: Function } | null}
-       * @private
-       */
-      this.__pendingModelValue = null;
-      /**
-       * Holds a serializedValue set imperatively (via property binding) while formElements is still
-       * empty — i.e. after registrationComplete resolved once (so __isInitialSerializedValue is false)
-       * but before the new batch of child elements has registered. Consumed by addFormElement.
-       * @type {{ value: any; checkCondition: Function } | null}
-       * @private
-       */
-      this.__pendingSerializedValue = null;
-      /**
-       * Holds a formattedValue set imperatively (via property binding) while formElements is still
-       * empty — i.e. after registrationComplete resolved once (so __isInitialFormattedValue is false)
-       * but before the new batch of child elements has registered. Consumed by addFormElement.
-       * @type {{ value: any; checkCondition: Function } | null}
-       * @private
-       */
-      this.__pendingFormattedValue = null;
     }
 
     connectedCallback() {
       super.connectedCallback();
-
-      this.registrationComplete.then(() => {
-        this.__isInitialModelValue = false;
-        this.__isInitialSerializedValue = false;
-        this.__isInitialFormattedValue = false;
-      });
     }
 
     /**
@@ -239,39 +176,6 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
       // eslint-disable-next-line no-param-reassign
       child.name = this.name;
       super.addFormElement(child, indexToInsertAt);
-
-      // If a modelValue was set while formElements was empty (e.g. a parent wrapper rendered
-      // children and value in the same cycle, after the initial registrationComplete), apply
-      // the pending value now that the first child has registered.
-      if (this.__pendingModelValue !== null) {
-        const { value, checkCondition } = this.__pendingModelValue;
-        this.__pendingModelValue = null;
-        // Defer to let all siblings register in the same microtask batch before checking.
-        Promise.resolve().then(() => {
-          this._setCheckedElements(value, checkCondition);
-          this.requestUpdate('modelValue', this._oldModelValue);
-          this._oldModelValue = this.modelValue;
-        });
-      }
-
-      if (this.__pendingSerializedValue !== null) {
-        const { value, checkCondition } = this.__pendingSerializedValue;
-        this.__pendingSerializedValue = null;
-        // Defer to let all siblings register in the same microtask batch before checking.
-        Promise.resolve().then(() => {
-          this._setCheckedElements(value, checkCondition);
-          this.requestUpdate('serializedValue');
-        });
-      }
-
-      if (this.__pendingFormattedValue !== null) {
-        const { value, checkCondition } = this.__pendingFormattedValue;
-        this.__pendingFormattedValue = null;
-        // Defer to let all siblings register in the same microtask batch before checking.
-        Promise.resolve().then(() => {
-          this._setCheckedElements(value, checkCondition);
-        });
-      }
     }
 
     clear() {
