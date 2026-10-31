@@ -67,6 +67,12 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
           this._setCheckedElements(value, checkCondition);
           this.requestUpdate('modelValue', this._oldModelValue);
         });
+      } else if (this.formElements.length === 0) {
+        // formElements is empty: either the group has no children yet, or children were
+        // replaced in the same render cycle (e.g. dynamic list from a parent wrapper).
+        // Store the value so addFormElement can apply it once the first child registers.
+        this.__pendingModelValue = { value, checkCondition };
+        this.requestUpdate('modelValue', this._oldModelValue);
       } else {
         this._setCheckedElements(value, checkCondition);
         this.requestUpdate('modelValue', this._oldModelValue);
@@ -162,6 +168,14 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
       this.__isInitialSerializedValue = true;
       /** @private */
       this.__isInitialFormattedValue = true;
+      /**
+       * Holds a modelValue set imperatively (via property binding) while formElements is still
+       * empty — i.e. after registrationComplete resolved once (so __isInitialModelValue is false)
+       * but before the new batch of child elements has registered. Consumed by addFormElement.
+       * @type {{ value: any; checkCondition: Function } | null}
+       * @private
+       */
+      this.__pendingModelValue = null;
     }
 
     connectedCallback() {
@@ -204,6 +218,20 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
       // eslint-disable-next-line no-param-reassign
       child.name = this.name;
       super.addFormElement(child, indexToInsertAt);
+
+      // If a modelValue was set while formElements was empty (e.g. a parent wrapper rendered
+      // children and value in the same cycle, after the initial registrationComplete), apply
+      // the pending value now that the first child has registered.
+      if (this.__pendingModelValue !== null) {
+        const { value, checkCondition } = this.__pendingModelValue;
+        this.__pendingModelValue = null;
+        // Defer to let all siblings register in the same microtask batch before checking.
+        Promise.resolve().then(() => {
+          this._setCheckedElements(value, checkCondition);
+          this.requestUpdate('modelValue', this._oldModelValue);
+          this._oldModelValue = this.modelValue;
+        });
+      }
     }
 
     clear() {
