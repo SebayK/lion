@@ -36,10 +36,10 @@ describe('FormRegistration & ChoiceGroup Performance Benchmark', () => {
     }
 
     const duration = performance.now() - start;
-    const opsPerSec = Math.round((iterations / (duration / 1000)));
+    const opsPerSec = Math.round(iterations / (duration / 1000));
 
     console.debug(
-      `\n⚡ Benchmark result: ${iterations} dynamic cycles completed in ${duration.toFixed(2)}ms (${opsPerSec} cycles/sec)\n`
+      `\n⚡ Benchmark result: ${iterations} dynamic cycles completed in ${duration.toFixed(2)}ms (${opsPerSec} cycles/sec)\n`,
     );
 
     // Expect each full dynamic cycle (DOM add 2 elements, microtask queue resolve, check, DOM remove 2 elements)

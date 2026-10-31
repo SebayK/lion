@@ -80,11 +80,9 @@ const FormRegistrarMixinImplementation = /** @type {FormRegistrarMixin} */ (supe
         this.__rejectInitComplete = reject;
       });
 
-      /**
-       * @type {Promise<any> & {done?:boolean}}
-       * @private
-       */
-      this.__registrationComplete = /** @type {any} */ (null);
+      this.__initCompleteDone = false;
+      this.__isCompletingRegistration = false;
+      this.__hasDisconnected = false;
       this._renewRegistration();
     }
 
@@ -93,7 +91,7 @@ const FormRegistrarMixinImplementation = /** @type {FormRegistrarMixin} */ (supe
      * @type {Promise<any> & {done?:boolean}}
      */
     get registrationComplete() {
-      return this.__registrationComplete;
+      return /** @type {Promise<any> & {done?:boolean}} */ (this.__registrationComplete);
     }
 
     /**
@@ -116,16 +114,16 @@ const FormRegistrarMixinImplementation = /** @type {FormRegistrarMixin} */ (supe
       this.__registrationComplete.then(
         () => {
           registrationPromise.done = true;
-          if (this.__resolveInitComplete) {
+          if (!this.__initCompleteDone && typeof this.__resolveInitComplete === 'function') {
+            this.__initCompleteDone = true;
             this.__resolveInitComplete(undefined);
-            this.__resolveInitComplete = null;
           }
         },
         () => {
           registrationPromise.done = true;
-          if (this.__rejectInitComplete) {
+          if (!this.__initCompleteDone && typeof this.__rejectInitComplete === 'function') {
+            this.__initCompleteDone = true;
             this.__rejectInitComplete(undefined);
-            this.__rejectInitComplete = null;
           }
           throw new Error(
             'Registration could not finish. Please use await el.registrationComplete;',
