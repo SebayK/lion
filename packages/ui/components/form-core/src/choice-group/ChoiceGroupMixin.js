@@ -109,6 +109,9 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
           this._setCheckedElements(value, checkCondition);
           this.requestUpdate('serializedValue');
         });
+      } else if (this.formElements.length === 0) {
+        this.__pendingSerializedValue = { value, checkCondition };
+        this.requestUpdate('serializedValue');
       } else {
         this._setCheckedElements(value, checkCondition);
         this.requestUpdate('serializedValue');
@@ -135,6 +138,8 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
           this.__isInitialFormattedValue = false;
           this._setCheckedElements(value, checkCondition);
         });
+      } else if (this.formElements.length === 0) {
+        this.__pendingFormattedValue = { value, checkCondition };
       } else {
         this._setCheckedElements(value, checkCondition);
       }
@@ -176,6 +181,22 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
        * @private
        */
       this.__pendingModelValue = null;
+      /**
+       * Holds a serializedValue set imperatively (via property binding) while formElements is still
+       * empty — i.e. after registrationComplete resolved once (so __isInitialSerializedValue is false)
+       * but before the new batch of child elements has registered. Consumed by addFormElement.
+       * @type {{ value: any; checkCondition: Function } | null}
+       * @private
+       */
+      this.__pendingSerializedValue = null;
+      /**
+       * Holds a formattedValue set imperatively (via property binding) while formElements is still
+       * empty — i.e. after registrationComplete resolved once (so __isInitialFormattedValue is false)
+       * but before the new batch of child elements has registered. Consumed by addFormElement.
+       * @type {{ value: any; checkCondition: Function } | null}
+       * @private
+       */
+      this.__pendingFormattedValue = null;
     }
 
     connectedCallback() {
@@ -230,6 +251,25 @@ const ChoiceGroupMixinImplementation = /** @type {ChoiceGroupMixin} */ (supercla
           this._setCheckedElements(value, checkCondition);
           this.requestUpdate('modelValue', this._oldModelValue);
           this._oldModelValue = this.modelValue;
+        });
+      }
+
+      if (this.__pendingSerializedValue !== null) {
+        const { value, checkCondition } = this.__pendingSerializedValue;
+        this.__pendingSerializedValue = null;
+        // Defer to let all siblings register in the same microtask batch before checking.
+        Promise.resolve().then(() => {
+          this._setCheckedElements(value, checkCondition);
+          this.requestUpdate('serializedValue');
+        });
+      }
+
+      if (this.__pendingFormattedValue !== null) {
+        const { value, checkCondition } = this.__pendingFormattedValue;
+        this.__pendingFormattedValue = null;
+        // Defer to let all siblings register in the same microtask batch before checking.
+        Promise.resolve().then(() => {
+          this._setCheckedElements(value, checkCondition);
         });
       }
     }

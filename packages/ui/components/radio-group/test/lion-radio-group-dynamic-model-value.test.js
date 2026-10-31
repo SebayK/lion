@@ -91,5 +91,123 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     );
     expect(checkedRadio?.choiceValue).to.equal('offer2');
   });
+
+  it('applies serializedValue correctly when children and value arrive after registrationComplete', async () => {
+    class DynamicRadioSerializedWrapper extends LitElement {
+      static get properties() {
+        return {
+          offers: { type: Array },
+          selectedOffer: { attribute: false },
+        };
+      }
+
+      constructor() {
+        super();
+        /** @type {{ id: string; name: string }[]} */
+        this.offers = [];
+        this.selectedOffer = '';
+      }
+
+      render() {
+        return html`
+          <lion-radio-group name="offer" .serializedValue=${this.selectedOffer}>
+            ${this.offers.map(
+              o => html`<lion-radio label=${o.name} .choiceValue=${o.id}></lion-radio>`,
+            )}
+          </lion-radio-group>
+        `;
+      }
+    }
+
+    if (!customElements.get('dynamic-radio-serialized-wrapper')) {
+      customElements.define('dynamic-radio-serialized-wrapper', DynamicRadioSerializedWrapper);
+    }
+
+    const wrapper = /** @type {DynamicRadioSerializedWrapper} */ (
+      await fixture(html`<dynamic-radio-serialized-wrapper></dynamic-radio-serialized-wrapper>`)
+    );
+
+    const group = /** @type {import('@lion/ui/radio-group.js').LionRadioGroup} */ (
+      wrapper.shadowRoot?.querySelector('lion-radio-group')
+    );
+
+    await group.registrationComplete;
+    await Promise.resolve();
+
+    wrapper.offers = [
+      { id: 'offer1', name: 'offer1' },
+      { id: 'offer2', name: 'offer2' },
+    ];
+    wrapper.selectedOffer = 'offer2';
+
+    await wrapper.updateComplete;
+    await group.updateComplete;
+    await group.registrationComplete;
+
+    expect(group.serializedValue).to.equal('offer2');
+    const checkedRadio = group.formElements.find(
+      (/** @type {any} */ el) => el.checked,
+    );
+    expect(checkedRadio?.choiceValue).to.equal('offer2');
+  });
+
+  it('applies formattedValue correctly when children and value arrive after registrationComplete', async () => {
+    class DynamicRadioFormattedWrapper extends LitElement {
+      static get properties() {
+        return {
+          offers: { type: Array },
+          selectedOffer: { attribute: false },
+        };
+      }
+
+      constructor() {
+        super();
+        /** @type {{ id: string; name: string }[]} */
+        this.offers = [];
+        this.selectedOffer = '';
+      }
+
+      render() {
+        return html`
+          <lion-radio-group name="offer" .formattedValue=${this.selectedOffer}>
+            ${this.offers.map(
+              o => html`<lion-radio label=${o.name} .choiceValue=${o.id}></lion-radio>`,
+            )}
+          </lion-radio-group>
+        `;
+      }
+    }
+
+    if (!customElements.get('dynamic-radio-formatted-wrapper')) {
+      customElements.define('dynamic-radio-formatted-wrapper', DynamicRadioFormattedWrapper);
+    }
+
+    const wrapper = /** @type {DynamicRadioFormattedWrapper} */ (
+      await fixture(html`<dynamic-radio-formatted-wrapper></dynamic-radio-formatted-wrapper>`)
+    );
+
+    const group = /** @type {import('@lion/ui/radio-group.js').LionRadioGroup} */ (
+      wrapper.shadowRoot?.querySelector('lion-radio-group')
+    );
+
+    await group.registrationComplete;
+    await Promise.resolve();
+
+    wrapper.offers = [
+      { id: 'offer1', name: 'offer1' },
+      { id: 'offer2', name: 'offer2' },
+    ];
+    wrapper.selectedOffer = 'offer2';
+
+    await wrapper.updateComplete;
+    await group.updateComplete;
+    await group.registrationComplete;
+
+    expect(group.formattedValue).to.equal('offer2');
+    const checkedRadio = group.formElements.find(
+      (/** @type {any} */ el) => el.checked,
+    );
+    expect(checkedRadio?.choiceValue).to.equal('offer2');
+  });
 });
 
