@@ -7,7 +7,7 @@ import '@lion/ui/define/lion-radio.js';
  * Regression test for: modelValue set on lion-radio-group is ignored when children
  * (lion-radio elements) are rendered dynamically at the same time.
  *
- * Scenario (mirrors ParentLion / LionWrapperTester):
+ * Scenario (dynamic options wrapper):
  *   1. A wrapper LitElement owns `offers` and `selectedOffer`.
  *   2. Both are initially empty / ''.
  *   3. After the group's registrationComplete resolves (__isInitialModelValue becomes false),
@@ -22,8 +22,8 @@ import '@lion/ui/define/lion-radio.js';
  */
 describe('lion-radio-group: dynamic modelValue with simultaneously added children', () => {
   /**
-   * A minimal wrapper that reproduces the ParentLion / LionWrapperTester pattern without
-   * needing ScopedElementsMixin or a second custom element layer.
+   * A minimal wrapper that reproduces dynamically added options with a pre-selected modelValue
+   * without needing ScopedElementsMixin or a second custom element layer.
    */
   class DynamicRadioWrapper extends LitElement {
     static get properties() {
@@ -70,7 +70,7 @@ describe('lion-radio-group: dynamic modelValue with simultaneously added childre
     // One extra microtask to let connectedCallback's .then() flip the flag.
     await Promise.resolve();
 
-    // Simulate what ParentLion does: set offers AND selectedOffer in one synchronous tick
+    // Set offers AND selectedOffer in one synchronous tick
     // (matching the setTimeout callback in the original component).
     wrapper.offers = [
       { id: 'offer1', name: 'offer1' },
