@@ -21,10 +21,23 @@ import { LionButton } from './LionButton.js';
  * @customElement lion-button-reset
  */
 export class LionButtonReset extends LionButton {
+  static get properties() {
+    return {
+      ...super.properties,
+      form: { type: String, reflect: true },
+      formElement: { attribute: false },
+    };
+  }
+
   constructor() {
     super();
     this.type = 'reset';
     this.__setupDelegationInConstructor();
+
+    /** @type {string|undefined} */
+    this.form = undefined;
+    /** @type {HTMLFormElement|import('../../form/src/LionForm.js').LionForm|undefined} */
+    this.formElement = undefined;
 
     /** @type {HTMLButtonElement} */
     this.__submitAndResetHelperButton = document.createElement('button');
@@ -48,6 +61,20 @@ export class LionButtonReset extends LionButton {
   }
 
   /**
+   * @param {import('lit').PropertyValues} changedProperties
+   */
+  updated(changedProperties) {
+    super.updated(changedProperties);
+
+    if (changedProperties.has('form') || changedProperties.has('formElement')) {
+      this._teardownSubmitAndResetHelper();
+      this._form = this._resolveForm();
+      this._setupSubmitAndResetHelper();
+      this._syncAriaControls();
+    }
+  }
+
+  /**
    * Prevents that someone who listens outside or on form catches the click event
    * @param {Event} e
    * @private
@@ -59,15 +86,58 @@ export class LionButtonReset extends LionButton {
   }
 
   /**
+   * Resolves target form:
+   * 1. Direct reference via `formElement`.
+   * 2. ID lookup via `form` attribute in root node, falling back to document scope if in ShadowRoot.
+   * 3. Fallback to ancestral form lookup via helper button.
+   * @protected
+   * @returns {HTMLFormElement|null}
+   */
+  _resolveForm() {
+    /** @type {any} */
+    let target = null;
+    if (this.formElement) {
+      target = this.formElement;
+    } else if (this.form) {
+      const root = this.getRootNode();
+      // @ts-expect-error
+      target = root && 'getElementById' in root ? root.getElementById(this.form) : null;
+      if (!target && typeof ShadowRoot !== 'undefined' && root instanceof ShadowRoot) {
+        target = this.ownerDocument ? this.ownerDocument.getElementById(this.form) : null;
+      }
+    }
+
+    if (target) {
+      const formNode = target._formNode || target;
+      if (formNode instanceof HTMLFormElement) {
+        return formNode;
+      }
+      return null;
+    }
+
+    this.appendChild(this.__submitAndResetHelperButton);
+    const { form } = this.__submitAndResetHelperButton;
+    this.removeChild(this.__submitAndResetHelperButton);
+    return form;
+  }
+
+  /**
+   * Synchronizes `aria-controls` attribute when a form ID is present.
    * @protected
    */
-  _setupSubmitAndResetHelperOnConnected() {
-    // Get form
-    this.appendChild(this.__submitAndResetHelperButton);
-    /** @type {HTMLFormElement|null} */
-    this._form = this.__submitAndResetHelperButton.form;
-    this.removeChild(this.__submitAndResetHelperButton);
+  _syncAriaControls() {
+    const formId = this.form || (this.formElement && this.formElement.id);
+    if (formId) {
+      this.setAttribute('aria-controls', formId);
+    } else {
+      this.removeAttribute('aria-controls');
+    }
+  }
 
+  /**
+   * @protected
+   */
+  _setupSubmitAndResetHelper() {
     if (this._form) {
       this._form.addEventListener('click', this.__preventEventLeakage);
     }
@@ -76,10 +146,27 @@ export class LionButtonReset extends LionButton {
   /**
    * @protected
    */
-  _teardownSubmitAndResetHelperOnDisconnected() {
+  _teardownSubmitAndResetHelper() {
     if (this._form) {
       this._form.removeEventListener('click', this.__preventEventLeakage);
     }
+  }
+
+  /**
+   * @protected
+   */
+  _setupSubmitAndResetHelperOnConnected() {
+    this._teardownSubmitAndResetHelper();
+    this._form = this._resolveForm();
+    this._setupSubmitAndResetHelper();
+    this._syncAriaControls();
+  }
+
+  /**
+   * @protected
+   */
+  _teardownSubmitAndResetHelperOnDisconnected() {
+    this._teardownSubmitAndResetHelper();
   }
 
   /**
@@ -92,9 +179,15 @@ export class LionButtonReset extends LionButton {
    */
   // TODO: rename to _clickDelegationHandler in v1
   async __clickDelegationHandler(ev) {
-    // Wait for updateComplete if form is not yet available
     if (!this._form) {
-      await this.updateComplete;
+      this._form = this._resolveForm();
+      if (!this._form) {
+        await this.updateComplete;
+        this._form = this._resolveForm();
+      }
+      if (this._form) {
+        this._setupSubmitAndResetHelper();
+      }
     }
 
     if ((this.type === 'submit' || this.type === 'reset') && ev.target === this && this._form) {
