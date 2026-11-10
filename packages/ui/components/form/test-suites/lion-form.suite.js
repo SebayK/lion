@@ -15,6 +15,7 @@ import '@lion/ui/define/lion-field.js';
 import '@lion/ui/define/lion-radio.js';
 import { LionForm } from '@lion/ui/form.js';
 import '@lion/ui/define/lion-form.js';
+import { LionButtonSubmit, LionButtonReset } from '@lion/ui/button.js';
 import { spy } from 'sinon';
 import {
   fixture as _fixture,
@@ -34,7 +35,7 @@ import { isActiveElement } from '../../core/test-helpers/isActiveElement.js';
  * tag; see docs/guides/principles/test-suites.md.
  * `tagString`, `klass` and the older role tag keys are deprecated: pass `classes` instead (Lion
  * itself uses `classes` everywhere).
- * @param {import('@lion/ui/types/test-suites.js').SuiteConfig<{'checkbox-group': SuiteElement; 'radio-group': SuiteElement; checkbox: SuiteElement; fieldset: SuiteElement; host: SuiteElement; listbox: SuiteElement; option: SuiteElement; radio: SuiteElement}, {checkboxGroupTagString?: any; checkboxTagString?: any; fieldsetTagString?: any; listboxTagString?: any; optionTagString?: any; radioGroupTagString?: any; radioTagString?: any}>} [customConfig]
+ * @param {import('@lion/ui/types/test-suites.js').SuiteConfig<{'button-reset': SuiteElement; 'button-submit': SuiteElement; 'checkbox-group': SuiteElement; 'radio-group': SuiteElement; checkbox: SuiteElement; fieldset: SuiteElement; host: SuiteElement; listbox: SuiteElement; option: SuiteElement; radio: SuiteElement}, {buttonResetTagString?: any; buttonSubmitTagString?: any; checkboxGroupTagString?: any; checkboxTagString?: any; fieldsetTagString?: any; listboxTagString?: any; optionTagString?: any; radioGroupTagString?: any; radioTagString?: any}>} [customConfig]
  */
 export function runFormSuite({
   classes: {
@@ -46,6 +47,8 @@ export function runFormSuite({
     listbox: roleListbox = LionListbox,
     option: roleOption = LionOption,
     radio: roleRadio = LionRadio,
+    'button-submit': roleButtonSubmit = LionButtonSubmit,
+    'button-reset': roleButtonReset = LionButtonReset,
   } = {},
   tagString: legacyTagString,
   checkboxGroupTagString: legacyCheckboxGroupTagString,
@@ -55,6 +58,8 @@ export function runFormSuite({
   listboxTagString: legacyListboxTagString,
   optionTagString: legacyOptionTagString,
   radioTagString: legacyRadioTagString,
+  buttonSubmitTagString: legacyButtonSubmitTagString,
+  buttonResetTagString: legacyButtonResetTagString,
 } = {}) {
   const tag = unsafeStatic(resolveSuiteTag(hostEl, legacyTagString));
   const tagNameCheckboxGroup = resolveSuiteTag(roleCheckboxGroup, legacyCheckboxGroupTagString);
@@ -71,6 +76,10 @@ export function runFormSuite({
   const tagOption = unsafeStatic(tagNameOption);
   const tagNameRadio = resolveSuiteTag(roleRadio, legacyRadioTagString);
   const tagRadio = unsafeStatic(tagNameRadio);
+  const tagNameButtonSubmit = resolveSuiteTag(roleButtonSubmit, legacyButtonSubmitTagString);
+  const tagButtonSubmit = unsafeStatic(tagNameButtonSubmit);
+  const tagNameButtonReset = resolveSuiteTag(roleButtonReset, legacyButtonResetTagString);
+  const tagButtonReset = unsafeStatic(tagNameButtonReset);
 
   /**
    * @typedef {import('lit').TemplateResult} TemplateResult
@@ -422,6 +431,123 @@ export function runFormSuite({
       const radioEl = radioGroupEl.formElements[0];
       button.click();
       expect(isActiveElement(radioEl._focusableNode)).to.be.true;
+    });
+
+    describe('ID and native node management', () => {
+      it('assigns a unique suffixed ID to the native form node when lion-form has an ID', async () => {
+        const el = await fixture(html`
+          <${tag} id="my-form">
+            <form></form>
+          </${tag}>
+        `);
+        // @ts-ignore
+        expect(el._formNode.id).to.equal('my-form__native');
+      });
+
+      it('assigns the inherited _inputId to the native form node when lion-form has no ID', async () => {
+        const el = await fixture(html`
+          <${tag}>
+            <form></form>
+          </${tag}>
+        `);
+        // @ts-ignore
+        expect(el._formNode.id).to.equal(el._inputId);
+        // @ts-ignore
+        expect(el._formNode.id).to.be.a('string').and.not.be.empty;
+      });
+
+      it('does not overwrite a pre-existing custom id explicitly defined on the form node', async () => {
+        const elWithId = await fixture(html`
+          <${tag} id="parent-form">
+            <form id="explicit-id"></form>
+          </${tag}>
+        `);
+        // @ts-ignore
+        expect(elWithId._formNode.id).to.equal('explicit-id');
+
+        const elWithoutId = await fixture(html`
+          <${tag}>
+            <form id="another-explicit-id"></form>
+          </${tag}>
+        `);
+        // @ts-ignore
+        expect(elWithoutId._formNode.id).to.equal('another-explicit-id');
+      });
+
+      it('guarantees no duplicate IDs exist between lion-form and form in the document', async () => {
+        const container = await fixture(html`
+          <div>
+            <${tag} id="collision-test">
+              <form></form>
+            </${tag}>
+            <${tag}>
+              <form></form>
+            </${tag}>
+          </div>
+        `);
+        const hostTagName = resolveSuiteTag(hostEl, legacyTagString);
+        const [formWithId, formWithoutId] = /** @type {NodeListOf<LionForm>} */ (
+          container.querySelectorAll(hostTagName)
+        );
+
+        // lion-form with ID
+        expect(formWithId.id).to.equal('collision-test');
+        // @ts-ignore
+        expect(formWithId._formNode.id).to.equal('collision-test__native');
+        expect(container.querySelectorAll('#collision-test')).to.have.lengthOf(1);
+        expect(container.querySelectorAll('#collision-test__native')).to.have.lengthOf(1);
+        // @ts-ignore
+        expect(formWithId.id).to.not.equal(formWithId._formNode.id);
+
+        // lion-form without ID
+        expect(formWithoutId.hasAttribute('id')).to.be.false;
+        // @ts-ignore
+        expect(formWithoutId._formNode.id).to.be.a('string').and.not.be.empty;
+        // @ts-ignore
+        expect(container.querySelectorAll(`[id="${formWithoutId._formNode.id}"]`)).to.have.lengthOf(
+          1,
+        );
+        // @ts-ignore
+        expect(formWithoutId.id).to.not.equal(formWithoutId._formNode.id);
+
+        await expect(container).to.be.accessible();
+      });
+
+      it('supports external button form targets for both native and lion buttons', async () => {
+        const submitSpy = spy();
+        const resetSpy = spy();
+        const container = await fixture(html`
+          <div>
+            <${tag} id="ext-form" @submit=${submitSpy} @reset=${resetSpy}>
+              <form></form>
+            </${tag}>
+            <button type="submit" form="ext-form__native" id="native-submit">Submit Native</button>
+            <button type="reset" form="ext-form__native" id="native-reset">Reset Native</button>
+            <${tagButtonSubmit} form="ext-form" id="lion-submit">Submit Lion</${tagButtonSubmit}>
+            <${tagButtonReset} form="ext-form" id="lion-reset">Reset Lion</${tagButtonReset}>
+          </div>
+        `);
+        const nativeSubmit = /** @type {HTMLButtonElement} */ (
+          container.querySelector('#native-submit')
+        );
+        const nativeReset = /** @type {HTMLButtonElement} */ (
+          container.querySelector('#native-reset')
+        );
+        const lionSubmit = /** @type {HTMLElement} */ (container.querySelector('#lion-submit'));
+        const lionReset = /** @type {HTMLElement} */ (container.querySelector('#lion-reset'));
+
+        nativeSubmit.click();
+        expect(submitSpy.callCount).to.equal(1);
+
+        nativeReset.click();
+        expect(resetSpy.callCount).to.equal(1);
+
+        lionSubmit.click();
+        expect(submitSpy.callCount).to.equal(2);
+
+        lionReset.click();
+        expect(resetSpy.callCount).to.equal(2);
+      });
     });
   });
 }

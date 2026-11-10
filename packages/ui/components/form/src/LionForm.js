@@ -30,6 +30,24 @@ export class LionForm extends LionFieldset {
 
     // @override LionFieldset: makes sure a11y is handled by ._formNode
     this.removeAttribute('role');
+
+    if (this._formNode && !this._formNode.id) {
+      if (this.id) {
+        this._formNode.id = `${this.id}__native`;
+      } else {
+        this._formNode.id = this._inputId;
+      }
+    }
+  }
+
+  /**
+   * @override FormControlMixin
+   * @protected
+   */
+  // eslint-disable-next-line class-methods-use-this
+  _enhanceLightDomA11y() {
+    // Overridden to prevent stamping this._inputId on the <lion-form> host element,
+    // as form identity and a11y are handled by this._formNode.
   }
 
   disconnectedCallback() {
