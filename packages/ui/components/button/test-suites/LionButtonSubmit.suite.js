@@ -1,4 +1,5 @@
 /* eslint-disable lit-a11y/click-events-have-key-events */
+import '@lion/ui/define/lion-form.js';
 import { LionButtonSubmit } from '@lion/ui/button.js';
 import { aTimeout, expect, fixture, html, unsafeStatic } from '@open-wc/testing';
 import { sendKeys } from '@web/test-runner-commands';
@@ -149,6 +150,99 @@ export function LionButtonSubmitSuite({ classes = {}, tagString } = {}) {
           expect(Array.from(elForm.children)).to.not.include(helperBtnEl);
         });
 
+        it('cleans up helper from previous form and registers with new form when form attribute changes', async () => {
+          const container = /** @type {HTMLDivElement} */ (
+            await fixture(html`
+              <div>
+                <form id="submit-dyn-form-a"><input /></form>
+                <form id="submit-dyn-form-b"><input /></form>
+                <${tagButton} form="submit-dyn-form-a">submit</${tagButton}>
+              </div>
+            `)
+          );
+          const btn = /** @type {LionButtonSubmit} */ (container.querySelector(tagStringButton));
+          const formA = /** @type {HTMLFormElement} */ (
+            container.querySelector('#submit-dyn-form-a')
+          );
+          const formB = /** @type {HTMLFormElement} */ (
+            container.querySelector('#submit-dyn-form-b')
+          );
+
+          btn.form = 'submit-dyn-form-b';
+          await btn.updateComplete;
+
+          expect(Boolean(formA.querySelector('button[type=submit]'))).to.be.false;
+          expect(Boolean(formB.querySelector('button[type=submit]'))).to.be.true;
+        });
+
+        it('cleans up helper from previous form and registers with new form when .formElement property changes', async () => {
+          const container = /** @type {HTMLDivElement} */ (
+            await fixture(html`
+              <div>
+                <form id="elem-form-a"><input /></form>
+                <form id="elem-form-b"><input /></form>
+                <${tagButton}>submit</${tagButton}>
+              </div>
+            `)
+          );
+          const formA = /** @type {HTMLFormElement} */ (container.querySelector('#elem-form-a'));
+          const formB = /** @type {HTMLFormElement} */ (container.querySelector('#elem-form-b'));
+          const btn = /** @type {LionButtonSubmit} */ (container.querySelector(tagStringButton));
+
+          btn.formElement = formA;
+          await btn.updateComplete;
+          expect(Boolean(formA.querySelector('button[type=submit]'))).to.be.true;
+          expect(Boolean(formB.querySelector('button[type=submit]'))).to.be.false;
+
+          btn.formElement = formB;
+          await btn.updateComplete;
+          expect(Boolean(formA.querySelector('button[type=submit]'))).to.be.false;
+          expect(Boolean(formB.querySelector('button[type=submit]'))).to.be.true;
+        });
+
+        it('creates max one helper submit button per form with multiple detached submit buttons', async () => {
+          const container = /** @type {HTMLDivElement} */ (
+            await fixture(html`
+              <div>
+                <form id="shared-form">
+                  <input />
+                </form>
+                <${tagButton} form="shared-form">btn1</${tagButton}>
+                <${tagButton} form="shared-form">btn2</${tagButton}>
+              </div>
+            `)
+          );
+          const form = /** @type {HTMLFormElement} */ (container.querySelector('#shared-form'));
+          const buttons = form.querySelectorAll('button[type=submit]');
+          expect(buttons.length).to.equal(1);
+        });
+
+        it('retains helper submit button until the last detached submit button is disconnected', async () => {
+          const container = /** @type {HTMLDivElement} */ (
+            await fixture(html`
+              <div>
+                <form id="shared-form-2">
+                  <input />
+                </form>
+                <${tagButton} form="shared-form-2">btn1</${tagButton}>
+                <${tagButton} form="shared-form-2">btn2</${tagButton}>
+              </div>
+            `)
+          );
+          const form = /** @type {HTMLFormElement} */ (container.querySelector('#shared-form-2'));
+          const [btn1, btn2] = /** @type {LionButtonSubmit[]} */ (
+            Array.from(container.querySelectorAll(tagStringButton))
+          );
+
+          expect(form.querySelectorAll('button[type=submit]').length).to.equal(1);
+
+          btn1.remove();
+          expect(form.querySelectorAll('button[type=submit]').length).to.equal(1);
+
+          btn2.remove();
+          expect(form.querySelectorAll('button[type=submit]').length).to.equal(0);
+        });
+
         it('hides the helper submit button in the UI', async () => {
           const el = /** @type {LionButtonSubmit} */ (
             await fixture(html`<form><${tagButton}>foo</${tagButton}></form>`)
@@ -171,6 +265,52 @@ export function LionButtonSubmitSuite({ classes = {}, tagString } = {}) {
           `);
 
         const input2 = /** @type {HTMLInputElement} */ (form.querySelector('input[name="foo2"]'));
+        input2.focus();
+        await sendKeys({
+          press: 'Enter',
+        });
+        expect(formSubmitSpy).to.have.been.calledOnce;
+      });
+
+      it('works with implicit form submission on-enter when submit button is detached', async () => {
+        const formSubmitSpy = /** @type {EventListener} */ (sinon.spy(e => e.preventDefault()));
+        const container = await fixture(html`
+          <div>
+            <form id="detached-form" @submit="${formSubmitSpy}">
+              <input name="foo" />
+              <input name="foo2" />
+            </form>
+            <${tagButton} form="detached-form">foo</${tagButton}>
+          </div>
+        `);
+
+        const input2 = /** @type {HTMLInputElement} */ (
+          container.querySelector('input[name="foo2"]')
+        );
+        input2.focus();
+        await sendKeys({
+          press: 'Enter',
+        });
+        expect(formSubmitSpy).to.have.been.calledOnce;
+      });
+
+      it('works with implicit form submission on-enter for detached button targeting a lion-form', async () => {
+        const formSubmitSpy = /** @type {EventListener} */ (sinon.spy(e => e.preventDefault()));
+        const container = await fixture(html`
+          <div>
+            <lion-form id="detached-lion-form" @submit="${formSubmitSpy}">
+              <form>
+                <input name="foo" />
+                <input name="foo2" />
+              </form>
+            </lion-form>
+            <${tagButton} form="detached-lion-form">foo</${tagButton}>
+          </div>
+        `);
+
+        const input2 = /** @type {HTMLInputElement} */ (
+          container.querySelector('input[name="foo2"]')
+        );
         input2.focus();
         await sendKeys({
           press: 'Enter',

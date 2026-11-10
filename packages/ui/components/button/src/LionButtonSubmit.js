@@ -59,8 +59,8 @@ export class LionButtonSubmit extends LionButtonReset {
     this.__implicitSubmitHelperButton = null;
   }
 
-  _setupSubmitAndResetHelperOnConnected() {
-    super._setupSubmitAndResetHelperOnConnected();
+  _setupSubmitAndResetHelper() {
+    super._setupSubmitAndResetHelper();
 
     if (!this._form || this.type !== 'submit') {
       return;
@@ -88,21 +88,24 @@ export class LionButtonSubmit extends LionButtonReset {
     implicitHelperMap.get(form)?.lionButtons.add(this);
   }
 
-  _teardownSubmitAndResetHelperOnDisconnected() {
-    super._teardownSubmitAndResetHelperOnDisconnected();
+  _teardownSubmitAndResetHelper() {
+    super._teardownSubmitAndResetHelper();
 
     if (this._form) {
-      // If we are the last button to leave the form, clean up the
+      // If we are the last button to leave the form, clean up
       const registrationForCurForm = /** @type {HelperRegistration} */ (
         implicitHelperMap.get(/** @type {HTMLFormElement} */ (this._form))
       );
       if (registrationForCurForm) {
         registrationForCurForm.lionButtons.delete(this);
         if (!registrationForCurForm.lionButtons.size) {
-          if (this._form.contains(registrationForCurForm.helper)) {
+          registrationForCurForm.observer.disconnect();
+          const wrapperEl = registrationForCurForm.helper.parentElement;
+          if (wrapperEl && this._form.contains(wrapperEl)) {
+            wrapperEl.remove();
+          } else if (this._form.contains(registrationForCurForm.helper)) {
             registrationForCurForm.helper.remove();
           }
-          implicitHelperMap.get(this._form)?.observer.disconnect();
           implicitHelperMap.delete(this._form);
         }
       }
