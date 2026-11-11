@@ -18,6 +18,8 @@ import { LionButton } from './LionButton.js';
  * Application Developers: for reset buttons, always use LionButtonReset, for submit
  * buttons always use LionButtonSubmit.
  *
+ * @property {string} [form]
+ * @property {HTMLFormElement | import('../../form/src/LionForm.js').LionForm} [formElement]
  * @customElement lion-button-reset
  */
 export class LionButtonReset extends LionButton {

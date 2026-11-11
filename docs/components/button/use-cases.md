@@ -90,6 +90,88 @@ Important notes:
 - `@click` on `<lion-button-submit>` and `@submit` on `<form>` are triggered by these use cases. We strongly encourage you to listen to the submit handler if your goal is to do something on form-submit.
 - To prevent form submission full page reloads, add a **submit handler on the form** `@submit` with `event.preventDefault()`. Adding it on the `<lion-button-submit>` is not enough.
 
+## Usage with detached forms
+
+`<lion-button-submit>` and `<lion-button-reset>` can be placed outside the `<form>` DOM tree (such as in sticky footers, headers, drawers, or dialog action bars).
+
+### Via `form` attribute
+
+Use the standard HTML `form="form-id"` attribute to associate the button with a `<form>` or `<lion-form>` element elsewhere in the DOM:
+
+```js preview-story
+export const detachedForm = () => html`
+  <form
+    id="detachedFormId"
+    @submit=${ev => {
+      ev.preventDefault();
+      console.log('detached form submit', ev.target);
+    }}
+    @reset=${ev => {
+      ev.preventDefault();
+      console.log('detached form reset', ev.target);
+    }}
+  >
+    <label for="detachedFirstName">First name</label>
+    <input id="detachedFirstName" name="firstName" />
+    <label for="detachedLastName">Last name</label>
+    <input id="detachedLastName" name="lastName" />
+  </form>
+
+  <!-- Buttons placed outside the form -->
+  <div style="margin-top: 16px;">
+    <lion-button-submit form="detachedFormId">Submit</lion-button-submit>
+    <lion-button-reset form="detachedFormId">Reset</lion-button-reset>
+  </div>
+`;
+```
+
+When targeting an external form via the `form` attribute:
+
+- **Polymorphic lookup**: Works with both native `<form>` elements and `<lion-form>` custom elements (the button automatically binds to the underlying native form node).
+- **Shadow DOM fallback**: If the button is rendered inside a `ShadowRoot` and the form ID is not found locally, the button falls back to searching the host document scope.
+- **`aria-controls`**: The button automatically reflects `aria-controls="form-id"` to announce the programmatic relationship to assistive technologies.
+- **Implicit submission**: Pressing `Enter` in any text field of the form continues to submit the form even when `<lion-button-submit>` is detached.
+
+### Sticky action footers and dialog actions
+
+A common UI pattern places submit and reset actions inside a sticky page footer or dialog action bar, separated from the form container:
+
+```html
+<!-- Main dialog content -->
+<div class="dialog-body">
+  <lion-form id="dialogForm">
+    <form>
+      <lion-input name="user" label="Username"></lion-input>
+      <lion-input name="email" label="Email address"></lion-input>
+    </form>
+  </lion-form>
+</div>
+
+<!-- Sticky dialog action footer -->
+<div class="dialog-actions">
+  <lion-button-reset form="dialogForm">Cancel</lion-button-reset>
+  <lion-button-submit form="dialogForm">Save changes</lion-button-submit>
+</div>
+```
+
+### Via `.formElement` property
+
+When custom components use Shadow DOM encapsulation where IDs cannot cross boundary walls, pass a direct form reference via the `.formElement` object property:
+
+```js
+const submitBtn = document.querySelector('lion-button-submit');
+const formEl = document.querySelector('#detachedFormId');
+
+// Direct object reference (accepts HTMLFormElement or LionForm)
+submitBtn.formElement = formEl;
+```
+
+Or declaratively in Lit templates:
+
+```js
+html` <lion-button-submit .formElement=${this.formRef}>Submit</lion-button-submit> `;
+```
+
 ## Considerations
 
 ### Why a Web Component?

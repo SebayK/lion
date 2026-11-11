@@ -40,6 +40,8 @@ function createImplicitSubmitHelperButton() {
  * (this is similar to how native HTMLButtonElement works)
  * - a submit button with native form support is needed
  *
+ * @property {string} [form]
+ * @property {HTMLFormElement | import('../../form/src/LionForm.js').LionForm} [formElement]
  * @customElement lion-button-submit
  */
 export class LionButtonSubmit extends LionButtonReset {
