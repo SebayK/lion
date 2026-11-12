@@ -17,6 +17,7 @@ import { html } from '@mdjs/mdjs-preview';
 import '@lion/ui/define/lion-button.js';
 import '@lion/ui/define/lion-button-submit.js';
 import '@lion/ui/define/lion-button-reset.js';
+import '@lion/ui/define-helpers/sb-action-logger.js';
 import iconSvg from './src/icon.svg.js';
 ```
 
@@ -53,16 +54,24 @@ export const detachedFormButtons = () => html`
     id="detachedExampleForm"
     @submit=${ev => {
       ev.preventDefault();
-      console.log('Submitted detached form');
+      document
+        .querySelector('#detachedExampleLogger')
+        .log('Submitted detached form via submit event!');
+    }}
+    @reset=${ev => {
+      ev.preventDefault();
+      document.querySelector('#detachedExampleLogger').log('Reset detached form via reset event!');
     }}
   >
     <label for="exampleInput">Username</label>
-    <input id="exampleInput" name="username" />
+    <input id="exampleInput" name="username" value="johndoe" />
   </form>
 
   <div style="margin-top: 16px;">
     <lion-button-submit form="detachedExampleForm">Submit</lion-button-submit>
     <lion-button-reset form="detachedExampleForm">Reset</lion-button-reset>
   </div>
+
+  <sb-action-logger id="detachedExampleLogger" style="margin-top: 16px;"></sb-action-logger>
 `;
 ```

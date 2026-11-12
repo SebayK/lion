@@ -401,6 +401,123 @@ export function LionButtonResetSuite({ classes = {}, tagString } = {}) {
         expect(input.value).to.be.empty;
       });
 
+      it('associates across two separate components with separate shadow roots via form attribute', async () => {
+        const tagFormCompString = defineCE(
+          class extends LitElement {
+            render() {
+              return html`
+                <form>
+                  <input name="field" />
+                </form>
+              `;
+            }
+          },
+        );
+        const tagActionCompString = defineCE(
+          class extends LitElement {
+            static properties = {
+              targetForm: { type: String },
+            };
+
+            constructor() {
+              super();
+              /** @type {string|undefined} */
+              this.targetForm = undefined;
+            }
+
+            render() {
+              return html`<${tagButtonReset} form="${this.targetForm}">reset</${tagButtonReset}>`;
+            }
+          },
+        );
+        const tagFormComp = unsafeStatic(tagFormCompString);
+        const tagActionComp = unsafeStatic(tagActionCompString);
+
+        const wrapper = /** @type {HTMLDivElement} */ (
+          await fixture(html`
+            <div>
+              <${tagFormComp} id="comp-form"></${tagFormComp}>
+              <${tagActionComp} targetForm="comp-form"></${tagActionComp}>
+            </div>
+          `)
+        );
+
+        const formComp = /** @type {HTMLElement} */ (wrapper.querySelector(tagFormCompString));
+        const actionComp = /** @type {HTMLElement} */ (wrapper.querySelector(tagActionCompString));
+        const form = /** @type {HTMLFormElement} */ (formComp.shadowRoot?.querySelector('form'));
+        const input = /** @type {HTMLInputElement} */ (form.querySelector('input'));
+        const btn = /** @type {LionButtonReset} */ (
+          actionComp.shadowRoot?.querySelector(tagStringButtonReset)
+        );
+
+        input.value = 'TestValue';
+        expect(input.value).to.equal('TestValue');
+        btn.click();
+        expect(input.value).to.be.empty;
+      });
+
+      it('associates across two separate components with separate shadow roots via .formElement property', async () => {
+        const tagFormCompString = defineCE(
+          class extends LitElement {
+            render() {
+              return html`
+                <form>
+                  <input name="field" />
+                </form>
+              `;
+            }
+
+            get formNode() {
+              return this.shadowRoot?.querySelector('form');
+            }
+          },
+        );
+        const tagActionCompString = defineCE(
+          class extends LitElement {
+            static properties = {
+              formElement: { attribute: false },
+            };
+
+            constructor() {
+              super();
+              /** @type {any} */
+              this.formElement = undefined;
+            }
+
+            render() {
+              return html`<${tagButtonReset} .formElement="${this.formElement}">reset</${tagButtonReset}>`;
+            }
+          },
+        );
+        const tagFormComp = unsafeStatic(tagFormCompString);
+        const tagActionComp = unsafeStatic(tagActionCompString);
+
+        const wrapper = /** @type {HTMLDivElement} */ (
+          await fixture(html`
+            <div>
+              <${tagFormComp}></${tagFormComp}>
+              <${tagActionComp}></${tagActionComp}>
+            </div>
+          `)
+        );
+
+        const formComp = /** @type {any} */ (wrapper.querySelector(tagFormCompString));
+        const actionComp = /** @type {any} */ (wrapper.querySelector(tagActionCompString));
+        actionComp.formElement = formComp.formNode;
+        await actionComp.updateComplete;
+
+        const form = /** @type {HTMLFormElement} */ (formComp.shadowRoot?.querySelector('form'));
+        const input = /** @type {HTMLInputElement} */ (form.querySelector('input'));
+        const btn = /** @type {LionButtonReset} */ (
+          actionComp.shadowRoot?.querySelector(tagStringButtonReset)
+        );
+
+        input.value = 'ShadowTest';
+        expect(input.value).to.equal('ShadowTest');
+        btn.click();
+        expect(input.value).to.be.empty;
+      });
+
       it('dynamically switches targets when form attribute changes', async () => {
         const wrapper = /** @type {HTMLDivElement} */ (
           await fixture(html`

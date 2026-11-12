@@ -13,10 +13,11 @@ eleventyNavigation:
 # Use Cases
 
 ```js script
-import { html } from '@mdjs/mdjs-preview';
+import { html, LitElement } from '@mdjs/mdjs-preview';
 import '@lion/ui/define/lion-button.js';
 import '@lion/ui/define/lion-button-reset.js';
 import '@lion/ui/define/lion-button-submit.js';
+import '@lion/ui/define-helpers/sb-action-logger.js';
 ```
 
 ## With click handler
@@ -104,17 +105,17 @@ export const detachedForm = () => html`
     id="detachedFormId"
     @submit=${ev => {
       ev.preventDefault();
-      console.log('detached form submit', ev.target);
+      document.querySelector('#detachedActionLogger').log('Form submitted (submit event)!');
     }}
     @reset=${ev => {
       ev.preventDefault();
-      console.log('detached form reset', ev.target);
+      document.querySelector('#detachedActionLogger').log('Form reset (reset event)!');
     }}
   >
     <label for="detachedFirstName">First name</label>
-    <input id="detachedFirstName" name="firstName" />
+    <input id="detachedFirstName" name="firstName" value="John" />
     <label for="detachedLastName">Last name</label>
-    <input id="detachedLastName" name="lastName" />
+    <input id="detachedLastName" name="lastName" value="Doe" />
   </form>
 
   <!-- Buttons placed outside the form -->
@@ -122,6 +123,8 @@ export const detachedForm = () => html`
     <lion-button-submit form="detachedFormId">Submit</lion-button-submit>
     <lion-button-reset form="detachedFormId">Reset</lion-button-reset>
   </div>
+
+  <sb-action-logger id="detachedActionLogger" style="margin-top: 16px;"></sb-action-logger>
 `;
 ```
 
@@ -131,6 +134,101 @@ When targeting an external form via the `form` attribute:
 - **Shadow DOM fallback**: If the button is rendered inside a `ShadowRoot` and the form ID is not found locally, the button falls back to searching the host document scope.
 - **`aria-controls`**: The button automatically reflects `aria-controls="form-id"` to announce the programmatic relationship to assistive technologies.
 - **Implicit submission**: Pressing `Enter` in any text field of the form continues to submit the form even when `<lion-button-submit>` is detached.
+
+### Across separate components with Shadow Roots
+
+A common architecture in modern Web Component applications splits forms and actions into separate autonomous components (each with its own `ShadowRoot`), such as a form card and a detached action bar:
+
+```js preview-story
+class DemoFormCard extends LitElement {
+  render() {
+    return html`
+      <style>
+        :host {
+          display: block;
+          padding: 16px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          background: #fafafa;
+        }
+      </style>
+      <form
+        @submit=${ev => {
+          ev.preventDefault();
+          const logger = document.querySelector('#shadowRootsLogger');
+          if (logger) {
+            const formData = new FormData(ev.target);
+            logger.log(`[Form Card ShadowRoot] Submitted username: "${formData.get('username')}"`);
+          }
+        }}
+        @reset=${ev => {
+          ev.preventDefault();
+          const logger = document.querySelector('#shadowRootsLogger');
+          if (logger) {
+            logger.log('[Form Card ShadowRoot] Form reset triggered!');
+          }
+        }}
+      >
+        <label for="usernameField">Username:</label>
+        <input id="usernameField" name="username" value="alice" />
+      </form>
+    `;
+  }
+}
+if (!customElements.get('demo-form-card')) {
+  customElements.define('demo-form-card', DemoFormCard);
+}
+
+class DemoActionBar extends LitElement {
+  static properties = {
+    form: { type: String },
+    formElement: { attribute: false },
+  };
+
+  constructor() {
+    super();
+    this.form = undefined;
+    this.formElement = undefined;
+  }
+
+  render() {
+    return html`
+      <style>
+        :host {
+          display: flex;
+          gap: 8px;
+          margin-top: 12px;
+        }
+      </style>
+      <lion-button-submit .formElement=${this.formElement} form=${this.form || undefined}>
+        Save
+      </lion-button-submit>
+      <lion-button-reset .formElement=${this.formElement} form=${this.form || undefined}>
+        Reset
+      </lion-button-reset>
+    `;
+  }
+}
+if (!customElements.get('demo-action-bar')) {
+  customElements.define('demo-action-bar', DemoActionBar);
+}
+
+export const separateShadowRoots = () => html`
+  <!-- Component 1: Form encapsulated inside its own ShadowRoot -->
+  <demo-form-card id="userCardForm"></demo-form-card>
+
+  <!-- Component 2: Action buttons encapsulated inside their own ShadowRoot -->
+  <demo-action-bar form="userCardForm"></demo-action-bar>
+
+  <sb-action-logger id="shadowRootsLogger" style="margin-top: 16px;"></sb-action-logger>
+`;
+```
+
+In this setup:
+
+- **`<demo-form-card id="userCardForm">`** renders a form inside its own Shadow DOM.
+- **`<demo-action-bar form="userCardForm">`** renders `<lion-button-submit>` and `<lion-button-reset>` inside its own Shadow DOM.
+- The button inside `<demo-action-bar>` resolves `#userCardForm` in the host document, discovers the inner `<form>` within its open shadow root, and connects seamlessly for both button activation and keyboard Enter implicit submission!
 
 ### Sticky action footers and dialog actions
 

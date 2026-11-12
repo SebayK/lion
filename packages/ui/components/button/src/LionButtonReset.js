@@ -110,7 +110,12 @@ export class LionButtonReset extends LionButton {
     }
 
     if (target) {
-      const formNode = target._formNode || target;
+      const formNode =
+        target._formNode ||
+        (target.shadowRoot &&
+          (target.shadowRoot.querySelector('form') ||
+            target.shadowRoot.querySelector('lion-form')?._formNode)) ||
+        target;
       if (formNode instanceof HTMLFormElement) {
         return formNode;
       }
