@@ -14,6 +14,7 @@ eleventyNavigation:
 
 ```js script
 import { html, LitElement } from '@mdjs/mdjs-preview';
+import { renderLitAsNode } from '@lion/ui/helpers.js';
 import '@lion/ui/define/lion-button.js';
 import '@lion/ui/define/lion-button-reset.js';
 import '@lion/ui/define/lion-button-submit.js';
@@ -100,32 +101,43 @@ Important notes:
 Use the standard HTML `form="form-id"` attribute to associate the button with a `<form>` or `<lion-form>` element elsewhere in the DOM:
 
 ```js preview-story
-export const detachedForm = () => html`
-  <form
-    id="detachedFormId"
-    @submit=${ev => {
-      ev.preventDefault();
-      document.querySelector('#detachedActionLogger').log('Form submitted (submit event)!');
-    }}
-    @reset=${ev => {
-      ev.preventDefault();
-      document.querySelector('#detachedActionLogger').log('Form reset (reset event)!');
-    }}
-  >
-    <label for="detachedFirstName">First name</label>
-    <input id="detachedFirstName" name="firstName" value="John" />
-    <label for="detachedLastName">Last name</label>
-    <input id="detachedLastName" name="lastName" value="Doe" />
-  </form>
+export const detachedForm = () => {
+  const actionLogger = renderLitAsNode(html`<sb-action-logger></sb-action-logger>`);
+  const log = msg => {
+    if (actionLogger && typeof actionLogger.log === 'function') {
+      actionLogger.log(msg);
+    } else {
+      console.log(msg);
+    }
+  };
 
-  <!-- Buttons placed outside the form -->
-  <div style="margin-top: 16px;">
-    <lion-button-submit form="detachedFormId">Submit</lion-button-submit>
-    <lion-button-reset form="detachedFormId">Reset</lion-button-reset>
-  </div>
+  return html`
+    <form
+      id="detachedFormId"
+      @submit=${ev => {
+        ev.preventDefault();
+        log('Form submitted (submit event)!');
+      }}
+      @reset=${ev => {
+        ev.preventDefault();
+        log('Form reset (reset event)!');
+      }}
+    >
+      <label for="detachedFirstName">First name</label>
+      <input id="detachedFirstName" name="firstName" value="John" />
+      <label for="detachedLastName">Last name</label>
+      <input id="detachedLastName" name="lastName" value="Doe" />
+    </form>
 
-  <sb-action-logger id="detachedActionLogger" style="margin-top: 16px;"></sb-action-logger>
-`;
+    <!-- Buttons placed outside the form -->
+    <div style="margin-top: 16px; margin-bottom: 16px;">
+      <lion-button-submit form="detachedFormId">Submit</lion-button-submit>
+      <lion-button-reset form="detachedFormId">Reset</lion-button-reset>
+    </div>
+
+    ${actionLogger}
+  `;
+};
 ```
 
 When targeting an external form via the `form` attribute:
@@ -141,6 +153,15 @@ A common architecture in modern Web Component applications splits forms and acti
 
 ```js preview-story
 class DemoFormCard extends LitElement {
+  static properties = {
+    logger: { attribute: false },
+  };
+
+  constructor() {
+    super();
+    this.logger = undefined;
+  }
+
   render() {
     return html`
       <style>
@@ -155,17 +176,17 @@ class DemoFormCard extends LitElement {
       <form
         @submit=${ev => {
           ev.preventDefault();
-          const logger = document.querySelector('#shadowRootsLogger');
-          if (logger) {
-            const formData = new FormData(ev.target);
-            logger.log(`[Form Card ShadowRoot] Submitted username: "${formData.get('username')}"`);
+          const formData = new FormData(ev.target);
+          if (this.logger && typeof this.logger.log === 'function') {
+            this.logger.log(
+              `[Form Card ShadowRoot] Submitted username: "${formData.get('username')}"`,
+            );
           }
         }}
         @reset=${ev => {
           ev.preventDefault();
-          const logger = document.querySelector('#shadowRootsLogger');
-          if (logger) {
-            logger.log('[Form Card ShadowRoot] Form reset triggered!');
+          if (this.logger && typeof this.logger.log === 'function') {
+            this.logger.log('[Form Card ShadowRoot] Form reset triggered!');
           }
         }}
       >
@@ -213,15 +234,21 @@ if (!customElements.get('demo-action-bar')) {
   customElements.define('demo-action-bar', DemoActionBar);
 }
 
-export const separateShadowRoots = () => html`
-  <!-- Component 1: Form encapsulated inside its own ShadowRoot -->
-  <demo-form-card id="userCardForm"></demo-form-card>
+export const separateShadowRoots = () => {
+  const actionLogger = renderLitAsNode(html`<sb-action-logger></sb-action-logger>`);
 
-  <!-- Component 2: Action buttons encapsulated inside their own ShadowRoot -->
-  <demo-action-bar form="userCardForm"></demo-action-bar>
+  return html`
+    <!-- Component 1: Form encapsulated inside its own ShadowRoot -->
+    <demo-form-card id="userCardForm" .logger=${actionLogger}></demo-form-card>
 
-  <sb-action-logger id="shadowRootsLogger" style="margin-top: 16px;"></sb-action-logger>
-`;
+    <!-- Component 2: Action buttons encapsulated inside their own ShadowRoot -->
+    <div style="margin-bottom: 16px;">
+      <demo-action-bar form="userCardForm"></demo-action-bar>
+    </div>
+
+    ${actionLogger}
+  `;
+};
 ```
 
 In this setup:
