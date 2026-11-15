@@ -15,10 +15,16 @@ eleventyNavigation:
 ```js script
 import { html, LitElement } from '@mdjs/mdjs-preview';
 import { renderLitAsNode } from '@lion/ui/helpers.js';
+import { Required, MinLength } from '@lion/ui/form-core.js';
+import { loadDefaultFeedbackMessages } from '@lion/ui/validate-messages.js';
 import '@lion/ui/define/lion-button.js';
 import '@lion/ui/define/lion-button-reset.js';
 import '@lion/ui/define/lion-button-submit.js';
+import '@lion/ui/define/lion-form.js';
+import '@lion/ui/define/lion-input.js';
 import '@lion/ui/define-helpers/sb-action-logger.js';
+
+loadDefaultFeedbackMessages();
 ```
 
 ## With click handler
@@ -112,22 +118,33 @@ export const detachedForm = () => {
   };
 
   return html`
-    <form
+    <lion-form
       id="detachedFormId"
       @submit=${ev => {
-        ev.preventDefault();
-        log('Form submitted (submit event)!');
+        const form = ev.target;
+        if (form.hasFeedbackFor.includes('error')) {
+          const invalidFields = form.formElements
+            .filter(el => el.hasFeedbackFor.includes('error'))
+            .map(el => el.name || el.label);
+          log(`❌ Validation failed for: ${invalidFields.join(', ')}`);
+          return;
+        }
+        log(`✅ Form submitted and saved! Data: ${JSON.stringify(form.serializedValue)}`);
       }}
-      @reset=${ev => {
-        ev.preventDefault();
-        log('Form reset (reset event)!');
+      @reset=${() => {
+        log('🔄 Form reset: inputs cleared and validation states reset.');
       }}
     >
-      <label for="detachedFirstName">First name</label>
-      <input id="detachedFirstName" name="firstName" value="John" />
-      <label for="detachedLastName">Last name</label>
-      <input id="detachedLastName" name="lastName" value="Doe" />
-    </form>
+      <form>
+        <lion-input
+          name="firstName"
+          label="First name"
+          .modelValue=${'John'}
+          .validators=${[new Required(), new MinLength(3)]}
+        ></lion-input>
+        <lion-input name="lastName" label="Last name" .validators=${[new Required()]}></lion-input>
+      </form>
+    </lion-form>
 
     <!-- Buttons placed outside the form -->
     <div style="margin-top: 16px; margin-bottom: 16px;">
@@ -173,26 +190,40 @@ class DemoFormCard extends LitElement {
           background: #fafafa;
         }
       </style>
-      <form
+      <lion-form
         @submit=${ev => {
-          ev.preventDefault();
-          const formData = new FormData(ev.target);
+          const form = ev.target;
+          if (form.hasFeedbackFor.includes('error')) {
+            const invalidFields = form.formElements
+              .filter(el => el.hasFeedbackFor.includes('error'))
+              .map(el => el.name || el.label);
+            if (this.logger && typeof this.logger.log === 'function') {
+              this.logger.log(`[Form Card] ❌ Validation failed for: ${invalidFields.join(', ')}`);
+            }
+            return;
+          }
           if (this.logger && typeof this.logger.log === 'function') {
             this.logger.log(
-              `[Form Card ShadowRoot] Submitted username: "${formData.get('username')}"`,
+              `[Form Card] ✅ Form submitted and saved! Data: ${JSON.stringify(form.serializedValue)}`,
             );
           }
         }}
-        @reset=${ev => {
-          ev.preventDefault();
+        @reset=${() => {
           if (this.logger && typeof this.logger.log === 'function') {
-            this.logger.log('[Form Card ShadowRoot] Form reset triggered!');
+            this.logger.log('[Form Card] 🔄 Form reset: inputs cleared and validation reset');
           }
         }}
       >
-        <label for="usernameField">Username:</label>
-        <input id="usernameField" name="username" value="alice" />
-      </form>
+        <form>
+          <lion-input
+            name="username"
+            label="Username"
+            .modelValue=${'alice'}
+            .validators=${[new Required(), new MinLength(3)]}
+          ></lion-input>
+          <lion-input name="email" label="Email" .validators=${[new Required()]}></lion-input>
+        </form>
+      </lion-form>
     `;
   }
 }

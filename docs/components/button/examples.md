@@ -15,11 +15,17 @@ eleventyNavigation:
 ```js script
 import { html } from '@mdjs/mdjs-preview';
 import { renderLitAsNode } from '@lion/ui/helpers.js';
+import { Required, MinLength } from '@lion/ui/form-core.js';
+import { loadDefaultFeedbackMessages } from '@lion/ui/validate-messages.js';
 import '@lion/ui/define/lion-button.js';
 import '@lion/ui/define/lion-button-submit.js';
 import '@lion/ui/define/lion-button-reset.js';
+import '@lion/ui/define/lion-form.js';
+import '@lion/ui/define/lion-input.js';
 import '@lion/ui/define-helpers/sb-action-logger.js';
 import iconSvg from './src/icon.svg.js';
+
+loadDefaultFeedbackMessages();
 ```
 
 ## Icon button
@@ -61,20 +67,33 @@ export const detachedFormButtons = () => {
   };
 
   return html`
-    <form
+    <lion-form
       id="detachedExampleForm"
       @submit=${ev => {
-        ev.preventDefault();
-        log('Submitted detached form via submit event!');
+        const form = ev.target;
+        if (form.hasFeedbackFor.includes('error')) {
+          const invalidFields = form.formElements
+            .filter(el => el.hasFeedbackFor.includes('error'))
+            .map(el => el.name || el.label);
+          log(`❌ Validation failed for: ${invalidFields.join(', ')}`);
+          return;
+        }
+        log(`✅ Form submitted and saved! Data: ${JSON.stringify(form.serializedValue)}`);
       }}
-      @reset=${ev => {
-        ev.preventDefault();
-        log('Reset detached form via reset event!');
+      @reset=${() => {
+        log('🔄 Form reset: inputs cleared and validation states reset.');
       }}
     >
-      <label for="exampleInput">Username</label>
-      <input id="exampleInput" name="username" value="johndoe" />
-    </form>
+      <form>
+        <lion-input
+          name="username"
+          label="Username"
+          .modelValue=${'johndoe'}
+          .validators=${[new Required(), new MinLength(3)]}
+        ></lion-input>
+        <lion-input name="email" label="Email" .validators=${[new Required()]}></lion-input>
+      </form>
+    </lion-form>
 
     <div style="margin-top: 16px; margin-bottom: 16px;">
       <lion-button-submit form="detachedExampleForm">Submit</lion-button-submit>
